@@ -77,6 +77,7 @@
     <Compile Include="User\AspNetUser.cs" />
     <Compile Include="User\AspNetUserClaim.cs" />
     <Compile Include="User\AspNetUserLogin.cs" />
+    <Compile Include="User\CachedUser.cs" />
     <Compile Include="User\C__MigrationHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User\UserDb.cs" />
@@ -85,7 +86,12 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Krab.Cache\Krab.Cache.csproj">
+      <Project>{a7de3e5a-6de0-4fe7-bf3b-0ad6fcd78f1a}</Project>
+      <Name>Krab.Cache</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
