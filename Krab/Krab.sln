@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krab.Web", "Krab.Web\Krab.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krab.DataAccess", "Krab.DataAccess\Krab.DataAccess.csproj", "{8E81E945-2032-4011-B040-3F825A5E292D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krab.Cache", "Krab.Cache\Krab.Cache.csproj", "{A7DE3E5A-6DE0-4FE7-BF3B-0AD6FCD78F1A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{8E81E945-2032-4011-B040-3F825A5E292D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E81E945-2032-4011-B040-3F825A5E292D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E81E945-2032-4011-B040-3F825A5E292D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7DE3E5A-6DE0-4FE7-BF3B-0AD6FCD78F1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7DE3E5A-6DE0-4FE7-BF3B-0AD6FCD78F1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7DE3E5A-6DE0-4FE7-BF3B-0AD6FCD78F1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7DE3E5A-6DE0-4FE7-BF3B-0AD6FCD78F1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

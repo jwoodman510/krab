@@ -3,6 +3,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Krab.Web.Bootstrap;
 
 namespace Krab.Web
 {
@@ -10,6 +11,8 @@ namespace Krab.Web
     {
         protected void Application_Start()
         {
+            UnityConfig.RegisterComponents();
+            Bootstrapper.Configure(GlobalConfiguration.Configuration);
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
