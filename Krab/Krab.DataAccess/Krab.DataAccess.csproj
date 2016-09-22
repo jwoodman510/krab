@@ -86,12 +86,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Krab.Cache\Krab.Cache.csproj">
-      <Project>{a7de3e5a-6de0-4fe7-bf3b-0ad6fcd78f1a}</Project>
-      <Name>Krab.Cache</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
