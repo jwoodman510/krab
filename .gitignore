@@ -1,0 +1,70 @@
+# VS
+*.user
+*.sln.docstates
+*.obj
+*.exe
+*.pdb
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+*.lib
+*.sbr
+*.scc
+*.jim
+*.dbmdl
+*.ldf
+*.mdf
+
+source/packages/*
+[Tt]est[Rr]esult*
+[Bb]uild[Ll]og.*
+*.[Pp]ublish.xml
+local.config
+**/bin/*
+**/debug*/*
+**/obj/*
+**/release*/
+**/precompiled[Ww]eb/
+
+# ReSharper
+*.[Rr]e[Ss]harper.*
+_[Rr]e[Ss]harper*/
+
+#hg
+*.orig
+
+*.vsp
+*.psess
+
+#weborb
+weborbassets/
+
+# Ignore NuGet Packages
+*.nupkg
+# Ignore the packages folder
+**/packages/*
+# except build/, which is used as an MSBuild target.
+!**/packages/build/
+# Uncomment if necessary however generally it will be regenerated when needed
+#!**/packages/repositories.config
+
+#nunit
+TestResult.xml
+*.VisualState.xml
+*.ncrunchproject
+*.ncrunchsolution
+*[Nn]Crunch*
+
+source/*.DotSettings
+
+**/.sonar/*

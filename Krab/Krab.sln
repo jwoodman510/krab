@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krab.Web", "Krab.Web\Krab.Web.csproj", "{66C8B1D2-740B-471A-973F-FA6D9EDCD8CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krab.DataAccess", "Krab.DataAccess\Krab.DataAccess.csproj", "{8E81E945-2032-4011-B040-3F825A5E292D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krab.Cache", "Krab.Cache\Krab.Cache.csproj", "{A7DE3E5A-6DE0-4FE7-BF3B-0AD6FCD78F1A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{66C8B1D2-740B-471A-973F-FA6D9EDCD8CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66C8B1D2-740B-471A-973F-FA6D9EDCD8CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66C8B1D2-740B-471A-973F-FA6D9EDCD8CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66C8B1D2-740B-471A-973F-FA6D9EDCD8CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E81E945-2032-4011-B040-3F825A5E292D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E81E945-2032-4011-B040-3F825A5E292D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E81E945-2032-4011-B040-3F825A5E292D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E81E945-2032-4011-B040-3F825A5E292D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7DE3E5A-6DE0-4FE7-BF3B-0AD6FCD78F1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7DE3E5A-6DE0-4FE7-BF3B-0AD6FCD78F1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7DE3E5A-6DE0-4FE7-BF3B-0AD6FCD78F1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7DE3E5A-6DE0-4FE7-BF3B-0AD6FCD78F1A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
