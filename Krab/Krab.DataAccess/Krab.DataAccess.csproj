@@ -72,7 +72,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
+    <Compile Include="Dac\IRedditUserDac.cs" />
     <Compile Include="Dac\IUserDac.cs" />
+    <Compile Include="Exception\DataAccessException.cs" />
+    <Compile Include="Exception\ModificationException.cs" />
+    <Compile Include="Exception\NotFoundException.cs" />
+    <Compile Include="Exception\ValidationException.cs" />
+    <Compile Include="RedditUser\RedditUser.cs" />
+    <Compile Include="RedditUser\RedditUserDb.cs" />
     <Compile Include="User\AspNetRole.cs" />
     <Compile Include="User\AspNetUser.cs" />
     <Compile Include="User\AspNetUserClaim.cs" />
@@ -85,6 +92,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
