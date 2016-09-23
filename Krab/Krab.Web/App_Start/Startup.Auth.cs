@@ -9,6 +9,7 @@ using Microsoft.Owin.Security.Google;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using Krab.Web.Models;
+using Krab.Web.Models.Identity;
 using Krab.Web.Providers;
 
 namespace Krab.Web

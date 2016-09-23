@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 
-namespace Krab.Web.Models
+namespace Krab.Web.Models.Identity
 {
     public class IndexViewModel
     {

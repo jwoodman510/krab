@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace Krab.Web.Models
+﻿namespace Krab.Web.Models.Identity
 {
     // Models returned by MeController actions.
     public class GetViewModel

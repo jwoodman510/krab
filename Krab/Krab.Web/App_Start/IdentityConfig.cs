@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Krab.Web.Models;
+using Krab.Web.Models.Identity;
 
 namespace Krab.Web
 {

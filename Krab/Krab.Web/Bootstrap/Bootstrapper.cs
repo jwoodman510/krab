@@ -1,4 +1,6 @@
-﻿using System.Web.Http;
+﻿using System.Linq;
+using System.Web.Http;
+using System.Web.Http.Filters;
 using Krab.Web.Controllers;
 using Microsoft.Practices.Unity;
 
@@ -13,6 +15,12 @@ namespace Krab.Web.Bootstrap
             RegisterInstances(container);
 
             config.DependencyResolver = new UnityResolver(container);
+
+            var providers = config.Services.GetFilterProviders().ToList();
+            var defaultprovider = providers.Single(i => i is ActionDescriptorFilterProvider);
+
+            config.Services.Remove(typeof(IFilterProvider), defaultprovider);
+            config.Services.Add(typeof(IFilterProvider), new UnityFilterProvider(container));
         }
 
         public static void RegisterInstances(IUnityContainer container)
