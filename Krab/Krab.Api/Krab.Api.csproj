@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E1A9478A-5B05-4045-AEE6-422CC28363A0}</ProjectGuid>
+    <ProjectGuid>{1DFE1B30-866B-4C4E-B16D-0FBA340CF1A0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Krab.Global</RootNamespace>
-    <AssemblyName>Krab.Global</AssemblyName>
+    <RootNamespace>Krab.Api</RootNamespace>
+    <AssemblyName>Krab.Api</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,9 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,11 +44,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppSettings.cs" />
-    <Compile Include="CacheKeys.cs" />
-    <Compile Include="Extensions\HttpContextExtensions.cs" />
-    <Compile Include="Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="AuthApi.cs" />
+    <Compile Include="Constants\Settings.cs" />
+    <Compile Include="Constants\Urls.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Krab.Api.ValueObjects\Krab.Api.ValueObjects.csproj">
+      <Project>{e0205349-f394-483a-bb23-c57aee706266}</Project>
+      <Name>Krab.Api.ValueObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Krab.Cache\Krab.Cache.csproj">
+      <Project>{a7de3e5a-6de0-4fe7-bf3b-0ad6fcd78f1a}</Project>
+      <Name>Krab.Cache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Krab.DataAccess\Krab.DataAccess.csproj">
+      <Project>{8e81e945-2032-4011-b040-3f825a5e292d}</Project>
+      <Name>Krab.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Krab.Global\Krab.Global.csproj">
+      <Project>{e1a9478a-5b05-4045-aee6-422cc28363a0}</Project>
+      <Name>Krab.Global</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
