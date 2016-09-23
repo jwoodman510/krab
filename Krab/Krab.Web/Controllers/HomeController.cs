@@ -1,9 +1,7 @@
-﻿using System.Threading.Tasks;
-using System.Web.Mvc;
-//using Krab.Cache;
+﻿using System.Web.Mvc;
+using Krab.Caching;
 using Krab.DataAccess.Dac;
 using Krab.DataAccess.User;
-using Krab.Global;
 using Microsoft.AspNet.Identity;
 
 namespace Krab.Web.Controllers
@@ -11,12 +9,13 @@ namespace Krab.Web.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-       // private readonly ICache _cache;
+        private readonly ICache _cache;
         private readonly IUserDac _userDac;
 
-        public HomeController(IUserDac userDac)
+        public HomeController(IUserDac userDac, ICache cache)
         {
             _userDac = userDac;
+            _cache = cache;
         }
 
         public ActionResult Index()
@@ -25,7 +24,7 @@ namespace Krab.Web.Controllers
 
             var user = _userDac.Get(userId);
 
-            //_cache.SetValue(userId, new CachedUser(user), 60 * 5);
+            _cache.SetValue(userId, new CachedUser(user), 60 * 5);
 
             return View();
         }

@@ -6,7 +6,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Krab.Api.Constants;
-using Krab.Cache;
+using Krab.Caching;
 using Krab.DataAccess.Dac;
 using Newtonsoft.Json;
 using Krab.Api.ValueObjects;
