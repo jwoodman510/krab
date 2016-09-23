@@ -368,10 +368,6 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Krab.Cache\Krab.Cache.csproj">
-      <Project>{a7de3e5a-6de0-4fe7-bf3b-0ad6fcd78f1a}</Project>
-      <Name>Krab.Cache</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Krab.DataAccess\Krab.DataAccess.csproj">
       <Project>{8e81e945-2032-4011-b040-3f825a5e292d}</Project>
       <Name>Krab.DataAccess</Name>

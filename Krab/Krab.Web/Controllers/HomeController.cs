@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using Krab.Cache;
+//using Krab.Cache;
 using Krab.DataAccess.Dac;
 using Krab.DataAccess.User;
 using Microsoft.AspNet.Identity;
@@ -9,12 +9,11 @@ namespace Krab.Web.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly ICache _cache;
         private readonly IUserDac _userDac;
+        //private readonly ICache _cache;
 
-        public HomeController(ICache cache, IUserDac userDac)
+        public HomeController(IUserDac userDac)
         {
-            _cache = cache;
             _userDac = userDac;
         }
 
@@ -24,7 +23,7 @@ namespace Krab.Web.Controllers
 
             var user = _userDac.Get(userId);
 
-            _cache.SetValue(userId, new CachedUser(user), 60 * 5);
+            //_cache.SetValue(userId, new CachedUser(user), 60 * 5);
 
             return View();
         }
