@@ -30,5 +30,9 @@ namespace Krab.Web.Models.Identity
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<Krab.DataAccess.User.AspNetUser> AspNetUsers { get; set; }
+
+        public System.Data.Entity.DbSet<Krab.DataAccess.RedditUser.RedditUser> RedditUsers { get; set; }
     }
 }

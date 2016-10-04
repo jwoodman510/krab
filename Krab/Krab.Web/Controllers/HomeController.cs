@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using Krab.Caching;
 using Krab.DataAccess.Dac;
 using Krab.DataAccess.User;
@@ -28,6 +29,16 @@ namespace Krab.Web.Controllers
 
             return View();
         }
+
+//        public JsonResult GetkeywordResponseSets()
+//        {
+//            KeywordResponseSets e = new KeywordResponseSets();
+//            var result = e.KeywordResponseSet.ToList();
+//            return Json(result, JsonRequestBehavior.AllowGet);
+//
+//        }
+
+
 
         //public async Task<ActionResult> AuthorizationCallback()
         //{
