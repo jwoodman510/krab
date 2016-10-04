@@ -368,6 +368,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Krab.Api\Krab.Api.csproj">
+      <Project>{1dfe1b30-866b-4c4e-b16d-0fba340cf1a0}</Project>
+      <Name>Krab.Api</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Krab.Caching\Krab.Caching.csproj">
       <Project>{4179cc7c-e9df-4502-8221-b62d091a89be}</Project>
       <Name>Krab.Caching</Name>
