@@ -72,14 +72,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
+    <Compile Include="Dac\IKeywordResponseSetDac.cs" />
     <Compile Include="Dac\IRedditUserDac.cs" />
     <Compile Include="Dac\IUserDac.cs" />
     <Compile Include="Exception\DataAccessException.cs" />
     <Compile Include="Exception\ModificationException.cs" />
     <Compile Include="Exception\NotFoundException.cs" />
     <Compile Include="Exception\ValidationException.cs" />
-    <Compile Include="KeywordResponseSet.cs" />
-    <Compile Include="KeywordResponseSets.cs" />
+    <Compile Include="KeywordResponseSet\KeywordResponseSet.cs" />
+    <Compile Include="KeywordResponseSet\KeywordResponseSetsDb.cs" />
     <Compile Include="RedditUser\RedditUser.cs" />
     <Compile Include="RedditUser\RedditUserDb.cs" />
     <Compile Include="User\AspNetRole.cs" />
@@ -93,7 +94,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

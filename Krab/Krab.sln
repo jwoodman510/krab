@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krab.Web", "Krab.Web\Krab.Web.csproj", "{66C8B1D2-740B-471A-973F-FA6D9EDCD8CE}"
-	ProjectSection(ProjectDependencies) = postProject
-		{77A39223-C858-4DEA-BF53-0F2BE78644A8} = {77A39223-C858-4DEA-BF53-0F2BE78644A8}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krab.DataAccess", "Krab.DataAccess\Krab.DataAccess.csproj", "{8E81E945-2032-4011-B040-3F825A5E292D}"
 EndProject
@@ -17,8 +14,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krab.Api", "Krab.Api\Krab.Api.csproj", "{1DFE1B30-866B-4C4E-B16D-0FBA340CF1A0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krab.Caching", "Krab.Caching\Krab.Caching.csproj", "{4179CC7C-E9DF-4502-8221-B62D091A89BE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REST", "REST\REST.csproj", "{77A39223-C858-4DEA-BF53-0F2BE78644A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,10 +45,6 @@ Global
 		{4179CC7C-E9DF-4502-8221-B62D091A89BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4179CC7C-E9DF-4502-8221-B62D091A89BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4179CC7C-E9DF-4502-8221-B62D091A89BE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{77A39223-C858-4DEA-BF53-0F2BE78644A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{77A39223-C858-4DEA-BF53-0F2BE78644A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{77A39223-C858-4DEA-BF53-0F2BE78644A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{77A39223-C858-4DEA-BF53-0F2BE78644A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
