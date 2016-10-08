@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.ServiceLocation;
+﻿using log4net;
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 
 namespace Krab.ScheduledService.Boostrap
@@ -16,6 +17,8 @@ namespace Krab.ScheduledService.Boostrap
 
         private static void RegisterInstances(IUnityContainer container)
         {
+            container.RegisterInstance(typeof(ILog), LogManager.GetLogger("ServiceLogger"));
+
             Configuration.Register(container);
             DataAccess.Configuration.Register(container);
             Api.Configuration.Register(container);

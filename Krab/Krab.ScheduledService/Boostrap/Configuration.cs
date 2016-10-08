@@ -1,6 +1,7 @@
-﻿using Microsoft.Practices.Unity;
+﻿using Krab.ScheduledService.Job;
+using Microsoft.Practices.Unity;
 
-namespace Krab.ScheduledService
+namespace Krab.ScheduledService.Boostrap
 {
     public static class Configuration
     {
