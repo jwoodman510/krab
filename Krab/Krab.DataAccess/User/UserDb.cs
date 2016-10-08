@@ -5,7 +5,7 @@ namespace Krab.DataAccess.User
     public partial class UserDb : DbContext
     {
         public UserDb()
-            : base("name=UserDb")
+            : base("name=DefaultConnection")
         {
         }
 

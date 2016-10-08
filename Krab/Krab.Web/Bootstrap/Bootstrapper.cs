@@ -27,6 +27,7 @@ namespace Krab.Web.Bootstrap
         {
             DataAccess.Configuration.Register(container);
             Caching.Configuration.Register(container);
+            Api.Configuration.Register(container);
             RegisterMvcControllers(container);
         }
 

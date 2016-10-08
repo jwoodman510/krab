@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Krab.Web.Bootstrap;
+using Krab.DataAccess.User;
 
 namespace Krab.Web
 {
@@ -11,6 +12,7 @@ namespace Krab.Web
     {
         protected void Application_Start()
         {
+      
             UnityConfig.RegisterComponents();
             Bootstrapper.Configure(GlobalConfiguration.Configuration);
             AreaRegistration.RegisterAllAreas();

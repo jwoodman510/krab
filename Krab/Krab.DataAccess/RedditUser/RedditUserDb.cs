@@ -8,7 +8,7 @@ namespace Krab.DataAccess.RedditUser
     public partial class RedditUserDb : DbContext
     {
         public RedditUserDb()
-            : base("name=RedditUserDb")
+            : base("name=DefaultConnection")
         {
         }
 

@@ -1,7 +1,39 @@
 ﻿@section SPAViews {
-    @Html.Partial("_Home")
+    @*    @Html.Partial("_Home")}*@}
+
+@section scripts{
+    <script src="../../Scripts/AspUser.js"></script>
 }
-@section Scripts{
-    @Scripts.Render("~/bundles/knockout")
-    @Scripts.Render("~/bundles/app")
-}
+
+
+<div class="container">
+    <div ng-app="myApp" class="row">
+
+        <div ng-controller="KRController">
+
+            <table class="table">
+                <tr>
+                    <th>Keyword</th>
+                    <th>Response</th>
+                </tr>
+                <tr ng-repeat="a in krSets">
+                    <td>{{a.keyword}}</td>
+                    <td>{{a.response}}</td>
+                </tr>
+                
+            </table>
+            
+            <button
+                class="btn btn-primary"
+                ng-click="addKR = !addKR"
+                ng-show="!addKR">Add a Keyword-Response Set
+            </button>
+            
+            
+
+        </div>
+    </div></div>
+
+
+
+
