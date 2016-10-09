@@ -3,11 +3,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Krab.Caching;
+using Krab.DataAccess.Dac;
+using Krab.DataAccess.User;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Krab.Web.Models;
 using Krab.Web.Models.Identity;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Krab.Web.Controllers
 {
@@ -17,14 +21,29 @@ namespace Krab.Web.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
+        private readonly ICache _cache;
+        private readonly IUserDac _userDac;
+        private readonly IRedditUserDac _redditUserDac;
+
         public ManageController()
         {
+            _cache = ServiceLocator.Current.GetInstance<ICache>();
+            _userDac = ServiceLocator.Current.GetInstance<IUserDac>();
+            _redditUserDac = ServiceLocator.Current.GetInstance<IRedditUserDac>();
         }
 
-        public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public ManageController(
+            ApplicationUserManager userManager,
+            ApplicationSignInManager signInManager,
+            ICache cache,
+            IUserDac userDac,
+            IRedditUserDac redditUserDac)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            _cache = cache;
+            _userDac = userDac;
+            _redditUserDac = redditUserDac;
         }
 
         public ApplicationSignInManager SignInManager
@@ -68,12 +87,33 @@ namespace Krab.Web.Controllers
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
+                HasRedditUser = HasRedditUserId(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
             return View(model);
+        }
+
+        private bool HasRedditUserId()
+        {
+            var id = User.Identity.GetUserId();
+
+            var cachedUser = _cache.GetValue<CachedUser>(id);
+
+            if (cachedUser != null)
+            {
+                return _redditUserDac.GetByUser(cachedUser.UserId)
+                    ?.FirstOrDefault() != null;
+            }
+
+            var user = _userDac.Get(id);
+
+            _cache.SetValue(id, new CachedUser(user), 60 * 5);
+
+            return _redditUserDac.GetByUser(user.UserId)
+                    ?.FirstOrDefault() != null;
         }
 
         //

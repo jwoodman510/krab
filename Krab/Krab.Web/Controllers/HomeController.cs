@@ -27,10 +27,12 @@ namespace Krab.Web.Controllers
         {
             var userId = User.Identity.GetUserId();
 
-            var user = _userDac.Get(userId);
-
-            _cache.SetValue(userId, new CachedUser(user), 60 * 5);
-
+            if (_cache.GetValue<CachedUser>(userId) == null)
+            {
+                var user = _userDac.Get(userId);
+                _cache.SetValue(userId, new CachedUser(user), 60 * 5);
+            }
+            
             return View();
         }
 
