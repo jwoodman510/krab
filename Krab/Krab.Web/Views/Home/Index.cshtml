@@ -2,7 +2,10 @@
     @*    @Html.Partial("_Home")}*@}
 
 @section scripts{
-    <script src="../../Scripts/AspUser.js"></script>
+
+<script src="../../Scripts/angular-ui-router.min.js"></script>
+<script src="//cdn.rawgit.com/auth0/angular-storage/master/dist/angular-storage.js"></script>
+<script src="../../Scripts/aspUser.js"></script>
 }
 
 
@@ -11,28 +14,27 @@
 
         <div ng-controller="KRController">
 
-            <table class="table">
-                <tr>
-                    <th>Keyword</th>
-                    <th>Response</th>
-                </tr>
-                <tr ng-repeat="a in krSets">
-                    <td>{{a.keyword}}</td>
-                    <td>{{a.response}}</td>
-                </tr>
-                
-            </table>
-            
-            <button
-                class="btn btn-primary"
-                ng-click="addKR = !addKR"
-                ng-show="!addKR">Add a Keyword-Response Set
-            </button>
-            
-            
+                        <table class="table">
+                            <tr>
+                                <th>Keyword {{keyword}}</th>
+                                <th>Response {{ponse}}</th>
+                            </tr>
+@*                            <tr ng-repeat="a in krSets">*@
+@*                                <td>{{a.keyword}}</td>*@
+@*                                <td>{{a.response}}</td>*@
+@*                            </tr>*@
+                            
+                        </table>
+
+
 
         </div>
     </div></div>
+
+
+
+
+
 
 
 
