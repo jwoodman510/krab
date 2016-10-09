@@ -2,7 +2,7 @@
 using System.IO;
 using System.ServiceProcess;
 using Krab.ScheduledService.Boostrap;
-using Krab.ScheduledService.Job;
+using Krab.ScheduledService.Jobs;
 using log4net;
 using Microsoft.Practices.ServiceLocation;
 using NCron.Fluent.Crontab;
@@ -77,7 +77,10 @@ namespace Krab.ScheduledService
                 };
             }
 
-            _schedulingService.At("* * * * *").Run(() => ServiceLocator.Current.GetInstance<IScheduledJob>());
+            _logger.Info("Scheduling jobs...");
+
+            _schedulingService.At("* * * * *").Run(() => ServiceLocator.Current.GetInstance<IProcessKeywordResponseSets>());
+            _schedulingService.Daily().Run(() => ServiceLocator.Current.GetInstance<IDeleteLogs>());
 
             _schedulingService.Start();
 

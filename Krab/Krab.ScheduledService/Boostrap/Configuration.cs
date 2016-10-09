@@ -1,4 +1,4 @@
-﻿using Krab.ScheduledService.Job;
+﻿using Krab.ScheduledService.Jobs;
 using Microsoft.Practices.Unity;
 
 namespace Krab.ScheduledService.Boostrap
@@ -7,7 +7,8 @@ namespace Krab.ScheduledService.Boostrap
     {
         public static void Register(IUnityContainer container)
         {
-            container.RegisterType<IScheduledJob, ScheduledJob>();
+            container.RegisterType<IProcessKeywordResponseSets, ProcessKeywordResponseSets>();
+            container.RegisterType<IDeleteLogs, DeleteLogs>();
         }
     }
 }
