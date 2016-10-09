@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using Krab.DataAccess.Dac;
 using Krab.DataAccess.KeywordResponseSet;
-using Krab.Web.Controllers.Api;
 using Krab.Web.Models.Response;
 
-namespace Krab.Web.Controllers
+namespace Krab.Web.Controllers.Api
 {
     public class KeywordResponseSetsController : BaseController
     {

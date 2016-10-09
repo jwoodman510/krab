@@ -19,7 +19,7 @@ namespace Krab.DataAccess.Dac
         {
             _keywordResponseSetsDb = keywordResponseSetsDb;
         }
-
+        
         public IEnumerable<KeywordResponseSet.KeywordResponseSet> GetByUserId(int userId)
         {
             return _keywordResponseSetsDb.KeywordResponseSets

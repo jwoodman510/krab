@@ -1,16 +1,16 @@
-﻿var myApp = angular.module("myApp", ["ui.grid"]);
+﻿var myApp = angular.module("myApp", []);
 
 myApp.controller("KRController", function ($scope, krService) {
 
-    getKeyWordResponseSet();
+    getKeywordResponseSets();
 
-    function getKeyWordResponseSet() {
-        krService.getKeyWordResponseSet()
-            .success(function(response) {
+    function getKeywordResponseSets() {
+        krService.getByUserId()
+            .success(function (response) { 
                 $scope.krSets = response;
                 console.log($scope.krSets);
             })
-            .error(function(error) {
+            .error(function (error) {
                 $scope.krSets = "Unable to load data: " + error.message;
                 console.log($scope.krSets);
             });
@@ -20,18 +20,93 @@ myApp.controller("KRController", function ($scope, krService) {
 
 
 
-myApp.factory("krService",
-[
-    "$http", function ($http) {
+myApp.factory("krService", ["$http", function ($http) { 
 
-        var krService = {};
+        var krService = {}; 
         var urlBase = "http://localhost:44497/api";
-        krService.getKeyWordResponseSet = function () {
-            return $http.get(urlBase + "/keywordresponsesets");
+        krService.getByUserId = function () { 
+            return $http.get(urlBase + "/keywordresponsesets/1");
         };
         return krService;
     }
 ]);
+
+
+
+
+
+
+
+
+
+
+//------------------------------------------------------------------------------------------
+
+//myApp.controller("KRController", function ($scope, krService) {
+//
+//    getKeywordResponseSets();
+//
+//    function getKeywordResponseSets() {
+//        krService.getByUserId()
+//            .success(function (response) {
+//                $scope.krSets = response;
+//                console.log($scope.krSets);
+//            })
+//            .error(function (error) {
+//                $scope.krSets = "Unable to load data: " + error.message;
+//                console.log($scope.krSets);
+//            });
+//    }
+//
+//});
+//
+//
+//
+//myApp.factory("krService", ["$http", function ($http) { //this is the header
+//
+//        var krService = {}; //this is the status
+//        var urlBase = "http://localhost:44497/api";
+//        krService.getByUserId = function () { //this is the method
+//            return $http.get(urlBase + "/keywordresponsesets/1");
+//        };
+//        return krService;
+//    }
+//]);
+
+//-----------------------------------------------------------------------------------
+
+//myApp.controller("KRController", function ($scope, krService) {
+//
+//    getKeyWordResponseSet();
+//
+//    function getKeyWordResponseSet() {
+//        krService.getKeyWordResponseSet()
+//            .success(function(response) {
+//                $scope.krSets = response;
+//                console.log($scope.krSets);
+//            })
+//            .error(function(error) {
+//                $scope.krSets = "Unable to load data: " + error.message;
+//                console.log($scope.krSets);
+//            });
+//    }
+//
+//});
+//
+//
+//
+//myApp.factory("krService",
+//[
+//    "$http", function ($http) {
+//
+//        var krService = {};
+//        var urlBase = "http://localhost:44497/api";
+//        krService.getKeyWordResponseSet = function () {
+//            return $http.get(urlBase + "/keywordresponsesets");
+//        };
+//        return krService;
+//    }
+//]);
 
 
 
