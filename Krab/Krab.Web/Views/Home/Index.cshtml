@@ -1,39 +1,26 @@
-﻿@section SPAViews {
-    @*    @Html.Partial("_Home")}*@}
-
-@section scripts{
-    <script src="../../Scripts/AspUser.js"></script>
-}
-
+﻿<script src="../../Scripts/app/myApp.js"></script>
 
 <div class="container">
     <div ng-app="myApp" class="row">
-
         <div ng-controller="KRController">
+            <div ng-if="isRedditUserNameLoading || isKrSetsLoading">
+                <i class="fa fa-spinner fa-spin fa-4x" style="padding-top:10px"></i>
+            </div>
+            <div ng-if="!isRedditUserNameLoading && !isKrSetsLoading">
+                <h2 ng-if="!needsRedditAccount">{{redditUserName}}</h2>
+                <a ng-if="needsRedditAccount" href="../Manage/">Click here to link a Reddit account.</a>
+                <table class="table">
+                    <tr>
+                        <th>Keyword {{keyword}}</th>
+                        <th>Response {{ponse}}</th>
+                    </tr>
+                    <tr ng-repeat="a in krSets">
+                        <td>{{a.keyword}}</td>
+                        <td>{{a.response}}</td>
+                    </tr>
 
-            <table class="table">
-                <tr>
-                    <th>Keyword</th>
-                    <th>Response</th>
-                </tr>
-                <tr ng-repeat="a in krSets">
-                    <td>{{a.keyword}}</td>
-                    <td>{{a.response}}</td>
-                </tr>
-                
-            </table>
-            
-            <button
-                class="btn btn-primary"
-                ng-click="addKR = !addKR"
-                ng-show="!addKR">Add a Keyword-Response Set
-            </button>
-            
-            
-
+                </table>
+            </div>
         </div>
-    </div></div>
-
-
-
-
+    </div>
+</div>

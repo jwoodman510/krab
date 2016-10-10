@@ -6,6 +6,12 @@
         long ServerResponseTimeMs { get; set; }
     }
 
+    public class OkResponse : IOkResponse
+    {
+        public object Result => null;
+        public long ServerResponseTimeMs { get; set; }
+    }
+
     public class OkResponse<T> : IOkResponse
     {
         public object Result { get; }

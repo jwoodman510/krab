@@ -70,24 +70,32 @@ namespace Krab.Api
                     throw new HttpRequestException(response.ReasonPhrase);
 
                 json = await response.Content.ReadAsStringAsync();
-                var user = JsonConvert.DeserializeObject<DataAccess.RedditUser.RedditUser>(json);
+                var user = JsonConvert.DeserializeObject<ValueObjects.User.RedditUser>(json);
 
-                if (string.IsNullOrEmpty(user.UserName))
+                if (string.IsNullOrEmpty(user.Name))
                     return;
 
                 var intUserId = _userDac.Get(userId)?.UserId ?? 0;
 
-                if (_redditUserDac.GetByUser(intUserId)?.All(u => u.UserName != user.UserName) == true)
+                var existing = _redditUserDac.GetByUser(intUserId)?.FirstOrDefault(u => u.UserName != user.Name);
+
+                if (existing == null)
                 {
                     var newRedditUser = _redditUserDac.Create(new DataAccess.RedditUser.RedditUser
                     {
-                        UserName = user.UserName,
+                        UserName = user.Name,
                         AccessToken = tokens.AccessToken,
                         RefreshToken = tokens.RefreshToken,
                         UserId = intUserId
                     });
 
                     _cache.SetValue(CacheKeys.Tokens(newRedditUser.Id), tokens, tokens.ExpiresIn - 120);
+                }
+                else
+                {
+                    _redditUserDac.UpdateTokens(existing.Id, tokens.AccessToken, tokens.RefreshToken);
+
+                    _cache.SetValue(CacheKeys.Tokens(existing.Id), tokens, tokens.ExpiresIn - 120);
                 }
             }
         }

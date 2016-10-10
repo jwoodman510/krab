@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
+﻿using System.Net.Http;
 using System.Web.Http;
-using Microsoft.Owin.Security.OAuth;
+using System.Web.Http.Routing;
 using Newtonsoft.Json.Serialization;
 
 namespace Krab.Web
@@ -13,16 +9,8 @@ namespace Krab.Web
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
-            // Configure Web API to use only bearer token authentication.
-            config.SuppressDefaultHostAuthentication();
-            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
-
-            // Use camel case for JSON data.
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
 
-            // Web API routes
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
@@ -30,6 +18,27 @@ namespace Krab.Web
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Routes.MapHttpRoute(
+                name: "POSTs",
+                routeTemplate: "api/v1/{controller}/{action}",
+                defaults: new { },
+                constraints: new { httpMethod = new HttpMethodConstraint(new HttpMethod("POST")) }
+                );
+
+            config.Routes.MapHttpRoute(
+                name: "PUTs",
+                routeTemplate: "api/v1/{controller}/{action}",
+                defaults: new { },
+                constraints: new { httpMethod = new HttpMethodConstraint(new HttpMethod("PUT")) }
+                );
+
+            config.Routes.MapHttpRoute(
+                name: "DELETEs",
+                routeTemplate: "api/v1/{controller}/{action}",
+                defaults: new { },
+                constraints: new { httpMethod = new HttpMethodConstraint(new HttpMethod("DELETE")) }
+                );
         }
     }
 }
