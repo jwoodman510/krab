@@ -74,6 +74,7 @@
     <Compile Include="Configuration.cs" />
     <Compile Include="Dac\IKeywordResponseSetDac.cs" />
     <Compile Include="Dac\IRedditUserDac.cs" />
+    <Compile Include="Dac\ISubredditDac.cs" />
     <Compile Include="Dac\IUserDac.cs" />
     <Compile Include="Exception\DataAccessException.cs" />
     <Compile Include="Exception\ModificationException.cs" />
