@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Http;
 using Krab.Caching;
+using Krab.DataAccess.Dac;
 using Krab.Global;
 using Krab.Web.Models.Response;
 using Microsoft.AspNet.Identity;
@@ -10,10 +12,12 @@ namespace Krab.Web.Controllers.Api
     public class RedditAuthorizationController : BaseController
     {
         private readonly ICache _cache;
+        private readonly IRedditUserDac _redditUserDac;
 
-        public RedditAuthorizationController(ICache cache)
+        public RedditAuthorizationController(ICache cache, IRedditUserDac redditUserDac)
         {
             _cache = cache;
+            _redditUserDac = redditUserDac;
         }
 
         public OkResponse<string> Get()
@@ -38,9 +42,12 @@ namespace Krab.Web.Controllers.Api
         }
 
         [HttpDelete]
-        public OkResponse Delete()
+        public OkResponse UnlinkRedditAccount()
         {
+            var redditAcct = _redditUserDac.GetByUser(GetUserId()).FirstOrDefault();
 
+            if (redditAcct != null)
+                _redditUserDac.Delete(redditAcct.Id);
 
             return new OkResponse();
         } 

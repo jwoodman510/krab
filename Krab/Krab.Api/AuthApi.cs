@@ -77,7 +77,9 @@ namespace Krab.Api
 
                 var intUserId = _userDac.Get(userId)?.UserId ?? 0;
 
-                if (_redditUserDac.GetByUser(intUserId)?.All(u => u.UserName != user.Name) == true)
+                var existing = _redditUserDac.GetByUser(intUserId)?.FirstOrDefault(u => u.UserName != user.Name);
+
+                if (existing == null)
                 {
                     var newRedditUser = _redditUserDac.Create(new DataAccess.RedditUser.RedditUser
                     {
@@ -88,6 +90,12 @@ namespace Krab.Api
                     });
 
                     _cache.SetValue(CacheKeys.Tokens(newRedditUser.Id), tokens, tokens.ExpiresIn - 120);
+                }
+                else
+                {
+                    _redditUserDac.UpdateTokens(existing.Id, tokens.AccessToken, tokens.RefreshToken);
+
+                    _cache.SetValue(CacheKeys.Tokens(existing.Id), tokens, tokens.ExpiresIn - 120);
                 }
             }
         }
