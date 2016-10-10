@@ -1,41 +1,22 @@
-﻿@section SPAViews {
-    @*    @Html.Partial("_Home")}*@}
-
-@section scripts{
-
-<script src="../../Scripts/angular-ui-router.min.js"></script>
-<script src="//cdn.rawgit.com/auth0/angular-storage/master/dist/angular-storage.js"></script>
-<script src="../../Scripts/aspUser.js"></script>
+﻿<script src="../../Scripts/aspUser.js"></script>
 }
-
 
 <div class="container">
     <div ng-app="myApp" class="row">
 
         <div ng-controller="KRController">
 
-                        <table class="table">
-                            <tr>
-                                <th>Keyword {{keyword}}</th>
-                                <th>Response {{ponse}}</th>
-                            </tr>
-@*                            <tr ng-repeat="a in krSets">*@
-@*                                <td>{{a.keyword}}</td>*@
-@*                                <td>{{a.response}}</td>*@
-@*                            </tr>*@
-                            
-                        </table>
+            <table class="table">
+                <tr>
+                    <th>Keyword {{keyword}}</th>
+                    <th>Response {{ponse}}</th>
+                </tr>
+                <tr ng-repeat="a in krSets">
+                    <td>{{a.keyword}}</td>
+                    <td>{{a.response}}</td>
+                </tr>
 
-
-
+            </table>
         </div>
-    </div></div>
-
-
-
-
-
-
-
-
-
+    </div>
+</div>
