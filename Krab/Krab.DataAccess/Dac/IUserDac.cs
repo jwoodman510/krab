@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Runtime.CompilerServices;
 using Krab.DataAccess.User;
 
 namespace Krab.DataAccess.Dac
