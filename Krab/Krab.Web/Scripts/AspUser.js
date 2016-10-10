@@ -1,13 +1,13 @@
 ﻿var myApp = angular.module("myApp", []);
 
-myApp.controller("KRController", function ($scope, krService) {
+myApp.controller("KRController", function ($scope, $http) {
 
     getKeywordResponseSets();
 
     function getKeywordResponseSets() {
-        krService.getByUserId()
+        $http.get("/api/keywordresponsesets")
             .success(function (response) { 
-                $scope.krSets = response;
+                $scope.krSets = response.result;
                 console.log($scope.krSets);
             })
             .error(function (error) {
@@ -23,9 +23,8 @@ myApp.controller("KRController", function ($scope, krService) {
 myApp.factory("krService", ["$http", function ($http) { 
 
         var krService = {}; 
-        var urlBase = "http://localhost:44497/api";
         krService.getByUserId = function () { 
-            return $http.get(urlBase + "/keywordresponsesets/1");
+            return $http.get("/api/keywordresponsesets");
         };
         return krService;
     }
