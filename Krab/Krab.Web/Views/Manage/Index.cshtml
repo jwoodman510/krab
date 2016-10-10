@@ -3,10 +3,12 @@
     ViewBag.Title = "Manage";
 }
 
+<script src="../../Scripts/app/controller/redditAuthCtrl.js"></script>
+
 <h2>@ViewBag.Title.</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
-<div>
+<div ng-controller="RedditAuthController">
     <h4>Change your account settings</h4>
     <hr />
     <dl class="dl-horizontal">
@@ -24,14 +26,15 @@
             ]
         </dd>
         <dt>Reddit Account:</dt>
-        <dd>            [
+        <dd>
+            [
             @if (Model.HasRedditUser)
             {
-                //todo: unlink
+                <a>Unlink</a>
             }
             else
             {
-                //todo: redirect to reddit
+                <a ng-click="test()" style="cursor: pointer">Link</a>
             }
             ]
         </dd>
