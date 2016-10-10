@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Mvc;
 using Krab.Api;
+using Krab.Api.Apis;
 using Krab.Caching;
 using Krab.DataAccess.Dac;
 using Krab.DataAccess.User;

@@ -15,6 +15,6 @@ namespace Krab.DataAccess.Subreddit
         [Column("Subreddit")]
         [Required]
         [StringLength(1028)]
-        public string Subreddit1 { get; set; }
+        public string SubredditName { get; set; }
     }
 }

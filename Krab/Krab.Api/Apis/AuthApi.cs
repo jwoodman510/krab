@@ -6,13 +6,13 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Krab.Api.Constants;
+using Krab.Api.ValueObjects;
 using Krab.Caching;
 using Krab.DataAccess.Dac;
-using Newtonsoft.Json;
-using Krab.Api.ValueObjects;
 using Krab.Global;
+using Newtonsoft.Json;
 
-namespace Krab.Api
+namespace Krab.Api.Apis
 {
     public interface IAuthApi
     {
@@ -70,7 +70,7 @@ namespace Krab.Api
                     throw new HttpRequestException(response.ReasonPhrase);
 
                 json = await response.Content.ReadAsStringAsync();
-                var user = JsonConvert.DeserializeObject<ValueObjects.User.RedditUser>(json);
+                var user = JsonConvert.DeserializeObject<RedditUser>(json);
 
                 if (string.IsNullOrEmpty(user.Name))
                     return;
