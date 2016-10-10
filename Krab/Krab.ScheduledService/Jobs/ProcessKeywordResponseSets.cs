@@ -141,6 +141,8 @@ namespace Krab.ScheduledService.Jobs
                         continue;
 
                     _logger.Info($"Keyword [{set.Keyword}] for UserId: {userId} => Replying to commentId: {comment.Id}.");
+
+                    _commentApi.SubmitComment(userId, comment.Name, set.Response);
                 }
             }
         }

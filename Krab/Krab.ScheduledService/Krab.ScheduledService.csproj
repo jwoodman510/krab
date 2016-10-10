@@ -102,6 +102,10 @@
       <Project>{1dfe1b30-866b-4c4e-b16d-0fba340cf1a0}</Project>
       <Name>Krab.Api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Krab.Caching\Krab.Caching.csproj">
+      <Project>{4179cc7c-e9df-4502-8221-b62d091a89be}</Project>
+      <Name>Krab.Caching</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Krab.DataAccess\Krab.DataAccess.csproj">
       <Project>{8e81e945-2032-4011-b040-3f825a5e292d}</Project>
       <Name>Krab.DataAccess</Name>

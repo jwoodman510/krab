@@ -11,6 +11,7 @@ using Krab.Caching;
 using Krab.DataAccess.Dac;
 using Krab.Global;
 using Newtonsoft.Json;
+using RedditUser = Krab.Api.ValueObjects.RedditUser;
 
 namespace Krab.Api.Apis
 {
@@ -18,7 +19,7 @@ namespace Krab.Api.Apis
     {
         Task SaveInitialTokens(string authorizationCode, string userId);
 
-        Task<string> GetAccessToken(int redditUserId);
+        Task<string> GetAccessTokenAsync(int redditUserId);
     }
 
     public class AuthApi : IAuthApi
@@ -62,7 +63,7 @@ namespace Krab.Api.Apis
 
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add("Authorization", $"bearer {tokens.AccessToken}");
-                client.DefaultRequestHeaders.Add("User-Agent", "My Reddit v1.0 by stagnant_waffle");
+                client.DefaultRequestHeaders.Add("User-Agent", Settings.UserAgent);
 
                 response = await client.GetAsync(Urls.Me);
 
@@ -100,7 +101,7 @@ namespace Krab.Api.Apis
             }
         }
 
-        public async Task<string> GetAccessToken(int redditUserId)
+        public async Task<string> GetAccessTokenAsync(int redditUserId)
         {
             var tokens = _cache.GetValue<Tokens>(CacheKeys.Tokens(redditUserId));
 

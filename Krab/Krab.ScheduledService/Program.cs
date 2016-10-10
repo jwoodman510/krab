@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.ServiceProcess;
@@ -70,6 +71,7 @@ namespace Krab.ScheduledService
             _logger.Info("Starting service...");
 
             Bootstrapper.Configure();
+            TryGetInstances();
 
             if (_schedulingService == null)
             {
@@ -131,6 +133,40 @@ namespace Krab.ScheduledService
             log4net.Config.XmlConfigurator.ConfigureAndWatch(log4NetConfig);
 
             _logger = LogManager.GetLogger("ServiceLogger");
+        }
+
+        private static void TryGetInstances()
+        {
+            var locator = ServiceLocator.Current;
+
+            if (locator == null)
+            {
+                _logger.Error("Unable to find Service Locator!");
+                return;
+            }
+
+            var types = new List<Type>
+            {
+                typeof(IDeleteLogs),
+                typeof(IProcessKeywordResponseSets)
+            };
+
+            foreach (var type in types)
+            {
+                try
+                {
+                    locator.GetInstance(type);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Warn($"Unable to find instane of {type.Name}!");
+                    _logger.Error($"Unable to find instane of {type.Name}!", ex);
+
+                    #if DEBUG
+                        throw;
+                    #endif
+                }
+            }
         }
     }
 }
