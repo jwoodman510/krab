@@ -3,19 +3,47 @@
     .controller("KRController", krController)
     .factory("krService", krService);
 
-function krController($scope, krService) {
+function krController($scope, krService, $http) {
 
-    getKeywordResponseSets();
+    $scope.redditUserName = "";
+    $scope.krSets = [];
+    $scope.isRedditUserNameLoading = true;
+    $scope.isKrSetsLoading = true;
+    $scope.needsRedditAccount = false;
+
+    init();
+
+    function init() {
+        getRedditUserName();
+        getKeywordResponseSets();
+    }
 
     function getKeywordResponseSets() {
         krService.getByUserId()
             .success(function (response) { 
                 $scope.krSets = response.result;
-                console.log($scope.krSets);
+                $scope.isRedditUserNameLoading = false;
             })
             .error(function (error) {
                 $scope.krSets = "Unable to load data: " + error.message;
                 console.log($scope.krSets);
+                $scope.isRedditUserNameLoading = false;
+            });
+    }
+
+    function getRedditUserName() {
+        $http.get("/api/reddituser")
+            .success(function (response) {
+                if (response.result.userName && response.result.userName.length > 0) {
+                    $scope.redditUserName = "Reddit Username: " + response.result.userName;
+                } else {
+                    $scope.needsRedditAccount = true;
+                }
+                $scope.isKrSetsLoading = false;
+            })
+            .error(function (error) {
+                console.log("Unable to load reddit user name: " + error.message);
+                $scope.isKrSetsLoading = false;
             });
     }
 }

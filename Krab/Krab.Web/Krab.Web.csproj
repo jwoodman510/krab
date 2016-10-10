@@ -257,6 +257,7 @@
     <Compile Include="Controllers\Api\BaseController.cs" />
     <Compile Include="Controllers\Api\HealthController.cs" />
     <Compile Include="Controllers\Api\RedditAuthorizationController.cs" />
+    <Compile Include="Controllers\Api\RedditUserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Api\KeywordResponseSetsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -269,6 +270,7 @@
     <Compile Include="Models\Identity\IdentityModels.cs" />
     <Compile Include="Models\Identity\ManageViewModels.cs" />
     <Compile Include="Models\Identity\MeViewModels.cs" />
+    <Compile Include="Models\RedditUser.cs" />
     <Compile Include="Models\Response\OkResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
@@ -1154,9 +1156,7 @@
     </Content>
     <Content Include="Scripts\version.json" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Old\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
