@@ -13,6 +13,9 @@ namespace Krab.DataAccess.Dac
         RedditUser.RedditUser Create(RedditUser.RedditUser u);
 
         void UpdateAccessToken(int id, string accessToken);
+
+        void UpdateTokens(int id, string accessToken, string refreshToken);
+        void Delete(int id);
     }
 
     public class RedditUserDac : IRedditUserDac
@@ -80,6 +83,45 @@ namespace Krab.DataAccess.Dac
             _context.SaveChanges();
 
             _context.Entry(previous).State = EntityState.Detached;
+        }
+
+        public void UpdateTokens(int id, string accessToken, string refreshToken)
+        {
+            if (id < 1)
+                throw new ValidationException("Invalid RedditUser Id.");
+
+            if (string.IsNullOrWhiteSpace(accessToken))
+                throw new ValidationException("Missing access token.");
+
+            if (string.IsNullOrWhiteSpace(refreshToken))
+                throw new ValidationException("Missing refresh token.");
+
+            var previous = _context.RedditUsers.Find(id);
+
+            if (previous == null)
+                throw new NotFoundException($"RedditUser {id} not found.");
+
+            var entry = _context.Entry(previous);
+
+            entry.Entity.AccessToken = accessToken;
+            entry.Entity.RefreshToken = refreshToken;
+
+            _context.SaveChanges();
+
+            _context.Entry(previous).State = EntityState.Detached;
+        }
+
+        public void Delete(int id)
+        {
+            var existing = _context.RedditUsers.Find(id);
+
+            if (existing == null)
+                return;
+
+            var entry = _context.Entry(existing);
+            entry.State = EntityState.Deleted;
+
+            _context.SaveChanges();
         }
     }
 }

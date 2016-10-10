@@ -60,7 +60,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthApi.cs" />
+    <Compile Include="Apis\AuthApi.cs" />
+    <Compile Include="Apis\CommentApi.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Constants\Settings.cs" />
     <Compile Include="Constants\Urls.cs" />

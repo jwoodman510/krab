@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Filters;
-using Krab.Web.Controllers;
 using Microsoft.Practices.Unity;
 
 namespace Krab.Web.Bootstrap
@@ -28,13 +27,6 @@ namespace Krab.Web.Bootstrap
             DataAccess.Configuration.Register(container);
             Caching.Configuration.Register(container);
             Api.Configuration.Register(container);
-            RegisterMvcControllers(container);
-        }
-
-        private static void RegisterMvcControllers(IUnityContainer container)
-        {
-            container.RegisterType<AccountController>(new InjectionConstructor());
-            container.RegisterType<ManageController>(new InjectionConstructor());
         }
     }
 }

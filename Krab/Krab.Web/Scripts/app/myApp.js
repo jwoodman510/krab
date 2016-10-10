@@ -1,42 +1,62 @@
-﻿var myApp = angular.module("myApp", []);
+﻿angular
+    .module("myApp", [])
+    .controller("KRController", krController)
+    .factory("krService", krService);
 
-myApp.controller("KRController", function ($scope, $http) {
+function krController($scope, krService, $http) {
 
-    getKeywordResponseSets();
+    $scope.redditUserName = "";
+    $scope.krSets = [];
+    $scope.isRedditUserNameLoading = true;
+    $scope.isKrSetsLoading = true;
+    $scope.needsRedditAccount = false;
+
+    init();
+
+    function init() {
+        getRedditUserName();
+        getKeywordResponseSets();
+    }
 
     function getKeywordResponseSets() {
-        $http.get("/api/keywordresponsesets")
+        krService.getByUserId()
             .success(function (response) { 
                 $scope.krSets = response.result;
-                console.log($scope.krSets);
+                $scope.isRedditUserNameLoading = false;
             })
             .error(function (error) {
                 $scope.krSets = "Unable to load data: " + error.message;
                 console.log($scope.krSets);
+                $scope.isRedditUserNameLoading = false;
             });
     }
 
-});
-
-
-
-myApp.factory("krService", ["$http", function ($http) { 
-
-        var krService = {}; 
-        krService.getByUserId = function () { 
-            return $http.get("/api/keywordresponsesets");
-        };
-        return krService;
+    function getRedditUserName() {
+        $http.get("/api/reddituser")
+            .success(function (response) {
+                if (response.result.userName && response.result.userName.length > 0) {
+                    $scope.redditUserName = "Reddit Username: " + response.result.userName;
+                } else {
+                    $scope.needsRedditAccount = true;
+                }
+                $scope.isKrSetsLoading = false;
+            })
+            .error(function (error) {
+                console.log("Unable to load reddit user name: " + error.message);
+                $scope.isKrSetsLoading = false;
+            });
     }
-]);
+}
 
+function krService($http) {
+    var svc = this;
 
+    svc.getByUserId = function () {
+        return $http.get("/api/keywordresponsesets");
+    };
 
-
-
-
-
-
+    return svc;
+}
 
 
 //------------------------------------------------------------------------------------------

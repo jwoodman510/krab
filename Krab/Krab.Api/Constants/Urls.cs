@@ -7,5 +7,7 @@
         public static string ApiUrl = "https://oauth.reddit.com";
 
         public static string Me => ApiUrl + "/api/v1/me";
+
+        public static string Comment => ApiUrl + "/api/comment";
     }
 }

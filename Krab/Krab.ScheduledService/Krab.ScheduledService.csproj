@@ -33,6 +33,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -58,6 +66,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml.Linq" />
@@ -92,9 +102,17 @@
       <Project>{1dfe1b30-866b-4c4e-b16d-0fba340cf1a0}</Project>
       <Name>Krab.Api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Krab.Caching\Krab.Caching.csproj">
+      <Project>{4179cc7c-e9df-4502-8221-b62d091a89be}</Project>
+      <Name>Krab.Caching</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Krab.DataAccess\Krab.DataAccess.csproj">
       <Project>{8e81e945-2032-4011-b040-3f825a5e292d}</Project>
       <Name>Krab.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Krab.Global\Krab.Global.csproj">
+      <Project>{e1a9478a-5b05-4045-aee6-422cc28363a0}</Project>
+      <Name>Krab.Global</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

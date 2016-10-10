@@ -5,6 +5,7 @@
         public string Id { get; set; }
         public int UserId { get; set; }
 
+
         public CachedUser(AspNetUser aspNetUser)
         {
             Id = aspNetUser.Id;

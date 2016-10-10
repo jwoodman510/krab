@@ -74,6 +74,7 @@
     <Compile Include="Configuration.cs" />
     <Compile Include="Dac\IKeywordResponseSetDac.cs" />
     <Compile Include="Dac\IRedditUserDac.cs" />
+    <Compile Include="Dac\ISubredditDac.cs" />
     <Compile Include="Dac\IUserDac.cs" />
     <Compile Include="Exception\DataAccessException.cs" />
     <Compile Include="Exception\ModificationException.cs" />
@@ -81,8 +82,11 @@
     <Compile Include="Exception\ValidationException.cs" />
     <Compile Include="KeywordResponseSet\KeywordResponseSet.cs" />
     <Compile Include="KeywordResponseSet\KeywordResponseSetsDb.cs" />
+    <Compile Include="KeywordResponseSet\KeywordResponseSetStatus.cs" />
     <Compile Include="RedditUser\RedditUser.cs" />
     <Compile Include="RedditUser\RedditUserDb.cs" />
+    <Compile Include="Subreddit\Subreddit.cs" />
+    <Compile Include="Subreddit\SubredditDb.cs" />
     <Compile Include="User\AspNetRole.cs" />
     <Compile Include="User\AspNetUser.cs" />
     <Compile Include="User\AspNetUserClaim.cs" />

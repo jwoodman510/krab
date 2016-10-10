@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.ServiceProcess;
+using Krab.DataAccess.Dac;
 using Krab.ScheduledService.Boostrap;
 using Krab.ScheduledService.Jobs;
 using log4net;
@@ -68,6 +71,7 @@ namespace Krab.ScheduledService
             _logger.Info("Starting service...");
 
             Bootstrapper.Configure();
+            TryGetInstances();
 
             if (_schedulingService == null)
             {
@@ -77,15 +81,35 @@ namespace Krab.ScheduledService
                 };
             }
 
-            _logger.Info("Scheduling jobs...");
-
-            _schedulingService.At("* * * * *").Run(() => ServiceLocator.Current.GetInstance<IProcessKeywordResponseSets>());
-            _schedulingService.Daily().Run(() => ServiceLocator.Current.GetInstance<IDeleteLogs>());
+            ScheduleJobs();
 
             _schedulingService.Start();
 
-
             _logger.Info("Service is started!");
+        }
+
+        private static void ScheduleJobs()
+        {
+            _logger.Info("Scheduling jobs...");
+
+            var runKrJobEveryMin = Convert.ToInt32(ConfigurationManager.AppSettings["ProcessSetsEveryMinutes"]);
+
+            if (runKrJobEveryMin == 1)
+            {
+                _schedulingService.At("* * * * *").Run(() => ServiceLocator.Current.GetInstance<IProcessKeywordResponseSets>());
+                _logger.Info("Running IProcessKeywordResponseSets every minute.");
+            }
+            else if (runKrJobEveryMin > 1 && runKrJobEveryMin < 60)
+            {
+                _schedulingService.At($"*/{runKrJobEveryMin} * * * *").Run(() => ServiceLocator.Current.GetInstance<IProcessKeywordResponseSets>());
+                _logger.Info($"Running IProcessKeywordResponseSets every {runKrJobEveryMin} minutes.");
+            }
+            else
+            {
+                _logger.Warn($"Invalid AppSetting: key=ProcessSetsEveryMinutes value={runKrJobEveryMin}");
+            }
+
+            _schedulingService.Daily().Run(() => ServiceLocator.Current.GetInstance<IDeleteLogs>());
         }
 
         private static void Stop()
@@ -109,6 +133,40 @@ namespace Krab.ScheduledService
             log4net.Config.XmlConfigurator.ConfigureAndWatch(log4NetConfig);
 
             _logger = LogManager.GetLogger("ServiceLogger");
+        }
+
+        private static void TryGetInstances()
+        {
+            var locator = ServiceLocator.Current;
+
+            if (locator == null)
+            {
+                _logger.Error("Unable to find Service Locator!");
+                return;
+            }
+
+            var types = new List<Type>
+            {
+                typeof(IDeleteLogs),
+                typeof(IProcessKeywordResponseSets)
+            };
+
+            foreach (var type in types)
+            {
+                try
+                {
+                    locator.GetInstance(type);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Warn($"Unable to find instane of {type.Name}!");
+                    _logger.Error($"Unable to find instane of {type.Name}!", ex);
+
+                    #if DEBUG
+                        throw;
+                    #endif
+                }
+            }
         }
     }
 }

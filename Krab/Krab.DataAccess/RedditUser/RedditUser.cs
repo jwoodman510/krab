@@ -8,7 +8,6 @@ namespace Krab.DataAccess.RedditUser
 
     public partial class RedditUser
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
         public int? UserId { get; set; }
