@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Krab.Api.Apis;
-using Krab.Api.ValueObjects;
 using Krab.Api.ValueObjects.Comment;
 using Krab.DataAccess.Dac;
 using Krab.DataAccess.KeywordResponseSet;
@@ -127,7 +126,9 @@ namespace Krab.ScheduledService.Jobs
             {
                 _logger.Info($"Retreiving the last 100 comments from /r/{subreddit.SubredditName}...");
 
-                var comments = _commentApi.GetNewBySubreddit(subreddit.SubredditName, 100);
+                var listing = _commentApi.GetNewBySubreddit(userId, subreddit.SubredditName, 100);
+
+                var comments = listing?.Data?.Children?.Select(c => c.Comment).ToList() ?? new List<Comment>();
 
                 foreach (var comment in comments)
                 {

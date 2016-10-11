@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Krab.Api.Constants;
 using Krab.Api.ValueObjects.Comment;
@@ -13,9 +11,9 @@ namespace Krab.Api.Apis
 {
     public interface ICommentApi
     {
-        IList<Comment> GetNewBySubreddit(string subreddit, int maxResults);
-        Task<IList<Comment>> GetNewBySubredditAsync(string subreddit, int maxResults);
-
+        Listing GetNewBySubreddit(int userId, string subreddit, int maxResults);
+        Task<Listing> GetNewBySubredditAsync(int userId, string subreddit, int maxResults);
+        
         void SubmitComment(int userId, string parentCommentId, string comment);
         Task SubmitCommentAsync(int userId, string parentCommentId, string comment);
     }
@@ -31,36 +29,50 @@ namespace Krab.Api.Apis
             _authApi = authApi;
         }
 
-        public IList<Comment> GetNewBySubreddit(string subreddit, int maxResults)
+        public Listing GetNewBySubreddit(int userId, string subreddit, int maxResults)
         {
-            IList<Comment> comments = new List<Comment>();
+            Listing listing = null;
 
-            Task.Run(async () => comments = await GetNewBySubredditAsync(subreddit, maxResults)).Wait();
+            Task.Run(async () => listing = await GetNewBySubredditAsync(userId, subreddit, maxResults)).Wait();
 
-            return comments;
+            return listing;
         }
 
-        public async Task<IList<Comment>> GetNewBySubredditAsync(string subreddit, int maxResults)
+        public async Task<Listing> GetNewBySubredditAsync(int userId, string subreddit, int maxResults)
         {
-            var comments = new List<Comment>();
+            Listing listing;
 
-            var url = $"https://www.reddit.com/r/{subreddit}/comments.json?limit={maxResults}";
+            var url = $"https://oauth.reddit.com/r/{subreddit}/comments.json?limit={maxResults}";
 
-            using (var client = new HttpClient(new HttpClientHandler()))
+            var redditUser = _redditUserDac.GetByUser(userId)?.FirstOrDefault();
+
+            if (redditUser == null)
+                return null;
+
+            var accessToken = await _authApi.GetAccessTokenAsync(redditUser.Id);
+
+            using (var client = new HttpClient(new HttpClientHandler
             {
+                UseCookies = false
+            }))
+            {
+                client.DefaultRequestHeaders.Add("Authorization", $"bearer {accessToken}");
+                client.DefaultRequestHeaders.Add("User-Agent", Settings.UserAgent);
+
                 var responseMsg = await client.GetAsync(url);
+
+                if (!responseMsg.IsSuccessStatusCode)
+                    throw new HttpRequestException(responseMsg.ReasonPhrase);
 
                 var json = await responseMsg.Content.ReadAsStringAsync();
 
                 if (string.IsNullOrWhiteSpace(json))
-                    return comments;
+                    return null;
 
-                var listing = JsonConvert.DeserializeObject<Listing>(json);
-
-                comments = listing?.Data?.Children?.Select(c => c.Comment).ToList() ?? comments;
+                listing = JsonConvert.DeserializeObject<Listing>(json);
             }
 
-            return comments;
+            return listing;
         }
 
         public void SubmitComment(int userId, string parentCommentId, string comment)
@@ -77,7 +89,10 @@ namespace Krab.Api.Apis
 
             var accessToken = await _authApi.GetAccessTokenAsync(redditUser.Id);
 
-            using (var client = new HttpClient(new HttpClientHandler()))
+            using (var client = new HttpClient(new HttpClientHandler
+            {
+                UseCookies = false
+            }))
             {
                 client.DefaultRequestHeaders.Add("Authorization", $"bearer {accessToken}");
                 client.DefaultRequestHeaders.Add("User-Agent", Settings.UserAgent);
@@ -88,7 +103,7 @@ namespace Krab.Api.Apis
                     Comment = comment
                 });
 
-                var response = await client.PostAsync(Urls.Comment, new StringContent(json));//, Encoding.UTF8, "application/json"));
+                var response = await client.PostAsync(Urls.Comment, new StringContent(json));
 
                 if (!response.IsSuccessStatusCode)
                     throw new HttpRequestException(response.ReasonPhrase);
