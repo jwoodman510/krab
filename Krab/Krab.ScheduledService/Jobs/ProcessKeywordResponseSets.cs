@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Krab.Api.Apis;
-using Krab.Api.ValueObjects;
-using Krab.Api.ValueObjects.Comment;
 using Krab.DataAccess.Dac;
 using Krab.DataAccess.KeywordResponseSet;
-using Krab.DataAccess.Subreddit;
 using Krab.Global;
 using log4net;
 using Microsoft.Practices.ServiceLocation;
 using NCron;
+using RedditSharp;
+using RedditSharp.Things;
+using Subreddit = Krab.DataAccess.Subreddit.Subreddit;
 
 namespace Krab.ScheduledService.Jobs
 {
@@ -26,20 +26,20 @@ namespace Krab.ScheduledService.Jobs
         private readonly IRedditUserDac _redditUserDac;
         private readonly IKeywordResponseSetDac _keywordResponseSetDac;
         private readonly IAppSettingProvider _appSettingProvider;
-        private readonly ICommentApi _commentApi;
+        private readonly IAuthApi _authApi;
 
         public ProcessKeywordResponseSets(
             ILog logger,
             IRedditUserDac redditUserDac,
             IKeywordResponseSetDac keywordResponseSetDac,
             IAppSettingProvider appSettingProvider,
-            ICommentApi commentApi)
+            IAuthApi authApi)
         {
             _logger = logger;
             _redditUserDac = redditUserDac;
             _keywordResponseSetDac = keywordResponseSetDac;
             _appSettingProvider = appSettingProvider;
-            _commentApi = commentApi;
+            _authApi = authApi;
         }
 
         public override void Execute()
@@ -101,11 +101,11 @@ namespace Krab.ScheduledService.Jobs
 
             foreach (var set in grouping)
             {
-                ProcessSet(grouping.Key, redditUser.UserName, set, subredditDac);
+                ProcessSet(grouping.Key, redditUser.Id, redditUser.UserName, set, subredditDac);
             }
         }
 
-        private void ProcessSet(int userId, string redditUserName, KeywordResponseSet set, ISubredditDac subredditDac)
+        private void ProcessSet(int userId, int redditUserId, string redditUserName, KeywordResponseSet set, ISubredditDac subredditDac)
         {
             _logger.Info($"Processing keyword [{set.Keyword}] for UserId: {userId}");
 
@@ -123,11 +123,19 @@ namespace Krab.ScheduledService.Jobs
                 subreddits = subreddits.GetRange(0, 5);
             }
 
+            var accessToken = _authApi.GetAccessToken(redditUserId);
+
+            var reddit = new Reddit(accessToken);
+
             foreach (var subreddit in subreddits)
             {
                 _logger.Info($"Retreiving the last 100 comments from /r/{subreddit.SubredditName}...");
-
-                var comments = _commentApi.GetNewBySubreddit(subreddit.SubredditName, 100);
+                
+                var comments = reddit
+                    .GetSubreddit(subreddit.SubredditName)
+                    ?.Comments
+                    ?.GetListing(100)
+                    ?.ToList() ?? new List<Comment>();
 
                 foreach (var comment in comments)
                 {
@@ -142,16 +150,23 @@ namespace Krab.ScheduledService.Jobs
 
                     _logger.Info($"Keyword [{set.Keyword}] for UserId: {userId} => Replying to commentId: {comment.Id}.");
 
-                    _commentApi.SubmitComment(userId, comment.Name, set.Response);
+                    try
+                    {
+                        comment.Reply(set.Response);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Error($"Failed to reply comment. Id={comment.Id}.", ex);
+                    }
                 }
             }
         }
 
         private static bool HasAlreadyReplied(string redditUserName, IEnumerable<Comment> comments, Comment comment)
         {
-            var childrenOfThisComment = comments.Where(c => c.ParentId == comment.Name);
+            var childrenOfThisComment = comments.Where(c => c.ParentId.Split('_').Last() == comment.Id);
             
-            return childrenOfThisComment.Where(c => c.ParentId == comment.Name).Any(c => HasSameAuthor(redditUserName, c));
+            return childrenOfThisComment.Where(c => c.ParentId == comment.ParentId.Split('_').Last()).Any(c => HasSameAuthor(redditUserName, c));
         }
 
         private static bool DoesNotContainKeyword(KeywordResponseSet set, Comment comment)
