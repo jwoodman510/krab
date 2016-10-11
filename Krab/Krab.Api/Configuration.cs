@@ -8,7 +8,6 @@ namespace Krab.Api
         public static void Register(IUnityContainer container)
         {
             container.RegisterType<IAuthApi, AuthApi>();
-            container.RegisterType<ICommentApi, CommentApi>();
         }
     }
 }

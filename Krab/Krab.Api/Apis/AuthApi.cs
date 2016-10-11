@@ -19,6 +19,8 @@ namespace Krab.Api.Apis
     {
         Task SaveInitialTokens(string authorizationCode, string userId);
 
+        string GetAccessToken(int redditUserId);
+
         Task<string> GetAccessTokenAsync(int redditUserId);
     }
 
@@ -99,6 +101,15 @@ namespace Krab.Api.Apis
                     _cache.SetValue(CacheKeys.Tokens(existing.Id), tokens, tokens.ExpiresIn - 120);
                 }
             }
+        }
+
+        public string GetAccessToken(int redditUserId)
+        {
+            string token = null;
+
+            Task.Run(async () => token = await GetAccessTokenAsync(redditUserId)).Wait();
+
+            return token;
         }
 
         public async Task<string> GetAccessTokenAsync(int redditUserId)
