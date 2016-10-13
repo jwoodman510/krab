@@ -1,4 +1,13 @@
 ﻿    .myGrid {
-    width: 500px; 
-    height: 250px;
+    width: 1200px; 
+    height: 500px;
       }
+
+    .header-filtered {
+  color: blue;
+}
+
+    .myText{
+        text-align: center;
+    }
+

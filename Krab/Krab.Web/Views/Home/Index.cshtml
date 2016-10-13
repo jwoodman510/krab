@@ -6,21 +6,24 @@
             <div ng-if="isRedditUserNameLoading || isKrSetsLoading">
                 <i class="fa fa-spinner fa-spin fa-4x" style="padding-top:10px"></i>
             </div>
-            <div ng-if="!isRedditUserNameLoading && !isKrSetsLoading">
-                <h2 ng-if="!needsRedditAccount">{{redditUserName}}</h2>
-                <a ng-if="needsRedditAccount" href="../Manage/">Click here to link a Reddit account.</a>
-                <table class="table">
-                    <tr>
-                        <th>Keyword {{keyword}}</th>
-                        <th>Response {{ponse}}</th>
-                    </tr>
-                    <tr ng-repeat="a in krSets">
-                        <td>{{a.keyword}}</td>
-                        <td>{{a.response}}</td>
-                    </tr>
+            
 
-                </table>
-            </div>
+            <div ng-if="!isRedditUserNameLoading && !isKrSetsLoading">
+                <div id="header" ng-if="!needsRedditAccount">{{redditUserName}}
+                    <br />
+                    <br />
+                    <div ui-grid="gridOptions" class="myGrid">
+                    </div>
+                </div>
+
+                <div class="myText">
+                <a ng-if="needsRedditAccount" href="../Manage/">
+                    Click here to link a Reddit account.
+                    <img ng-src="http://themodernape.com/wp-content/uploads/2014/09/20131209094736.png" />
+                </a>
+                </div>
+                </div>
+
         </div>
     </div>
 </div>
