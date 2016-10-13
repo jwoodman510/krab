@@ -41,7 +41,7 @@ function krController($scope, krService, $http) {
                     $scope.gridOptions.columnDefs = [
                    { field: "keyword", displayName: "Keyword" },
                    { field: "response", displayName: "Response" },
-                   { field: "statusId", displayName: "Status" }
+                   { field: "status", displayName: "Status"}
                     ];
                 } else {
                     $scope.needsRedditAccount = true;

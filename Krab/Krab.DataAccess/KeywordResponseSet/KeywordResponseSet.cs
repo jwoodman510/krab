@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,5 +20,18 @@ namespace Krab.DataAccess.KeywordResponseSet
         [Required]
         [StringLength(1000)]
         public string Response { get; set; }
+
+        public string Status
+        {
+            get
+            {
+                KeywordResponseSetStatus status;
+
+                if (Enum.TryParse(StatusId.ToString(), out status))
+                    return status.ToString();
+
+                return KeywordResponseSetStatus.Unknown.ToString();
+            }
+        }
     }
 }

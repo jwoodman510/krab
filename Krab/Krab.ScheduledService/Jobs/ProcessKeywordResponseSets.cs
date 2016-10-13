@@ -99,7 +99,7 @@ namespace Krab.ScheduledService.Jobs
 
             _logger.Info($"Processing sets for UserId: {grouping.Key}.");
 
-            foreach (var set in grouping)
+            foreach (var set in grouping.Where(s => s.Status == KeywordResponseSetStatus.Active.ToString()))
             {
                 ProcessSet(grouping.Key, redditUser.Id, redditUser.UserName, set, subredditDac);
             }
