@@ -166,7 +166,7 @@ namespace Krab.ScheduledService.Jobs
         {
             var childrenOfThisComment = comments.Where(c => c.ParentId.Split('_').Last() == comment.Id);
             
-            return childrenOfThisComment.Where(c => c.ParentId == comment.ParentId.Split('_').Last()).Any(c => HasSameAuthor(redditUserName, c));
+            return childrenOfThisComment.Any(c => HasSameAuthor(redditUserName, c));
         }
 
         private static bool DoesNotContainKeyword(KeywordResponseSet set, Comment comment)

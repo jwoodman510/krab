@@ -3,6 +3,7 @@ using System.Linq;
 using Krab.DataAccess.Dac;
 using Krab.DataAccess.KeywordResponseSet;
 using Krab.Web.Models.Response;
+using System.Web.Http;
 
 namespace Krab.Web.Controllers.Api
 {
@@ -14,7 +15,7 @@ namespace Krab.Web.Controllers.Api
         {
             _keywordResponseSetDac = keywordResponseSetDac;
         }
-        
+        [HttpGet]
         public OkResponse<IList<KeywordResponseSet>> Get()
         {
             var sets = _keywordResponseSetDac.GetByUserId(GetUserId());
