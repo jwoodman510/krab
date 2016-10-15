@@ -21,5 +21,6 @@ namespace Krab.Web.Controllers.Api
             var sets = _keywordResponseSetDac.GetByUserId(GetUserId());
             return new OkResponse<IList<KeywordResponseSet>>(sets?.ToList() ?? new List<KeywordResponseSet>());
         }
+        
     }
 }

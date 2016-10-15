@@ -10,6 +10,7 @@ namespace Krab.DataAccess.Dac
         IEnumerable<KeywordResponseSet.KeywordResponseSet> GetAll();
         IEnumerable<KeywordResponseSet.KeywordResponseSet> GetByUserId(int userId);
         KeywordResponseSet.KeywordResponseSet Get(int id);
+        //KeywordResponseSet.KeywordResponseSet DeleteByUserId(int id);
     }
 
     public class KeywordResponseSetDac : IKeywordResponseSetDac
@@ -38,5 +39,6 @@ namespace Krab.DataAccess.Dac
         {
             return _keywordResponseSetsDb.KeywordResponseSets.Find(id);
         }
+
     }
 }
