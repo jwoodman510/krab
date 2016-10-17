@@ -12,6 +12,11 @@ namespace Krab.Web.Attributes
         [SuppressMessage("ReSharper", "ConstantNullCoalescingCondition")]
         public override void OnException(HttpActionExecutedContext context)
         {
+            #if DEBUG
+                if (!(context.Exception is HttpException) && !(context.Exception is DataAccess.Exception.DataAccessException))
+                    return;
+            #endif
+
             HttpException httpException;
 
             if (context.Exception is DataAccess.Exception.NotFoundException)
@@ -21,6 +26,10 @@ namespace Krab.Web.Attributes
             else if(context.Exception is DataAccess.Exception.ValidationException)
             {
                 httpException = new ValidationException((DataAccess.Exception.ValidationException)context.Exception);
+            }
+            else if (context.Exception is DataAccess.Exception.DataAccessException)
+            {
+                httpException = new HttpException((int)HttpStatusCode.InternalServerError, context.Exception.Message);
             }
             else
             {
