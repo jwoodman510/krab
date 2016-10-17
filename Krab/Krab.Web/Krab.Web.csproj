@@ -263,6 +263,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Exceptions\ApiException.cs" />
     <Compile Include="Exceptions\NotFoundException.cs" />
+    <Compile Include="Exceptions\ValidationException.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1157,9 +1158,7 @@
     </Content>
     <Content Include="Scripts\version.json" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Images\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />

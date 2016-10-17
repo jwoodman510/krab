@@ -8,5 +8,11 @@ namespace Krab.Web.Exceptions
             : base(HttpStatusCode.NotFound, errorMessage)
         {
         }
+
+        public NotFoundException(DataAccess.Exception.NotFoundException ex)
+            : base(HttpStatusCode.NotFound, ex.Message)
+        {
+            
+        }
     }
 }
