@@ -1,0 +1,9 @@
+diff a/Krab/Krab.Web/Krab.Web.csproj b/Krab/Krab.Web/Krab.Web.csproj	(rejected hunks)
+@@ -261,7 +261,6 @@
+     <Compile Include="Controllers\HomeController.cs" />
+     <Compile Include="Controllers\Api\KeywordResponseSetsController.cs" />
+     <Compile Include="Controllers\ManageController.cs" />
+-    <Compile Include="Controllers\OldKeywordResponseSetsController.cs" />
+     <Compile Include="Exceptions\ApiException.cs" />
+     <Compile Include="Exceptions\NotFoundException.cs" />
+     <Compile Include="Global.asax.cs">
