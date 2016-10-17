@@ -12,6 +12,8 @@ namespace Krab.DataAccess.Dac
         IEnumerable<KeywordResponseSet.KeywordResponseSet> GetByUserId(int userId);
         KeywordResponseSet.KeywordResponseSet Get(int id);
 
+        KeywordResponseSet.KeywordResponseSet Insert(KeywordResponseSet.KeywordResponseSet set);
+
         KeywordResponseSet.KeywordResponseSet Update(KeywordResponseSet.KeywordResponseSet set);
 
         void Delete(IEnumerable<int> ids);
@@ -43,7 +45,38 @@ namespace Krab.DataAccess.Dac
         {
             return _keywordResponseSetsDb.KeywordResponseSets.Find(id);
         }
-        
+
+        public KeywordResponseSet.KeywordResponseSet Insert(KeywordResponseSet.KeywordResponseSet set)
+        {
+            set.Id = 0;
+
+            if (string.IsNullOrWhiteSpace(set.Keyword))
+                throw new ValidationException("Missing Keyword.");
+
+            if(set.Keyword.Length > 50 || set.Keyword.Length < 5)
+                throw new ValidationException("Keyword length must be 5 - 50 characters.");
+
+            if (string.IsNullOrWhiteSpace(set.Response))
+                throw new ValidationException("Missing Response.");
+
+            if (set.Response.Length > 1000 || set.Response.Length < 1)
+                throw new ValidationException("Response length must be 1 - 1000 characters.");
+
+            if (set.StatusId != (int)KeywordResponseSetStatus.Active && set.StatusId != (int)KeywordResponseSetStatus.Paused)
+                throw new ValidationException("Invalid Status.");
+            
+            if (KeywordExists(set.Keyword, set.UserId))
+                throw new ValidationException("Keyword already exists.");
+
+            if(GetByUserId(set.UserId)?.Count() >= 10)
+                throw new ValidationException("Maximum count reached.");
+
+            _keywordResponseSetsDb.KeywordResponseSets.Add(set);
+            _keywordResponseSetsDb.SaveChanges();
+
+            return set;
+        }
+
         public KeywordResponseSet.KeywordResponseSet Update(KeywordResponseSet.KeywordResponseSet set)
         {
             if(set.Id < 1)
@@ -52,7 +85,7 @@ namespace Krab.DataAccess.Dac
             if (string.IsNullOrWhiteSpace(set.Keyword))
                 throw new ValidationException("Missing Keyword.");
 
-            if (string.IsNullOrWhiteSpace(set.Status))
+            if (string.IsNullOrWhiteSpace(set.Response))
                 throw new ValidationException("Missing Response.");
 
             if(set.StatusId != (int)KeywordResponseSetStatus.Active && set.StatusId != (int)KeywordResponseSetStatus.Paused)
@@ -62,6 +95,9 @@ namespace Krab.DataAccess.Dac
 
             if(previous == null)
                 throw new NotFoundException("Not Found.");
+
+            if(KeywordExists(set.Keyword, set.UserId))
+                throw new ValidationException("Keyword already exists.");
 
             var entry = _keywordResponseSetsDb.Entry(previous);
 
@@ -91,6 +127,13 @@ namespace Krab.DataAccess.Dac
 
                 _keywordResponseSetsDb.SaveChanges();
             }
+        }
+
+        private bool KeywordExists(string keyword, int userId)
+        {
+            return _keywordResponseSetsDb
+                .KeywordResponseSets
+                .Any(s => s.Keyword.ToLower() == keyword && s.UserId == userId);
         }
     }
 }
