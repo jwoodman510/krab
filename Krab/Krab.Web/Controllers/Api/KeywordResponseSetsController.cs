@@ -60,7 +60,6 @@ namespace Krab.Web.Controllers.Api
         [HttpPost]
         public OkResponse<KeywordResponseSet> Create([FromBody] KeywordResponseSet set)
         {
-            set.Id = 0;
             set.UserId = GetUserId();
 
             var created = _keywordResponseSetDac.Insert(set);
