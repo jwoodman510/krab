@@ -6,7 +6,6 @@ using Krab.DataAccess.Dac;
 using Krab.DataAccess.KeywordResponseSet;
 using Krab.Web.Models.Response;
 using System.Web.Http;
-using System;
 
 namespace Krab.Web.Controllers.Api
 {
@@ -62,8 +61,6 @@ namespace Krab.Web.Controllers.Api
         public OkResponse<KeywordResponseSet> Create([FromBody] KeywordResponseSet set)
         {
             set.UserId = GetUserId();
-
-            set.UserId = new Random().Next();
             var created = _keywordResponseSetDac.Insert(set);
 
             return new OkResponse<KeywordResponseSet>(created);

@@ -2,7 +2,6 @@
     .module("myApp", ['ui.grid', 'ngRoute'])
     .controller("KRController", krController)
     .factory("krService", krService)
-
     .controller("AddController", addController)
      .config(function ($routeProvider) {
          $routeProvider
@@ -15,7 +14,7 @@
              });
      });
 
-
+// i feel like this can be part of the same controller as the grid.. but either way works.
 function addController($scope, krService) {
     $scope.addKrSet = function () {
         var krToAdd = {
@@ -26,12 +25,15 @@ function addController($scope, krService) {
         krService.AddKrSet(krToAdd)
         .success(function (response) {
             alert("Keyword Response Set Added!");
+            // instead of an alert, we can just show/hide a label to the user. Most people have AdBlock now.
             $scope.keyword = undefined;
             $scope.response = undefined;
             $scope.statusId = undefined;
+            // we need to refresh the grid here with the new data.
         })
         .error(function (response) {
             alert("Error in Adding");
+            // instead of an alert, we can just show/hide an error label to the user. Most people have AdBlock now.
         });
     }
 };
@@ -89,16 +91,17 @@ function krController($scope, krService, $http) {
     }
 }
 
-    function krService($http) {
-        var svc = this;
+// this can go in its own file. we can make a "service" folder under the app folder in scripts.
+function krService($http) {
+    var svc = this;
 
-        svc.getByUserId = function () {
-            return $http.get("/api/keywordresponsesets");
-        };
+    svc.getByUserId = function () {
+        return $http.get("/api/keywordresponsesets");
+    };
 
-        svc.AddKrSet = function (sets) {
-            return $http.post("/api/keywordresponsesets", sets);
-        };
+    svc.AddKrSet = function (sets) {
+        return $http.post("/api/keywordresponsesets", sets);
+    };
 
-        return svc;
-    }
+    return svc;
+}
