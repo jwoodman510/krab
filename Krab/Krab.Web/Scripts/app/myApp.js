@@ -1,7 +1,41 @@
 ﻿angular
-    .module("myApp", ["ui.grid"])
+    .module("myApp", ['ui.grid', 'ngRoute'])
     .controller("KRController", krController)
-    .factory("krService", krService);
+    .factory("krService", krService)
+
+    .controller("AddController", addController)
+     .config(function ($routeProvider) {
+         $routeProvider
+             .when("/Add", {
+                 templateUrl: "Function_Views/add.html",
+                 controller: "AddController"
+             })
+             .otherwise({
+                 redirectTo: "/"
+             });
+     });
+
+
+function addController($scope, krService) {
+    $scope.addKrSet = function () {
+        var krToAdd = {
+            'Keyword': $scope.keyword,
+            'Response': $scope.response,
+            'StatusId': $scope.statusId
+        };
+        krService.AddKrSet(krToAdd)
+        .success(function (response) {
+            alert("Keyword Response Set Added!");
+            $scope.keyword = undefined;
+            $scope.response = undefined;
+            $scope.statusId = undefined;
+        })
+        .error(function (response) {
+            alert("Error in Adding");
+        });
+    }
+};
+
 
 function krController($scope, krService, $http) {
 
@@ -53,8 +87,6 @@ function krController($scope, krService, $http) {
                 $scope.isKrSetsLoading = false;
             });
     }
-
-
 }
 
     function krService($http) {
@@ -62,6 +94,10 @@ function krController($scope, krService, $http) {
 
         svc.getByUserId = function () {
             return $http.get("/api/keywordresponsesets");
+        };
+
+        svc.AddKrSet = function (sets) {
+            return $http.post("/api/keywordresponsesets", sets);
         };
 
         return svc;

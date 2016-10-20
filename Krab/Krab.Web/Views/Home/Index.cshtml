@@ -1,7 +1,10 @@
 ﻿<script src="../../Scripts/app/myApp.js"></script>
 
+
 <div class="container">
     <div ng-app="myApp" class="row">
+        <br />      
+
         <div ng-controller="KRController">
             <div ng-if="isRedditUserNameLoading || isKrSetsLoading">
                 <i class="fa fa-spinner fa-spin fa-4x" style="padding-top:10px"></i>
@@ -9,8 +12,22 @@
             
 
             <div ng-if="!isRedditUserNameLoading && !isKrSetsLoading">
-                <div id="header" ng-if="!needsRedditAccount">{{redditUserName}}
+
+                <div id="header" ng-if="!needsRedditAccount">
+
+                    <div class="font">{{redditUserName}}</div>
                     <br />
+                    <div class="btn-group">
+                        <nav role="navigation" class="navbar navbar-inverse">
+                            <ul class="nav navbar-nav">
+                                <li><a href="#Add">Add a Keyword Response Set</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <div ng-view>
+
+                    </div>
                     <br />
                     <div ui-grid="gridOptions" class="myGrid">
                     </div>
@@ -25,7 +42,11 @@
                 </a>
                 </div>
                 </div>
-
         </div>
+
+
+
+
     </div>
 </div>
+
