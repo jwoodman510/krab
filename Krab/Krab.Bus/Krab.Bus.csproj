@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
+    <Compile Include="Message.cs" />
     <Compile Include="IMessageSubscriber.cs" />
     <Compile Include="ReceiveBus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

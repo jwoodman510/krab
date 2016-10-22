@@ -1,6 +1,8 @@
-﻿namespace Krab.Messages
+﻿using Krab.Bus;
+
+namespace Krab.Messages
 {
-    public class ProcessKeywordResponseSet
+    public class ProcessKeywordResponseSet : Message
     {
         public int UserId { get; set; }
 

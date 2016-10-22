@@ -43,6 +43,12 @@
     <Compile Include="ProcessKeywordResponseSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Krab.Bus\Krab.Bus.csproj">
+      <Project>{d8f7e87c-e9fa-4f69-92c8-a7bcb787c873}</Project>
+      <Name>Krab.Bus</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

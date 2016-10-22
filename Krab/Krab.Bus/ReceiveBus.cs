@@ -6,9 +6,7 @@ namespace Krab.Bus
 {
     public interface IReceiveBus : IDisposable
     {
-        void Subscribe<T>(Action<T> receive) where T : class;
-
-        void RegisterSubscriber<TSubscriber, TMessage>() where TSubscriber : IMessageSubscriber<TMessage> where TMessage : class;
+        void RegisterSubscriber<TSubscriber, TMessage>() where TSubscriber : IMessageSubscriber<TMessage> where TMessage : Message;
     }
 
     public class ReceiveBus : IReceiveBus
@@ -27,7 +25,7 @@ namespace Krab.Bus
             _bus.Subscribe("Default", receive);
         }
 
-        public void RegisterSubscriber<TSubscriber, TMessage>() where TSubscriber : IMessageSubscriber<TMessage> where TMessage : class
+        public void RegisterSubscriber<TSubscriber, TMessage>() where TSubscriber : IMessageSubscriber<TMessage> where TMessage : Message
         {
             Subscribe<TMessage>(message => ServiceLocator.Current.GetInstance<TSubscriber>().Receive(message));
         }
