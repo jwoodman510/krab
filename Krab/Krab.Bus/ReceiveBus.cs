@@ -3,9 +3,9 @@ using System;
 
 namespace Krab.Bus
 {
-    public interface IReceiveBus
+    public interface IReceiveBus : IDisposable
     {
-        void Subscribe<T>(string subscriptionId, Action<T> receive) where T : class;
+        void Subscribe<T>(Action<T> receive) where T : class;
     }
 
     public class ReceiveBus : IReceiveBus
@@ -16,12 +16,17 @@ namespace Krab.Bus
         public ReceiveBus()
         {
             _host = "localhost";
-            _bus = RabbitHutch.CreateBus($"host={_host}");
+            _bus = RabbitHutch.CreateBus($"host={_host};publisherConfirms=true;timeout=10");
         }
 
-        public void Subscribe<T>(string subscriptionId, Action<T> receive) where T : class
+        public void Subscribe<T>(Action<T> receive) where T : class
         {
-            _bus.Subscribe(subscriptionId, receive);
+            _bus.Subscribe("Default", receive);
+        }
+
+        public void Dispose()
+        {
+            _bus?.SafeDispose();
         }
     }
 }

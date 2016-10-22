@@ -14,12 +14,12 @@ namespace Krab.Global
     {
         public int GetInt(string key)
         {
-            return Convert.ToInt32(ConfigurationManager.AppSettings["key"]);
+            return Convert.ToInt32(ConfigurationManager.AppSettings[key]);
         }
 
         public bool GetBool(string key)
         {
-            return Convert.ToBoolean(ConfigurationManager.AppSettings["key"]);
+            return Convert.ToBoolean(ConfigurationManager.AppSettings[key]);
         }
     }
 }

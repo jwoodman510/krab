@@ -30,6 +30,7 @@ namespace Krab.ScheduledService.Jobs
         private readonly IAppSettingProvider _appSettingProvider;
         private readonly IAuthApi _authApi;
         private readonly ISendBus _sendBus;
+        private readonly bool _shouldUseBus;
 
         public ProcessKeywordResponseSets(
             ILog logger,
@@ -45,6 +46,7 @@ namespace Krab.ScheduledService.Jobs
             _appSettingProvider = appSettingProvider;
             _authApi = authApi;
             _sendBus = sendBus;
+            _shouldUseBus = _appSettingProvider.GetBool("UseSendBus");
         }
 
         public override void Execute()
@@ -106,18 +108,25 @@ namespace Krab.ScheduledService.Jobs
 
             foreach (var set in grouping.Where(s => s.Status == KeywordResponseSetStatus.Active.ToString()))
             {
-                _sendBus.Publish(new ProcessKeywordResponseSet
+                if (_shouldUseBus)
                 {
-                    UserId = grouping.Key,
-                    RedditUserId = redditUser.Id,
-                    RedditUserName = redditUser.UserName,
-                    Id = set.Id,
-                    StatusId = set.StatusId,
-                    Keyword = set.Keyword,
-                    Response = set.Response
-                });
+                    _logger.Info($"Publishing ProcessKeywordResponseSet message. KeywordResponseSetId={set.Id}.");
 
-                ProcessSet(grouping.Key, redditUser.Id, redditUser.UserName, set, subredditDac);
+                    _sendBus.Publish(new ProcessKeywordResponseSet
+                    {
+                        UserId = grouping.Key,
+                        RedditUserId = redditUser.Id,
+                        RedditUserName = redditUser.UserName,
+                        Id = set.Id,
+                        StatusId = set.StatusId,
+                        Keyword = set.Keyword,
+                        Response = set.Response
+                    });
+                }
+                else
+                {
+                    ProcessSet(grouping.Key, redditUser.Id, redditUser.UserName, set, subredditDac);
+                }
             }
         }
 

@@ -5,7 +5,7 @@ namespace Krab.Bus
 {
     public interface ISendBus : IDisposable
     {
-        void Publish(object message);
+        void Publish<T>(T message) where T : class;
     }
 
     public class SendBus : ISendBus
@@ -19,14 +19,14 @@ namespace Krab.Bus
             _bus = RabbitHutch.CreateBus($"host={_host}");
         }
 
-        public void Publish(object message)
+        public void Publish<T>(T message) where T : class
         {
             _bus.Publish(message);
         }
 
         public void Dispose()
         {
-            _bus?.Dispose();
+            _bus?.SafeDispose();
         }
     }
 }
