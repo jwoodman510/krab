@@ -1,12 +1,13 @@
 ﻿using Microsoft.Practices.Unity;
 
-namespace Krab.Caching
+namespace Krab.Bus
 {
     public static class Configuration
     {
         public static void Register(IUnityContainer container)
         {
-            container.RegisterType<ICache, InMemoryCache>();
+            container.RegisterType<ISendBus, SendBus>();
+            container.RegisterType<IReceiveBus, ReceiveBus>();
         }
     }
 }

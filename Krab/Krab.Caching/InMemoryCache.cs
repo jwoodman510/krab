@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Krab.Caching
 {
-    public class Cache : ICache
+    public class InMemoryCache : ICache
     {
         private static MemoryCache MemoryCache => MemoryCache.Default;
 

@@ -12,6 +12,8 @@ using NCron;
 using RedditSharp;
 using RedditSharp.Things;
 using Subreddit = Krab.DataAccess.Subreddit.Subreddit;
+using Krab.Bus;
+using Krab.Messages;
 
 namespace Krab.ScheduledService.Jobs
 {
@@ -27,19 +29,22 @@ namespace Krab.ScheduledService.Jobs
         private readonly IKeywordResponseSetDac _keywordResponseSetDac;
         private readonly IAppSettingProvider _appSettingProvider;
         private readonly IAuthApi _authApi;
+        private readonly ISendBus _sendBus;
 
         public ProcessKeywordResponseSets(
             ILog logger,
             IRedditUserDac redditUserDac,
             IKeywordResponseSetDac keywordResponseSetDac,
             IAppSettingProvider appSettingProvider,
-            IAuthApi authApi)
+            IAuthApi authApi,
+            ISendBus sendBus)
         {
             _logger = logger;
             _redditUserDac = redditUserDac;
             _keywordResponseSetDac = keywordResponseSetDac;
             _appSettingProvider = appSettingProvider;
             _authApi = authApi;
+            _sendBus = sendBus;
         }
 
         public override void Execute()
@@ -101,6 +106,17 @@ namespace Krab.ScheduledService.Jobs
 
             foreach (var set in grouping.Where(s => s.Status == KeywordResponseSetStatus.Active.ToString()))
             {
+                _sendBus.Publish(new ProcessKeywordResponseSet
+                {
+                    UserId = grouping.Key,
+                    RedditUserId = redditUser.Id,
+                    RedditUserName = redditUser.UserName,
+                    Id = set.Id,
+                    StatusId = set.StatusId,
+                    Keyword = set.Keyword,
+                    Response = set.Response
+                });
+
                 ProcessSet(grouping.Key, redditUser.Id, redditUser.UserName, set, subredditDac);
             }
         }

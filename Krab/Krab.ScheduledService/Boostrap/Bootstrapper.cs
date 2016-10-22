@@ -1,4 +1,5 @@
-﻿using Krab.ScheduledService.Jobs;
+﻿using Krab.Bus;
+using Krab.ScheduledService.Jobs;
 using log4net;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
@@ -9,6 +10,8 @@ namespace Krab.ScheduledService.Boostrap
 {
     public static class Bootstrapper
     {
+        private static ISendBus _sendBus;
+
         public static void Configure()
         {
             var container = new UnityContainer();
@@ -21,6 +24,7 @@ namespace Krab.ScheduledService.Boostrap
         private static void RegisterInstances(IUnityContainer container)
         {
             container.RegisterInstance(typeof(ILog), LogManager.GetLogger("ServiceLogger"));
+            container.RegisterInstance(typeof(ISendBus), new SendBus());
 
             Configuration.Register(container);
             DataAccess.Configuration.Register(container);
