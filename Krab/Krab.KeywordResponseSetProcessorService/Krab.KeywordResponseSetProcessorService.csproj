@@ -126,6 +126,10 @@
       <Project>{e1a9478a-5b05-4045-aee6-422cc28363a0}</Project>
       <Name>Krab.Global</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Krab.Logger\Krab.Logger.csproj">
+      <Project>{a1d4159e-f933-43aa-af39-81fbef8c741f}</Project>
+      <Name>Krab.Logger</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Krab.Messages\Krab.Messages.csproj">
       <Project>{4bfd50a7-68d3-4a45-9c27-651dcfedbbb0}</Project>
       <Name>Krab.Messages</Name>

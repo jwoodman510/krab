@@ -1,6 +1,5 @@
-﻿using log4net;
-using System;
-using System.IO;
+﻿using Krab.Logger;
+using Microsoft.Practices.ServiceLocation;
 using Topshelf;
 
 namespace Krab.KeywordResponseSetProcessorService
@@ -29,35 +28,26 @@ namespace Krab.KeywordResponseSetProcessorService
 
         public class Service
         {
-            private static ILog _logger;
+            private static ILogger _logger;
 
             public void Start()
             {
-                SetupLogger();
-
-                _logger.Info("Starting service...");
-
                 Bootstrap.Bootstrapper.Configure();
 
-                _logger.Info("Service is started!");
-            }
+                _logger = ServiceLocator.Current.GetInstance<ILogger>();
 
-            private static void SetupLogger()
-            {
-                var log4NetConfig = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log4net.config"));
+                _logger.LogInfo("Starting service...");
 
-                log4net.Config.XmlConfigurator.ConfigureAndWatch(log4NetConfig);
-
-                _logger = LogManager.GetLogger("ServiceLogger");
+                _logger.LogInfo("Service is started!");
             }
 
             public void Stop()
             {
-                _logger.Info("Stopping service...");
+                _logger.LogInfo("Stopping service...");
 
                 Bootstrap.Bootstrapper.StopReceiveBus();
 
-                _logger.Info("Service Stopped.");
+                _logger.LogInfo("Service Stopped.");
             }
         }
     }

@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krab.Bus", "Krab.Bus\Krab.B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krab.KeywordResponseSetProcessorService", "Krab.KeywordResponseSetProcessorService\Krab.KeywordResponseSetProcessorService.csproj", "{0F32DA70-BA1B-4592-811D-94E71271AAB4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krab.Logger", "Krab.Logger\Krab.Logger.csproj", "{A1D4159E-F933-43AA-AF39-81FBEF8C741F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{0F32DA70-BA1B-4592-811D-94E71271AAB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F32DA70-BA1B-4592-811D-94E71271AAB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F32DA70-BA1B-4592-811D-94E71271AAB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1D4159E-F933-43AA-AF39-81FBEF8C741F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1D4159E-F933-43AA-AF39-81FBEF8C741F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1D4159E-F933-43AA-AF39-81FBEF8C741F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1D4159E-F933-43AA-AF39-81FBEF8C741F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

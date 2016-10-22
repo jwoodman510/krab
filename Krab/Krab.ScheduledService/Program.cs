@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
 using Krab.ScheduledService.Boostrap;
 using Krab.ScheduledService.Jobs;
-using log4net;
 using Microsoft.Practices.ServiceLocation;
 using NCron.Fluent.Crontab;
 using NCron.Service;
 using Topshelf;
+using Krab.Logger;
 
 namespace Krab.ScheduledService
 {
@@ -36,16 +34,16 @@ namespace Krab.ScheduledService
 
         public class Service
         {
-            private static ILog _logger;
+            private static ILogger _logger;
             private static SchedulingService _schedulingService;
 
             public void Start()
             {
-                SetupLogger();
-
                 Bootstrapper.Configure();
 
-                _logger.Info("Starting service...");
+                _logger = ServiceLocator.Current.GetInstance<ILogger>();
+
+                _logger.LogInfo("Starting service...");
 
                 if (_schedulingService == null)
                 {
@@ -59,37 +57,28 @@ namespace Krab.ScheduledService
 
                 _schedulingService.Start();
 
-                _logger.Info("Service is started!");
-            }
-
-            private static void SetupLogger()
-            {
-                var log4NetConfig = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log4net.config"));
-
-                log4net.Config.XmlConfigurator.ConfigureAndWatch(log4NetConfig);
-
-                _logger = LogManager.GetLogger("ServiceLogger");
+                _logger.LogInfo("Service is started!");
             }
 
             public void ScheduleJobs()
             {
-                _logger.Info("Scheduling jobs...");
+                _logger.LogInfo("Scheduling jobs...");
 
                 var runKrJobEveryMin = Convert.ToInt32(ConfigurationManager.AppSettings["ProcessSetsEveryMinutes"]);
 
                 if (runKrJobEveryMin == 1)
                 {
                     _schedulingService.At("* * * * *").Run(() => ServiceLocator.Current.GetInstance<IProcessKeywordResponseSets>());
-                    _logger.Info("Running IProcessKeywordResponseSets every minute.");
+                    _logger.LogInfo("Running IProcessKeywordResponseSets every minute.");
                 }
                 else if (runKrJobEveryMin > 1 && runKrJobEveryMin < 60)
                 {
                     _schedulingService.At($"*/{runKrJobEveryMin} * * * *").Run(() => ServiceLocator.Current.GetInstance<IProcessKeywordResponseSets>());
-                    _logger.Info($"Running IProcessKeywordResponseSets every {runKrJobEveryMin} minutes.");
+                    _logger.LogInfo($"Running IProcessKeywordResponseSets every {runKrJobEveryMin} minutes.");
                 }
                 else
                 {
-                    _logger.Warn($"Invalid AppSetting: key=ProcessSetsEveryMinutes value={runKrJobEveryMin}");
+                    _logger.LogWarning($"Invalid AppSetting: key=ProcessSetsEveryMinutes value={runKrJobEveryMin}");
                 }
 
                 _schedulingService.Daily().Run(() => ServiceLocator.Current.GetInstance<IDeleteLogs>());
@@ -97,10 +86,10 @@ namespace Krab.ScheduledService
 
             public void Stop()
             {
-                _logger.Info("Stopping service...");
+                _logger.LogInfo("Stopping service...");
                 _schedulingService?.Stop();
                 _schedulingService?.Dispose();
-                _logger.Info("Service Stopped.");
+                _logger.LogInfo("Service Stopped.");
             }
         }
     }

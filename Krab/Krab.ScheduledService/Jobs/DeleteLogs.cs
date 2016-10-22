@@ -2,6 +2,8 @@
 using System.IO;
 using log4net;
 using NCron;
+using Krab.Logger;
+
 namespace Krab.ScheduledService.Jobs
 {
     public interface IDeleteLogs : ICronJob
@@ -14,20 +16,20 @@ namespace Krab.ScheduledService.Jobs
         private const int DeleteDaysOlderThan = 7;
         private const string Directory = @"c:\tmp\logs\ScheduledService";
 
-        private readonly ILog _logger;
+        private readonly ILogger _logger;
 
-        public DeleteLogs(ILog logger)
+        public DeleteLogs(ILogger logger)
         {
             _logger = logger;
         }
 
         public override void Execute()
         {
-            _logger.Info($"Executing {GetType()}.");
+            _logger.LogInfo($"Executing {GetType()}.");
 
             if (!System.IO.Directory.Exists(Directory))
             {
-                _logger.Info($"Directory not found: {Directory}");
+                _logger.LogInfo($"Directory not found: {Directory}");
                 return;
             }
 
@@ -44,11 +46,11 @@ namespace Krab.ScheduledService.Jobs
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error($"Unable to delete file: {file}.", ex);
+                    _logger.LogError($"Unable to delete file: {file}.", ex);
                 }
             }
 
-            _logger.Info($"{GetType()} Complete.");
+            _logger.LogInfo($"{GetType()} Complete.");
         }
     }
 }
