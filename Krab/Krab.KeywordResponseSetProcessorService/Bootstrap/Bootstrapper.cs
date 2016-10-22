@@ -28,8 +28,13 @@ namespace Krab.KeywordResponseSetProcessorService.Bootstrap
         {
             container.RegisterInstance(typeof(ILog), LogManager.GetLogger("ServiceLogger"));
 
+            DataAccess.Configuration.Register(container);
+            Caching.Configuration.Register(container);
+            Api.Configuration.Register(container);
+            Global.Configuration.Register(container);
+
             container.RegisterType<IMessageSubscriber<ProcessKeywordResponseSet>, ProcessKeywordResponseSetSubscriber>();
-            
+
             TryGetInstances();
         }
 
