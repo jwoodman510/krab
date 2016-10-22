@@ -1,4 +1,23 @@
 ﻿    .myGrid {
-    width: 500px; 
-    height: 250px;
+    width: 1200px; 
+    height: 500px;
       }
+
+    .header-filtered {
+  color: blue;
+}
+
+    .myText{
+        text-align: center;
+    }
+
+    .font{
+    font-family: inherit;
+    font-size: 20px;
+    }
+
+    .form { 
+    margin: 0 auto; 
+    width:250px;
+    }
+

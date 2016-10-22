@@ -1,114 +1,107 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
-using System.ServiceProcess;
 using Krab.ScheduledService.Boostrap;
 using Krab.ScheduledService.Jobs;
 using log4net;
 using Microsoft.Practices.ServiceLocation;
 using NCron.Fluent.Crontab;
 using NCron.Service;
+using Topshelf;
 
 namespace Krab.ScheduledService
 {
     public class Program
     {
-        public const string ServiceName = "Krab.ScheduledService";
-
-        private static SchedulingService _schedulingService;
-
-        private static ILog _logger;
-
-        public class Service : ServiceBase
-        {
-            public Service()
-            {
-                ServiceName = Program.ServiceName;
-            }
-
-            protected override void OnStart(string[] args)
-            {
-                Program.Start(args);
-            }
-
-            protected override void OnStop()
-            {
-                Program.Stop();
-            }
-        }
-
         private static void Main(string[] args)
         {
-            if (!Environment.UserInteractive)
+            HostFactory.New(x =>
             {
-                using (var service = new Service())
+                x.Service<Service>(svc =>
                 {
-                    ServiceBase.Run(service);
+                    svc.ConstructUsing(s => new Service());
+                    svc.WhenStarted(s => s.Start());
+                    svc.WhenStopped(s => s.Stop());
+                });
+
+                x.RunAsLocalSystem();
+                x.SetDescription("This service runs scheduled jobs.");
+                x.SetDisplayName("KRAB Scheduled Service");
+                x.SetServiceName("Krab.ScheduledService");
+                x.StartAutomatically();
+
+            }).Run();
+        }
+
+        public class Service
+        {
+            private static ILog _logger;
+            private static SchedulingService _schedulingService;
+
+            public void Start()
+            {
+                SetupLogger();
+
+                Bootstrapper.Configure();
+
+                _logger.Info("Starting service...");
+
+                if (_schedulingService == null)
+                {
+                    _schedulingService = new SchedulingService
+                    {
+                        LogFactory = new LogFactory()
+                    };
                 }
+
+                ScheduleJobs();
+
+                _schedulingService.Start();
+
+                _logger.Info("Service is started!");
             }
-            else
+
+            private static void SetupLogger()
             {
-                Start(args);
+                var log4NetConfig = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log4net.config"));
 
-                Console.WriteLine("Press escape to stop the service.");
+                log4net.Config.XmlConfigurator.ConfigureAndWatch(log4NetConfig);
 
-                var key = Console.ReadKey(true);
-                while (key.Key != ConsoleKey.Escape)
+                _logger = LogManager.GetLogger("ServiceLogger");
+            }
+
+            public void ScheduleJobs()
+            {
+                _logger.Info("Scheduling jobs...");
+
+                var runKrJobEveryMin = Convert.ToInt32(ConfigurationManager.AppSettings["ProcessSetsEveryMinutes"]);
+
+                if (runKrJobEveryMin == 1)
                 {
-                    key = Console.ReadKey(true);
+                    _schedulingService.At("* * * * *").Run(() => ServiceLocator.Current.GetInstance<IProcessKeywordResponseSets>());
+                    _logger.Info("Running IProcessKeywordResponseSets every minute.");
+                }
+                else if (runKrJobEveryMin > 1 && runKrJobEveryMin < 60)
+                {
+                    _schedulingService.At($"*/{runKrJobEveryMin} * * * *").Run(() => ServiceLocator.Current.GetInstance<IProcessKeywordResponseSets>());
+                    _logger.Info($"Running IProcessKeywordResponseSets every {runKrJobEveryMin} minutes.");
+                }
+                else
+                {
+                    _logger.Warn($"Invalid AppSetting: key=ProcessSetsEveryMinutes value={runKrJobEveryMin}");
                 }
 
-                Stop();
+                _schedulingService.Daily().Run(() => ServiceLocator.Current.GetInstance<IDeleteLogs>());
             }
-        }
 
-        private static void Start(string[] args)
-        {
-            SetupLogger();
-
-            _logger.Info("Starting service...");
-
-            Bootstrapper.Configure();
-
-            if (_schedulingService == null)
+            public void Stop()
             {
-                _schedulingService = new SchedulingService
-                {
-                    LogFactory = new LogFactory()
-                };
+                _logger.Info("Stopping service...");
+                _schedulingService?.Stop();
+                _schedulingService?.Dispose();
+                _logger.Info("Service Stopped.");
             }
-
-            _logger.Info("Scheduling jobs...");
-
-            _schedulingService.At("* * * * *").Run(() => ServiceLocator.Current.GetInstance<IProcessKeywordResponseSets>());
-            _schedulingService.Daily().Run(() => ServiceLocator.Current.GetInstance<IDeleteLogs>());
-
-            _schedulingService.Start();
-
-
-            _logger.Info("Service is started!");
-        }
-
-        private static void Stop()
-        {
-            _logger.Info("Stopping service...");
-            _schedulingService?.Stop();
-            _logger.Info("Service Stopped.");
-        }
-
-        private static void SetupLogger()
-        {
-            var log4NetConfig = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log4net.config"));
-
-            if (!log4NetConfig.Exists)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Unable to find log4net.config!");
-                Console.ResetColor();
-            }
-
-            log4net.Config.XmlConfigurator.ConfigureAndWatch(log4NetConfig);
-
-            _logger = LogManager.GetLogger("ServiceLogger");
         }
     }
 }

@@ -19,6 +19,7 @@ namespace Krab.DataAccess
             container.RegisterType<IUserDac, UserDac>();
             container.RegisterType<IKeywordResponseSetDac, KeywordResponseSetDac>();
             container.RegisterType<IRedditUserDac,RedditUserDac>();
+            container.RegisterType<ISubredditDac, SubredditDac>();
         }
     }
 }

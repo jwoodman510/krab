@@ -6,7 +6,7 @@ namespace Krab.Caching
     {
         public static void Register(IUnityContainer container)
         {
-            container.RegisterType<ICache, Cache>();
+            container.RegisterType<ICache, InMemoryCache>();
         }
     }
 }

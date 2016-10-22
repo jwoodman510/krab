@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Unity;
+﻿using Krab.Api.Apis;
+using Microsoft.Practices.Unity;
 
 namespace Krab.Api
 {

@@ -7,6 +7,11 @@ namespace Krab.ScheduledService.Boostrap
     {
         public static void Register(IUnityContainer container)
         {
+            RegisterJobs(container);
+        }
+
+        private static void RegisterJobs(IUnityContainer container)
+        {
             container.RegisterType<IProcessKeywordResponseSets, ProcessKeywordResponseSets>();
             container.RegisterType<IDeleteLogs, DeleteLogs>();
         }
