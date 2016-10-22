@@ -1,5 +1,5 @@
 ﻿using Krab.Bus;
-using Krab.KeywordResponseSetProcessorService.Receivers;
+using Krab.KeywordResponseSetProcessorService.Subscribers;
 using Krab.Messages;
 using log4net;
 using Microsoft.Practices.ServiceLocation;
@@ -28,7 +28,7 @@ namespace Krab.KeywordResponseSetProcessorService.Bootstrap
         {
             container.RegisterInstance(typeof(ILog), LogManager.GetLogger("ServiceLogger"));
 
-            container.RegisterType<ProcessKeywordResponseSetReceiver, ProcessKeywordResponseSetReceiver>();
+            container.RegisterType<IMessageSubscriber<ProcessKeywordResponseSet>, ProcessKeywordResponseSetSubscriber>();
             
             TryGetInstances();
         }
@@ -37,7 +37,7 @@ namespace Krab.KeywordResponseSetProcessorService.Bootstrap
         {
             _receiveBus = new ReceiveBus();
 
-            _receiveBus.Subscribe<ProcessKeywordResponseSet>((m) => ServiceLocator.Current.GetInstance<ProcessKeywordResponseSetReceiver>().Receive(m));
+            _receiveBus.RegisterSubscriber<IMessageSubscriber<ProcessKeywordResponseSet>, ProcessKeywordResponseSet>();
 
             container.RegisterInstance(typeof(IReceiveBus), _receiveBus);
         }
@@ -58,9 +58,11 @@ namespace Krab.KeywordResponseSetProcessorService.Bootstrap
 
             var logger = locator.GetInstance<ILog>();
 
+            logger.Info("Verifying instances are bootstrapped...");
+
             var types = new List<Type>
             {
-
+                typeof(IMessageSubscriber<ProcessKeywordResponseSet>)
             };
 
             foreach (var type in types)

@@ -1,13 +1,14 @@
-﻿using Krab.Messages;
+﻿using Krab.Bus;
+using Krab.Messages;
 using log4net;
 
-namespace Krab.KeywordResponseSetProcessorService.Receivers
+namespace Krab.KeywordResponseSetProcessorService.Subscribers
 {
-    public class ProcessKeywordResponseSetReceiver
+    public class ProcessKeywordResponseSetSubscriber : IMessageSubscriber<ProcessKeywordResponseSet>
     {
         private readonly ILog _logger;
 
-        public ProcessKeywordResponseSetReceiver(ILog logger)
+        public ProcessKeywordResponseSetSubscriber(ILog logger)
         {
             _logger = logger;
         }

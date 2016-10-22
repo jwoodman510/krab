@@ -10,8 +10,6 @@ namespace Krab.ScheduledService.Boostrap
 {
     public static class Bootstrapper
     {
-        private static ISendBus _sendBus;
-
         public static void Configure()
         {
             var container = new UnityContainer();
@@ -45,6 +43,8 @@ namespace Krab.ScheduledService.Boostrap
             }
 
             var logger = locator.GetInstance<ILog>();
+
+            logger.Info("Verifying instances are bootstrapped...");
 
             var types = new List<Type>
             {

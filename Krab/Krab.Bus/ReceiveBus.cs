@@ -1,4 +1,5 @@
 ﻿using EasyNetQ;
+using Microsoft.Practices.ServiceLocation;
 using System;
 
 namespace Krab.Bus
@@ -6,6 +7,8 @@ namespace Krab.Bus
     public interface IReceiveBus : IDisposable
     {
         void Subscribe<T>(Action<T> receive) where T : class;
+
+        void RegisterSubscriber<TSubscriber, TMessage>() where TSubscriber : IMessageSubscriber<TMessage> where TMessage : class;
     }
 
     public class ReceiveBus : IReceiveBus
@@ -16,12 +19,17 @@ namespace Krab.Bus
         public ReceiveBus()
         {
             _host = "localhost";
-            _bus = RabbitHutch.CreateBus($"host={_host};publisherConfirms=true;timeout=10");
+            _bus = RabbitHutch.CreateBus($"host={_host}");
         }
 
         public void Subscribe<T>(Action<T> receive) where T : class
         {
             _bus.Subscribe("Default", receive);
+        }
+
+        public void RegisterSubscriber<TSubscriber, TMessage>() where TSubscriber : IMessageSubscriber<TMessage> where TMessage : class
+        {
+            Subscribe<TMessage>(message => ServiceLocator.Current.GetInstance<TSubscriber>().Receive(message));
         }
 
         public void Dispose()
