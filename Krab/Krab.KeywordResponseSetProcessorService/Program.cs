@@ -36,8 +36,6 @@ namespace Krab.KeywordResponseSetProcessorService
 
                 _logger = ServiceLocator.Current.GetInstance<ILogger>();
 
-                _logger.LogInfo("Starting service...");
-
                 _logger.LogInfo("Service is started!");
             }
 

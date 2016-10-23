@@ -5,13 +5,15 @@ using Krab.Messages;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using System;
-using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
 
 namespace Krab.KeywordResponseSetProcessorService.Bootstrap
 {
     public static class Bootstrapper
     {
         private static IReceiveBus _receiveBus;
+        private static ILogger _logger;
 
         public static void Configure()
         {
@@ -26,7 +28,10 @@ namespace Krab.KeywordResponseSetProcessorService.Bootstrap
 
         private static void RegisterInstances(IUnityContainer container)
         {
-            container.RegisterInstance(typeof(ILogger), new KrabLogger());
+            _logger = new KrabLogger();
+            container.RegisterInstance(typeof(ILogger), _logger);
+
+            _logger.LogInfo("Registering Instances...");
 
             DataAccess.Configuration.Register(container);
             Caching.Configuration.Register(container);
@@ -40,7 +45,11 @@ namespace Krab.KeywordResponseSetProcessorService.Bootstrap
 
         private static void StartReceiveBus(IUnityContainer container)
         {
-            _receiveBus = new ReceiveBus();
+            _logger.LogInfo("Starting Receive Bus...");
+
+            var busHost = ConfigurationManager.AppSettings["BusHost"];
+
+            _receiveBus = new ReceiveBus(busHost);
 
             _receiveBus.RegisterSubscriber<IMessageSubscriber<ProcessKeywordResponseSet>, ProcessKeywordResponseSet>();
 
@@ -65,10 +74,28 @@ namespace Krab.KeywordResponseSetProcessorService.Bootstrap
 
             logger.LogInfo("Verifying instances are bootstrapped...");
 
-            var types = new List<Type>
-            {
-                typeof(IMessageSubscriber<ProcessKeywordResponseSet>)
-            };
+            var types = typeof(Bootstrapper)
+                .Assembly
+                .GetTypes()
+                .Where(t => !t.IsAbstract && !t.IsInterface)
+                .Where(t =>
+                {
+                    var interfaces = t.GetInterfaces();
+
+                    foreach (var i in interfaces)
+                    {
+                        if (i.IsGenericType)
+                        {
+                            var typeDef = i.GetGenericTypeDefinition();
+                            var iDef = typeof(IMessageSubscriber<>).GetGenericTypeDefinition();
+
+                            if (typeDef == iDef)
+                                return true;
+                        }
+                    }
+
+                    return false;
+                });
 
             foreach (var type in types)
             {

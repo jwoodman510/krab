@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Krab.Global.Extensions;
 using log4net;
 using NCron;
 using Krab.Logger;
@@ -14,9 +15,9 @@ namespace Krab.ScheduledService.Jobs
     public class DeleteLogs : CronJob, IDeleteLogs
     {
         private const int DeleteDaysOlderThan = 7;
-        private const string Directory = @"c:\tmp\logs\ScheduledService";
 
         private readonly ILogger _logger;
+        private readonly string[] _directories = { @"c:\tmp\logs\ScheduledService", @"c:\tmp\logs\KeywordResponseSetProcessorService" };
 
         public DeleteLogs(ILogger logger)
         {
@@ -25,15 +26,20 @@ namespace Krab.ScheduledService.Jobs
 
         public override void Execute()
         {
+            _directories.ForEach(ProcessDirectory);
+        }
+
+        private void ProcessDirectory(string directory)
+        {
             _logger.LogInfo($"Executing {GetType()}.");
 
-            if (!System.IO.Directory.Exists(Directory))
+            if (!Directory.Exists(directory))
             {
-                _logger.LogInfo($"Directory not found: {Directory}");
+                _logger.LogInfo($"Directory not found: {directory}");
                 return;
             }
 
-            foreach (var file in System.IO.Directory.GetFiles(Directory))
+            foreach (var file in Directory.GetFiles(directory))
             {
                 var fileInfo = new FileInfo(file);
 

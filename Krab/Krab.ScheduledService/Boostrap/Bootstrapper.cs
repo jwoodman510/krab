@@ -5,6 +5,7 @@ using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 
 namespace Krab.ScheduledService.Boostrap
 {
@@ -21,7 +22,9 @@ namespace Krab.ScheduledService.Boostrap
 
         private static void RegisterInstances(IUnityContainer container)
         {
-            container.RegisterInstance(typeof(ISendBus), new SendBus());
+            var busHost = ConfigurationManager.AppSettings["BusHost"];
+
+            container.RegisterInstance(typeof(ISendBus), new SendBus(busHost));
             container.RegisterInstance(typeof(ILogger), new KrabLogger());
 
             Configuration.Register(container);
