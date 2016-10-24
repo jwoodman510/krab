@@ -29,7 +29,7 @@ namespace Krab.ScheduledService.Boostrap
 
             Configuration.Register(container);
             DataAccess.Configuration.Register(container);
-            Caching.Configuration.Register(container);
+            Caching.Configuration.RegisterRedisCache(container);
             Api.Configuration.Register(container);
             Global.Configuration.Register(container);
 

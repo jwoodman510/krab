@@ -8,7 +8,7 @@ namespace Krab.DataAccess.Dac
 {
     public interface IKeywordResponseSetDac
     {
-        IEnumerable<KeywordResponseSet.KeywordResponseSet> GetAll();
+        IQueryable<KeywordResponseSet.KeywordResponseSet> GetAll();
         IEnumerable<KeywordResponseSet.KeywordResponseSet> GetByUserId(int userId);
         KeywordResponseSet.KeywordResponseSet Get(int id);
 
@@ -28,7 +28,7 @@ namespace Krab.DataAccess.Dac
             _keywordResponseSetsDb = keywordResponseSetsDb;
         }
 
-        public IEnumerable<KeywordResponseSet.KeywordResponseSet> GetAll()
+        public IQueryable<KeywordResponseSet.KeywordResponseSet> GetAll()
         {
             return _keywordResponseSetsDb.KeywordResponseSets
                 .AsNoTracking();

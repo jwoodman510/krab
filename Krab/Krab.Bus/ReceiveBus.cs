@@ -52,7 +52,11 @@ namespace Krab.Bus
 
                 try
                 {
+                    _logger.LogInfo($"{message.GetType()} received.");
+
                     subscriber.Receive(message);
+
+                    _logger.LogInfo($"{message.GetType()} complete.");
                 }
                 catch (Exception ex)
                 {
@@ -80,7 +84,11 @@ namespace Krab.Bus
 
                 try
                 {
+                    _logger.LogInfo($"{message.GetType()} received.");
+
                     await subscriber.ReceiveAsync(message);
+
+                    _logger.LogInfo($"{message.GetType()} complete.");
                 }
                 catch (Exception ex)
                 {

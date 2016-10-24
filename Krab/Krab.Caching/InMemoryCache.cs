@@ -7,13 +7,7 @@ namespace Krab.Caching
     public class InMemoryCache : ICache
     {
         private static MemoryCache MemoryCache => MemoryCache.Default;
-
-        public void SetValue(string key, object value, DateTimeOffset expiration)
-        {
-            var json = JsonConvert.SerializeObject(value);
-            MemoryCache.Set(key, json, expiration);
-        }
-
+        
         public void SetValue(string key, object value, long secondsToKeep)
         {
             if (secondsToKeep <= 0)

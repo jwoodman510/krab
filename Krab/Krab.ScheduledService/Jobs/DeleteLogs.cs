@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Krab.Global.Extensions;
-using log4net;
 using NCron;
 using Krab.Logger;
 
