@@ -14,6 +14,7 @@ using RedditSharp.Things;
 using Subreddit = Krab.DataAccess.Subreddit.Subreddit;
 using Krab.Bus;
 using Krab.Messages;
+using Krab.Logger;
 
 namespace Krab.ScheduledService.Jobs
 {
@@ -24,7 +25,7 @@ namespace Krab.ScheduledService.Jobs
 
     public class ProcessKeywordResponseSets : CronJob, IProcessKeywordResponseSets
     {
-        private readonly ILog _logger;
+        private readonly ILogger _logger;
         private readonly IRedditUserDac _redditUserDac;
         private readonly IKeywordResponseSetDac _keywordResponseSetDac;
         private readonly IAppSettingProvider _appSettingProvider;
@@ -33,7 +34,7 @@ namespace Krab.ScheduledService.Jobs
         private readonly bool _shouldUseBus;
 
         public ProcessKeywordResponseSets(
-            ILog logger,
+            ILogger logger,
             IRedditUserDac redditUserDac,
             IKeywordResponseSetDac keywordResponseSetDac,
             IAppSettingProvider appSettingProvider,
@@ -51,7 +52,7 @@ namespace Krab.ScheduledService.Jobs
 
         public override void Execute()
         {
-            _logger.Info($"Executing {GetType()}.");
+            _logger.LogInfo($"Executing {GetType()}.");
 
             try
             {
@@ -62,11 +63,11 @@ namespace Krab.ScheduledService.Jobs
             }
             catch (Exception ex)
             {
-                _logger.Error($"{GetType()} Failed Unexpectedly.", ex);
+                _logger.LogError($"{GetType()} Failed Unexpectedly.", ex);
             }
             finally
             {
-                _logger.Info($"{GetType()} Complete.");
+                _logger.LogInfo($"{GetType()} Complete.");
             }
         }
         
@@ -93,7 +94,7 @@ namespace Krab.ScheduledService.Jobs
             var redditUser = _redditUserDac.GetByUser(userId)?.FirstOrDefault();
 
             if (redditUser == null)
-                _logger.Info($"UserId: {userId} has no linked reddit account and will not be processed.");
+                _logger.LogInfo($"UserId: {userId} has no linked reddit account and will not be processed.");
 
             return redditUser != null;
         }
@@ -104,13 +105,13 @@ namespace Krab.ScheduledService.Jobs
 
             var redditUser = _redditUserDac.GetByUser(grouping.Key).First();
 
-            _logger.Info($"Processing sets for UserId: {grouping.Key}.");
+            _logger.LogInfo($"Processing sets for UserId: {grouping.Key}.");
 
             foreach (var set in grouping.Where(s => s.Status == KeywordResponseSetStatus.Active.ToString()))
             {
                 if (_shouldUseBus)
                 {
-                    _logger.Info($"Publishing ProcessKeywordResponseSet message. KeywordResponseSetId={set.Id}.");
+                    _logger.LogInfo($"Publishing ProcessKeywordResponseSet message. KeywordResponseSetId={set.Id}.");
 
                     _sendBus.Publish(new ProcessKeywordResponseSet
                     {
@@ -132,19 +133,19 @@ namespace Krab.ScheduledService.Jobs
 
         private void ProcessSet(int userId, int redditUserId, string redditUserName, KeywordResponseSet set, ISubredditDac subredditDac)
         {
-            _logger.Info($"Processing keyword [{set.Keyword}] for UserId: {userId}");
+            _logger.LogInfo($"Processing keyword [{set.Keyword}] for UserId: {userId}");
 
             var subreddits = subredditDac.GetByKeywordResponseSetId(set.Id)?.ToList() ?? new List<Subreddit>();
 
             if (subreddits.Count == 0)
             {
-                _logger.Info($"Keyword [{set.Keyword}] for UserId: {userId} has no associated subreddits.");
+                _logger.LogInfo($"Keyword [{set.Keyword}] for UserId: {userId} has no associated subreddits.");
                 return;
             }
 
             if (subreddits.Count > 5)
             {
-                _logger.Info($"Keyword [{set.Keyword}] for UserId: {userId} has {subreddits.Count} associated subreddits. Truncating the list.");
+                _logger.LogInfo($"Keyword [{set.Keyword}] for UserId: {userId} has {subreddits.Count} associated subreddits. Truncating the list.");
                 subreddits = subreddits.GetRange(0, 5);
             }
 
@@ -154,7 +155,7 @@ namespace Krab.ScheduledService.Jobs
 
             foreach (var subreddit in subreddits)
             {
-                _logger.Info($"Retreiving the last 100 comments from /r/{subreddit.SubredditName}...");
+                _logger.LogInfo($"Retreiving the last 100 comments from /r/{subreddit.SubredditName}...");
                 
                 var comments = reddit
                     .GetSubreddit(subreddit.SubredditName)
@@ -173,7 +174,7 @@ namespace Krab.ScheduledService.Jobs
                     if (HasAlreadyReplied(redditUserName, comments, comment))
                         continue;
 
-                    _logger.Info($"Keyword [{set.Keyword}] for UserId: {userId} => Replying to commentId: {comment.Id}.");
+                    _logger.LogInfo($"Keyword [{set.Keyword}] for UserId: {userId} => Replying to commentId: {comment.Id}.");
 
                     try
                     {
@@ -181,7 +182,7 @@ namespace Krab.ScheduledService.Jobs
                     }
                     catch (Exception ex)
                     {
-                        _logger.Error($"Failed to reply comment. Id={comment.Id}.", ex);
+                        _logger.LogError($"Failed to reply comment. Id={comment.Id}.", ex);
                     }
                 }
             }

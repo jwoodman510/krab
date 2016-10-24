@@ -1,6 +1,7 @@
 ﻿using EasyNetQ;
 using Microsoft.Practices.ServiceLocation;
 using System;
+using System.Linq;
 
 namespace Krab.Bus
 {
@@ -11,13 +12,11 @@ namespace Krab.Bus
 
     public class ReceiveBus : IReceiveBus
     {
-        private readonly string _host;
         private readonly IBus _bus;
 
-        public ReceiveBus()
+        public ReceiveBus(string host)
         {
-            _host = "localhost";
-            _bus = RabbitHutch.CreateBus($"host={_host}");
+            _bus = RabbitHutch.CreateBus($"host={host}");
         }
 
         public void Subscribe<T>(Action<T> receive) where T : class

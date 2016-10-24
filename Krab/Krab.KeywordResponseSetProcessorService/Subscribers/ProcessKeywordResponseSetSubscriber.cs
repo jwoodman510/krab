@@ -1,8 +1,8 @@
 ﻿using Krab.Api.Apis;
 using Krab.Bus;
 using Krab.DataAccess.Dac;
+using Krab.Logger;
 using Krab.Messages;
-using log4net;
 using RedditSharp;
 using RedditSharp.Things;
 using System;
@@ -13,11 +13,11 @@ namespace Krab.KeywordResponseSetProcessorService.Subscribers
 {
     public class ProcessKeywordResponseSetSubscriber : IMessageSubscriber<ProcessKeywordResponseSet>
     {
-        private readonly ILog _logger;
+        private readonly ILogger _logger;
         private readonly IAuthApi _authApi;
         private readonly ISubredditDac _subRedditDac;
 
-        public ProcessKeywordResponseSetSubscriber(ILog logger, IAuthApi authApi, ISubredditDac subredditDac)
+        public ProcessKeywordResponseSetSubscriber(ILogger logger, IAuthApi authApi, ISubredditDac subredditDac)
         {
             _logger = logger;
             _authApi = authApi;
@@ -26,28 +26,28 @@ namespace Krab.KeywordResponseSetProcessorService.Subscribers
 
         public void Receive(ProcessKeywordResponseSet message)
         {
-            _logger.Info($"{message.GetType()} Received. KeywordResponseSetId={message.Id}.");
+            _logger.LogInfo($"{message.GetType()} Received. KeywordResponseSetId={message.Id}.");
 
             Process(message);
 
-            _logger.Info($"{message.GetType()} Complete. KeywordResponseSetId={message.Id}.");
+            _logger.LogInfo($"{message.GetType()} Complete. KeywordResponseSetId={message.Id}.");
         }
 
         public void Process(ProcessKeywordResponseSet message)
         {
-            _logger.Info($"Processing keyword [{message.Keyword}] for UserId: {message.UserId}");
+            _logger.LogInfo($"Processing keyword [{message.Keyword}] for UserId: {message.UserId}");
 
             var subreddits = _subRedditDac.GetByKeywordResponseSetId(message.Id)?.ToList() ?? new List<DataAccess.Subreddit.Subreddit>();
 
             if (subreddits.Count == 0)
             {
-                _logger.Info($"Keyword [{message.Keyword}] for UserId: {message.UserId} has no associated subreddits.");
+                _logger.LogInfo($"Keyword [{message.Keyword}] for UserId: {message.UserId} has no associated subreddits.");
                 return;
             }
 
             if (subreddits.Count > 5)
             {
-                _logger.Info($"Keyword [{message.Keyword}] for UserId: {message.UserId} has {subreddits.Count} associated subreddits. Truncating the list.");
+                _logger.LogInfo($"Keyword [{message.Keyword}] for UserId: {message.UserId} has {subreddits.Count} associated subreddits. Truncating the list.");
                 subreddits = subreddits.GetRange(0, 5);
             }
 
@@ -57,7 +57,7 @@ namespace Krab.KeywordResponseSetProcessorService.Subscribers
 
             foreach (var subreddit in subreddits)
             {
-                _logger.Info($"Retreiving the last 100 comments from /r/{subreddit.SubredditName}...");
+                _logger.LogInfo($"Retreiving the last 100 comments from /r/{subreddit.SubredditName}...");
 
                 var comments = reddit
                     .GetSubreddit(subreddit.SubredditName)
@@ -76,7 +76,7 @@ namespace Krab.KeywordResponseSetProcessorService.Subscribers
                     if (HasAlreadyReplied(message.RedditUserName, comments, comment))
                         continue;
 
-                    _logger.Info($"Keyword [{message.Keyword}] for UserId: {message.UserId} => Replying to commentId: {comment.Id}.");
+                    _logger.LogInfo($"Keyword [{message.Keyword}] for UserId: {message.UserId} => Replying to commentId: {comment.Id}.");
 
                     try
                     {
@@ -84,7 +84,7 @@ namespace Krab.KeywordResponseSetProcessorService.Subscribers
                     }
                     catch (Exception ex)
                     {
-                        _logger.Error($"Failed to reply comment. Id={comment.Id}.", ex);
+                        _logger.LogError($"Failed to reply comment. Id={comment.Id}.", ex);
                     }
                 }
             }

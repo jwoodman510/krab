@@ -1,10 +1,11 @@
 ﻿using Krab.Bus;
+using Krab.Logger;
 using Krab.ScheduledService.Jobs;
-using log4net;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 
 namespace Krab.ScheduledService.Boostrap
 {
@@ -21,8 +22,10 @@ namespace Krab.ScheduledService.Boostrap
 
         private static void RegisterInstances(IUnityContainer container)
         {
-            container.RegisterInstance(typeof(ILog), LogManager.GetLogger("ServiceLogger"));
-            container.RegisterInstance(typeof(ISendBus), new SendBus());
+            var busHost = ConfigurationManager.AppSettings["BusHost"];
+
+            container.RegisterInstance(typeof(ISendBus), new SendBus(busHost));
+            container.RegisterInstance(typeof(ILogger), new KrabLogger());
 
             Configuration.Register(container);
             DataAccess.Configuration.Register(container);
@@ -42,9 +45,9 @@ namespace Krab.ScheduledService.Boostrap
                 throw new Exception("Unable to find Service Locator!");
             }
 
-            var logger = locator.GetInstance<ILog>();
+            var logger = locator.GetInstance<ILogger>();
 
-            logger.Info("Verifying instances are bootstrapped...");
+            logger.LogInfo("Verifying instances are bootstrapped...");
 
             var types = new List<Type>
             {
@@ -60,8 +63,8 @@ namespace Krab.ScheduledService.Boostrap
                 }
                 catch (Exception ex)
                 {
-                    logger.Warn($"Unable to find instane of {type.Name}!");
-                    logger.Error($"Unable to find instane of {type.Name}!", ex);
+                    logger.LogWarning($"Unable to find instane of {type.Name}!");
+                    logger.LogError($"Unable to find instane of {type.Name}!", ex);
 
 #if DEBUG
                     throw;

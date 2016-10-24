@@ -1,7 +1,10 @@
 ﻿using System;
 using System.IO;
+using Krab.Global.Extensions;
 using log4net;
 using NCron;
+using Krab.Logger;
+
 namespace Krab.ScheduledService.Jobs
 {
     public interface IDeleteLogs : ICronJob
@@ -12,26 +15,31 @@ namespace Krab.ScheduledService.Jobs
     public class DeleteLogs : CronJob, IDeleteLogs
     {
         private const int DeleteDaysOlderThan = 7;
-        private const string Directory = @"c:\tmp\logs\ScheduledService";
 
-        private readonly ILog _logger;
+        private readonly ILogger _logger;
+        private readonly string[] _directories = { @"c:\tmp\logs\ScheduledService", @"c:\tmp\logs\KeywordResponseSetProcessorService" };
 
-        public DeleteLogs(ILog logger)
+        public DeleteLogs(ILogger logger)
         {
             _logger = logger;
         }
 
         public override void Execute()
         {
-            _logger.Info($"Executing {GetType()}.");
+            _directories.ForEach(ProcessDirectory);
+        }
 
-            if (!System.IO.Directory.Exists(Directory))
+        private void ProcessDirectory(string directory)
+        {
+            _logger.LogInfo($"Executing {GetType()}.");
+
+            if (!Directory.Exists(directory))
             {
-                _logger.Info($"Directory not found: {Directory}");
+                _logger.LogInfo($"Directory not found: {directory}");
                 return;
             }
 
-            foreach (var file in System.IO.Directory.GetFiles(Directory))
+            foreach (var file in Directory.GetFiles(directory))
             {
                 var fileInfo = new FileInfo(file);
 
@@ -44,11 +52,11 @@ namespace Krab.ScheduledService.Jobs
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error($"Unable to delete file: {file}.", ex);
+                    _logger.LogError($"Unable to delete file: {file}.", ex);
                 }
             }
 
-            _logger.Info($"{GetType()} Complete.");
+            _logger.LogInfo($"{GetType()} Complete.");
         }
     }
 }
