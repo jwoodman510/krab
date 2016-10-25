@@ -49,11 +49,13 @@
 
 <div class="container body-content">
     @RenderSection("SPAViews", required: false)
-    <hr/>
-    <footer>
-        <p>&copy; @DateTime.Now.Year - Keyword-Response Auto-Bot</p>
-    </footer>
 </div>
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted">&copy; @DateTime.Now.Year - Keyword-Response Auto-Bot</p>
+    </div>
+</footer>
+
 
 </body>
 </html>
