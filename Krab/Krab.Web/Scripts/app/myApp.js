@@ -29,7 +29,7 @@ function krController($scope, krService, $http) {
     $scope.isKrSetsLoading = true;
     $scope.needsRedditAccount = false;
 
-    $scope.selectedSet = "Select Keyword Response Set"
+    $scope.selectedSet = "Select Keyword Response Set";
     $scope.isDeletedSetVisible = false;
 
     $scope.gridOptions = { enableFiltering: true, data: "krSets" };
@@ -135,32 +135,25 @@ function krController($scope, krService, $http) {
         .error(function (response) {
             alert("Error in Updating");
         });
-
     }
 
     $scope.DeleteSet = function () {
-        var setsToDelete = {
-            'Id' : $scope.selectedSet
-        };
-        console.log(setsToDelete);
-
-        krService.DeleteKrSet(setsToDelete)
+        console.log("Deleting: " + $scope.selectedSet.toString());
+        
+        krService.DeleteKrSet($scope.selectedSet)
            .success(function (response) {
                alert("KRSet Deleted!");
                $scope.keyword = undefined;
                $scope.response = undefined;
                $scope.statusId = undefined;
-               $scope.selectedSet = "Select Keyword Response Set"
+                $scope.selectedSet = "Select Keyword Response Set";
                $scope.isDeletedSetVisible = false;
                getKeywordResponseSets();
            })
            .error(function (response) {
                alert("Error in Deleting");
            });
-
     }
-
-
 }
 
 // this can go in its own file. we can make a "service" folder under the app folder in scripts -> Will move it soon. 
@@ -179,8 +172,8 @@ function krService($http) {
         return $http.put("/api/keywordresponsesets", setsToUpdate);
     };
 
-    svc.DeleteKrSet = function (setsToDelete) {
-        return $http.delete("/api/keywordresponsesets", setsToDelete);
+    svc.DeleteKrSet = function (keywordResponseSetId) {
+        return $http.delete("/api/keywordresponsesets/deleteKeywordResponseSets?keywordResponseSetId=" + keywordResponseSetId.toString());
     };
     return svc;
 }

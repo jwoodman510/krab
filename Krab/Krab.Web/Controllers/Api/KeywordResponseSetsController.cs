@@ -33,8 +33,8 @@ namespace Krab.Web.Controllers.Api
             if (set == null)
                 return new OkResponse();
 
-            //if (set.UserId != GetUserId())
-                //throw new HttpException((int)HttpStatusCode.Unauthorized, "User is unauthorized.");
+            if (set.UserId != GetUserId())
+                throw new HttpException((int)HttpStatusCode.Unauthorized, "User is unauthorized.");
             
             _keywordResponseSetDac.Delete(new List<int> { set.Id });
 
@@ -49,9 +49,8 @@ namespace Krab.Web.Controllers.Api
             if (setDb == null)
                 throw new HttpException((int)HttpStatusCode.BadRequest, "Invalid KeywordResponseSet.");
 
-            //Commented this out because I don't understand what it's doing + it's disabling me from Updating a KR Set.
-            //if (set.Id != GetUserId())
-              //  throw new HttpException((int)HttpStatusCode.Unauthorized, "User is unauthorized.");
+            if (set.UserId != GetUserId())
+                throw new HttpException((int)HttpStatusCode.Unauthorized, "User is unauthorized.");
 
            var updated =  _keywordResponseSetDac.Update(set);
 
