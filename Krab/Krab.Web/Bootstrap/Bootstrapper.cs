@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Filters;
+using Krab.Global;
+using Krab.Mail;
 using Microsoft.Practices.Unity;
 
 namespace Krab.Web.Bootstrap
@@ -24,6 +26,8 @@ namespace Krab.Web.Bootstrap
 
         public static void RegisterInstances(IUnityContainer container)
         {
+            container.RegisterInstance(typeof (IMailClient), new SendGridMailClient(AppSettings.SendGridApiKey));
+
             DataAccess.Configuration.Register(container);
             Caching.Configuration.RegisterInMemoryCache(container);
             Api.Configuration.Register(container);

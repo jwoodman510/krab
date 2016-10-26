@@ -13,5 +13,7 @@ namespace Krab.Global
             public static string ClientId => "7c9AhacF0DtugQ";
             public static string ClientSecret => "WX9dvCbFo0ViKJx5IOS2r15d35o";
 #endif
+
+        public static string SendGridApiKey => "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";
     }
 }
