@@ -20,7 +20,7 @@
              });
 });
 
-function krController($scope, $http, krService) {
+function krController($scope, $http, krService, $location) {
 
     $scope.redditUserName = "";
     $scope.krSets = [];
@@ -29,10 +29,11 @@ function krController($scope, $http, krService) {
     $scope.needsRedditAccount = false;
     $scope.selectedSet = "Select Keyword Response Set";
     $scope.isDeletedSetVisible = false;
+    $scope.errorMessage = "";
 
     $scope.gridOptions = {
         enableSorting: true,
-        data: "krSets",
+        data: 'krSets',
         columnDefs: [
             { field: "keyword", displayName: "Keyword" },
             { field: "response", displayName: "Response" },
@@ -54,7 +55,7 @@ function krController($scope, $http, krService) {
                 $scope.isRedditUserNameLoading = false;
             })
             .error(function (error) {
-                $scope.krSets = "Unable to load data: " + error.message;
+                $scope.errorMessage = "Unable to load data: " + error.message;
                 $scope.isRedditUserNameLoading = false;
             });
     }
@@ -81,13 +82,7 @@ function krController($scope, $http, krService) {
             'StatusId': $scope.statusId
         })
         .success(function (response) {
-            alert("Keyword Response Set Added!");
-            $scope.keyword = undefined;
-            $scope.response = undefined;
-            $scope.statusId = undefined;
-            getKeywordResponseSets();
-
-            // we need to refresh the grid here with the new data -> Having a tough time figuring this out. 
+            $scope.goHome();
         })
         .error(function (response) {
             alert("Error in Adding");
@@ -102,6 +97,10 @@ function krController($scope, $http, krService) {
         $scope.response = data.response;
         $scope.statusId = data.statusId;
     };
+
+    $scope.goHome = function () {
+        $location.path('/');
+    }
 
     $scope.UpdateKrSet = function () {
         var setsToUpdate = {
