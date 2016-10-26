@@ -21,7 +21,6 @@
 });
 
 function krController($scope, $http, krService, $location) {
-
     $scope.redditUserName = "";
     $scope.krSets = [];
     $scope.isRedditUserNameLoading = true;
@@ -40,6 +39,13 @@ function krController($scope, $http, krService, $location) {
             { field: "status", displayName: "Status" }
         ]
     };
+
+    $scope.$on('$locationChangeStart', function (next, last) {
+        $scope.showAddEditDelete =
+            $location.path() === '' ||
+            $location.path() === '/#' ||
+            $location.path() === '/';
+    });
 
     init();
 
