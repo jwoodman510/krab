@@ -341,7 +341,7 @@
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\app\myApp.js" />
     <Content Include="Scripts\app\controller\redditAuthCtrl.js" />
-    <Content Include="Scripts\app\service\myAppService.js" />
+    <Content Include="Scripts\app\service\krService.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
