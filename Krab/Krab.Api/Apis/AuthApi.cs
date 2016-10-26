@@ -9,6 +9,7 @@ using Krab.Api.Constants;
 using Krab.Api.ValueObjects;
 using Krab.Caching;
 using Krab.DataAccess.Dac;
+using Krab.DataAccess.User;
 using Krab.Global;
 using Newtonsoft.Json;
 using RedditUser = Krab.Api.ValueObjects.RedditUser;
@@ -73,20 +74,32 @@ namespace Krab.Api.Apis
                     throw new HttpRequestException(response.ReasonPhrase);
 
                 json = await response.Content.ReadAsStringAsync();
-                var user = JsonConvert.DeserializeObject<RedditUser>(json);
+                var redditUser = JsonConvert.DeserializeObject<RedditUser>(json);
 
-                if (string.IsNullOrEmpty(user.Name))
+                if (string.IsNullOrEmpty(redditUser.Name))
                     return;
 
-                var intUserId = _userDac.Get(userId)?.UserId ?? 0;
+                var cacheKey = $"UserIds:{userId}";
+                var cachedUser = _cache.GetValue<CachedUser>(cacheKey);
 
-                var existing = _redditUserDac.GetByUser(intUserId)?.FirstOrDefault(u => u.UserName != user.Name);
+                var intUserId = cachedUser?.UserId ?? (_userDac.Get(userId)?.UserId ?? 0);
+
+                if (cachedUser == null)
+                {
+                    _cache.SetValue(cacheKey, new CachedUser
+                    {
+                        Id = userId,
+                        UserId = intUserId
+                    }, 60 * 60);
+                }
+
+                var existing = _redditUserDac.GetByUser(intUserId)?.FirstOrDefault(u => u.UserName != redditUser.Name);
 
                 if (existing == null)
                 {
                     var newRedditUser = _redditUserDac.Create(new DataAccess.RedditUser.RedditUser
                     {
-                        UserName = user.Name,
+                        UserName = redditUser.Name,
                         AccessToken = tokens.AccessToken,
                         RefreshToken = tokens.RefreshToken,
                         UserId = intUserId

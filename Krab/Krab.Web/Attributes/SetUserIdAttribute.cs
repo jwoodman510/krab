@@ -16,13 +16,12 @@ namespace Krab.Web.Attributes
 
         public SetUserIdAttribute()
         {
-_userDac = (IUserDac)GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IUserDac)); ;
-            Console.Write(_userDac);
+            _userDac = (IUserDac)GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IUserDac));
         }
 
         public override void OnActionExecuting(HttpActionContext context)
         {
-var id = HttpContext.Current.User?.Identity?.GetUserId();
+            var id = HttpContext.Current.User?.Identity?.GetUserId();
 
             if (id == null)
                 return;

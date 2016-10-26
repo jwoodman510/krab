@@ -2,42 +2,24 @@
     .module("myApp", ['ui.grid', 'ngRoute'])
     .controller("KRController", krController)
     .factory("krService", krService)
-    .controller("AddController", addController)
      .config(function ($routeProvider) {
          $routeProvider
              .when("/Add", {
                  templateUrl: "Function_Views/add.html",
-                 controller: "AddController"
+                 controller: "KRController"
+             })
+             .when("/Edit", {
+                 templateUrl: "Function_Views/edit.html",
+                 controller: "KRController"
+             })
+             .when("/Delete", {
+                 templateUrl: "Function_Views/delete.html",
+                 controller: "KRController"
              })
              .otherwise({
                  redirectTo: "/"
              });
-     });
-
-// i feel like this can be part of the same controller as the grid.. but either way works.
-function addController($scope, krService) {
-    $scope.addKrSet = function () {
-        var krToAdd = {
-            'Keyword': $scope.keyword,
-            'Response': $scope.response,
-            'StatusId': $scope.statusId
-        };
-        krService.AddKrSet(krToAdd)
-        .success(function (response) {
-            alert("Keyword Response Set Added!");
-            // instead of an alert, we can just show/hide a label to the user. Most people have AdBlock now.
-            $scope.keyword = undefined;
-            $scope.response = undefined;
-            $scope.statusId = undefined;
-            // we need to refresh the grid here with the new data.
-        })
-        .error(function (response) {
-            alert("Error in Adding");
-            // instead of an alert, we can just show/hide an error label to the user. Most people have AdBlock now.
-        });
-    }
-};
-
+});
 
 function krController($scope, krService, $http) {
 
@@ -47,7 +29,17 @@ function krController($scope, krService, $http) {
     $scope.isKrSetsLoading = true;
     $scope.needsRedditAccount = false;
 
+    $scope.selectedSet = "Select Keyword Response Set";
+    $scope.isDeletedSetVisible = false;
+
     $scope.gridOptions = { enableFiltering: true, data: "krSets" };
+
+    var refresh = function () {
+        $scope.refresh = true;
+        $timeout(function () {
+            $scope.refresh = false;
+        }, 0);
+    };
 
     init();
 
@@ -58,7 +50,7 @@ function krController($scope, krService, $http) {
 
     function getKeywordResponseSets() {
         krService.getByUserId()
-            .success(function (response) { 
+            .success(function (response) {
                 $scope.krSets = response.result;
                 $scope.isRedditUserNameLoading = false;
             })
@@ -67,7 +59,7 @@ function krController($scope, krService, $http) {
                 console.log($scope.krSets);
                 $scope.isRedditUserNameLoading = false;
             });
-        }
+    }
 
     function getRedditUserName() {
         $http.get("/api/reddituser")
@@ -77,7 +69,7 @@ function krController($scope, krService, $http) {
                     $scope.gridOptions.columnDefs = [
                    { field: "keyword", displayName: "Keyword" },
                    { field: "response", displayName: "Response" },
-                   { field: "status", displayName: "Status"}
+                   { field: "status", displayName: "Status" }
                     ];
                 } else {
                     $scope.needsRedditAccount = true;
@@ -89,9 +81,82 @@ function krController($scope, krService, $http) {
                 $scope.isKrSetsLoading = false;
             });
     }
+
+    $scope.addKrSet = function () {
+        var krToAdd = {
+            'Keyword': $scope.keyword,
+            'Response': $scope.response,
+            'StatusId': $scope.statusId
+        };
+        krService.AddKrSet(krToAdd)
+        .success(function (response) {
+            alert("Keyword Response Set Added!");
+            $scope.keyword = undefined;
+            $scope.response = undefined;
+            $scope.statusId = undefined;
+            getKeywordResponseSets();
+            console.log($scope.krSets);
+
+            // we need to refresh the grid here with the new data -> Having a tough time figuring this out. 
+        })
+        .error(function (response) {
+            alert("Error in Adding");
+            // instead of an alert, we can just show/hide an error label to the user. Most people have AdBlock now.
+        });
+    }
+
+    $scope.dropboxitemselected = function (data) {
+        $scope.isDeletedSetVisible = true;
+        $scope.selectedSet = data.id;
+        $scope.keyword = data.keyword;
+        $scope.response = data.response;
+        $scope.statusId = data.statusId;
+    };
+
+    $scope.UpdateKrSet = function () {
+        var setsToUpdate = {
+            'Id': $scope.selectedSet,
+            'Keyword': $scope.keyword,
+            'Response': $scope.response,
+            'StatusId': $scope.statusId
+        };
+        console.log(setsToUpdate);
+
+        krService.EditKrSet(setsToUpdate)
+        .success(function (response) {
+            alert("KRSet Updated!");
+            $scope.keyword = undefined;
+            $scope.response = undefined;
+            $scope.statusId = undefined;
+            $scope.selectedSet = "Select Keyword Response Set"
+            $scope.isDeletedSetVisible = false;
+            getKeywordResponseSets();
+        })
+        .error(function (response) {
+            alert("Error in Updating");
+        });
+    }
+
+    $scope.DeleteSet = function () {
+        console.log("Deleting: " + $scope.selectedSet.toString());
+        
+        krService.DeleteKrSet($scope.selectedSet)
+           .success(function (response) {
+               alert("KRSet Deleted!");
+               $scope.keyword = undefined;
+               $scope.response = undefined;
+               $scope.statusId = undefined;
+                $scope.selectedSet = "Select Keyword Response Set";
+               $scope.isDeletedSetVisible = false;
+               getKeywordResponseSets();
+           })
+           .error(function (response) {
+               alert("Error in Deleting");
+           });
+    }
 }
 
-// this can go in its own file. we can make a "service" folder under the app folder in scripts.
+// this can go in its own file. we can make a "service" folder under the app folder in scripts -> Will move it soon. 
 function krService($http) {
     var svc = this;
 
@@ -103,5 +168,12 @@ function krService($http) {
         return $http.post("/api/keywordresponsesets", sets);
     };
 
+    svc.EditKrSet = function (setsToUpdate) {
+        return $http.put("/api/keywordresponsesets", setsToUpdate);
+    };
+
+    svc.DeleteKrSet = function (keywordResponseSetId) {
+        return $http.delete("/api/keywordresponsesets/deleteKeywordResponseSets?keywordResponseSetId=" + keywordResponseSetId.toString());
+    };
     return svc;
 }

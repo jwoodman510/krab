@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Krab.Global.Extensions;
-using log4net;
 using NCron;
 using Krab.Logger;
 
@@ -43,7 +42,7 @@ namespace Krab.ScheduledService.Jobs
             {
                 var fileInfo = new FileInfo(file);
 
-                if (DateTime.UtcNow.AddDays(DeleteDaysOlderThan) <= fileInfo.CreationTimeUtc)
+                if (fileInfo.CreationTimeUtc.AddDays(DeleteDaysOlderThan) >= DateTime.UtcNow)
                     continue;
 
                 try

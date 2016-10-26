@@ -34,9 +34,9 @@ namespace Krab.KeywordResponseSetProcessorService.Bootstrap
             _logger.LogInfo("Registering Instances...");
 
             DataAccess.Configuration.Register(container);
-            Caching.Configuration.Register(container);
             Api.Configuration.Register(container);
             Global.Configuration.Register(container);
+            Caching.Configuration.RegisterRedisCache(container);
 
             container.RegisterType<IMessageSubscriber<ProcessKeywordResponseSet>, ProcessKeywordResponseSetSubscriber>();
 
@@ -49,7 +49,7 @@ namespace Krab.KeywordResponseSetProcessorService.Bootstrap
 
             var busHost = ConfigurationManager.AppSettings["BusHost"];
 
-            _receiveBus = new ReceiveBus(busHost);
+            _receiveBus = new ReceiveBus(busHost, _logger);
 
             _receiveBus.RegisterSubscriber<IMessageSubscriber<ProcessKeywordResponseSet>, ProcessKeywordResponseSet>();
 

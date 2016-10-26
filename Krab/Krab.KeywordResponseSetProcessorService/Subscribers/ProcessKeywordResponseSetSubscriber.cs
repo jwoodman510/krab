@@ -26,15 +26,6 @@ namespace Krab.KeywordResponseSetProcessorService.Subscribers
 
         public void Receive(ProcessKeywordResponseSet message)
         {
-            _logger.LogInfo($"{message.GetType()} Received. KeywordResponseSetId={message.Id}.");
-
-            Process(message);
-
-            _logger.LogInfo($"{message.GetType()} Complete. KeywordResponseSetId={message.Id}.");
-        }
-
-        public void Process(ProcessKeywordResponseSet message)
-        {
             _logger.LogInfo($"Processing keyword [{message.Keyword}] for UserId: {message.UserId}");
 
             var subreddits = _subRedditDac.GetByKeywordResponseSetId(message.Id)?.ToList() ?? new List<DataAccess.Subreddit.Subreddit>();

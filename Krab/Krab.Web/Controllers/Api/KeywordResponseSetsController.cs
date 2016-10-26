@@ -52,9 +52,9 @@ namespace Krab.Web.Controllers.Api
             if (set.UserId != GetUserId())
                 throw new HttpException((int)HttpStatusCode.Unauthorized, "User is unauthorized.");
 
-            _keywordResponseSetDac.Update(set);
+           var updated =  _keywordResponseSetDac.Update(set);
 
-            return new OkResponse<KeywordResponseSet>(set);
+            return new OkResponse<KeywordResponseSet>(updated);
         }
 
         [HttpPost]

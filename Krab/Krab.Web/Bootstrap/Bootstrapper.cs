@@ -25,7 +25,7 @@ namespace Krab.Web.Bootstrap
         public static void RegisterInstances(IUnityContainer container)
         {
             DataAccess.Configuration.Register(container);
-            Caching.Configuration.Register(container);
+            Caching.Configuration.RegisterInMemoryCache(container);
             Api.Configuration.Register(container);
         }
     }
