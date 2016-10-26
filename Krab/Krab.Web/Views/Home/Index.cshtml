@@ -16,14 +16,10 @@
 
                     <div class="font">{{redditUserName}}</div>
                     <br />
-                    <div class="btn-group">
-                        <nav role="navigation" class="navbar navbar-inverse">
-                            <ul class="nav navbar-nav">
-                                <li><a href="#Add">Add a Keyword Response Set</a></li>
-                                <li><a href="#Edit">Edit a Keyword Response Set</a></li>
-                                <li><a href="#Delete">Delete a Keyword Response Set</a></li>
-                            </ul>
-                        </nav>
+                    <div>
+                        <a class="fa fa-plus-square fa-2x" href="#Add"> Create</a>
+                        <a class="fa fa-pencil-square fa-2x" style="padding-left:20px;" href="#Edit"> Edit</a>
+                        <a class="fa fa-remove fa-2x" style="padding-left:20px;" href="#Delete"> Delete</a>
                     </div>
 
                     <div ng-view></div>
@@ -32,7 +28,7 @@
                     </div>
                 </div>
 
-                <div class="myText">
+                <div class="center-aligned">
                 <a ng-if="needsRedditAccount" href="../Manage/">
                     <br />
                     Click here to link a Reddit account.
