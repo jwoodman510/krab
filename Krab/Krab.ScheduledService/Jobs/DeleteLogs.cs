@@ -42,7 +42,7 @@ namespace Krab.ScheduledService.Jobs
             {
                 var fileInfo = new FileInfo(file);
 
-                if (DateTime.UtcNow.AddDays(DeleteDaysOlderThan) <= fileInfo.CreationTimeUtc)
+                if (fileInfo.CreationTimeUtc.AddDays(DeleteDaysOlderThan) >= DateTime.UtcNow)
                     continue;
 
                 try
