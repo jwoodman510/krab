@@ -29,6 +29,17 @@ function krController($scope, $http, krService, $location) {
     $scope.selectedSet = "Select Keyword Response Set";
     $scope.isDeletedSetVisible = false;
     $scope.errorMessage = "";
+    $scope.statuses = [
+        {
+            "id": 1,
+            "label": "Active"
+        },
+        {
+            "id": 2,
+            "label": "Paused"
+        }
+    ];
+    $scope.selectedStatus = $scope.statuses[0];
 
     $scope.gridOptions = {
         enableSorting: true,
@@ -82,11 +93,13 @@ function krController($scope, $http, krService, $location) {
     }
 
     $scope.addKrSet = function () {
-        krService.AddKrSet({
+        var krSet = {
             'Keyword': $scope.keyword,
             'Response': $scope.response,
-            'StatusId': $scope.statusId
-        })
+            'StatusId': $scope.selectedStatus.id
+        };
+
+        krService.AddKrSet(krSet)
         .success(function (response) {
             $scope.goHome();
         })
