@@ -1,44 +1,35 @@
 ﻿<script src="../../Scripts/app/myApp.js"></script>
 
-
 <div class="container">
     <div ng-app="myApp" class="row">
-        <br />      
-
-        <div ng-controller="KRController">
-
+        <br />
+        <div ng-controller="krController">
             <div ng-if="isRedditUserNameLoading || isKrSetsLoading">
                 <i class="fa fa-spinner fa-spin fa-4x" style="padding-top:10px"></i>
-            </div>
-            
+            </div>            
             <div ng-if="!isRedditUserNameLoading && !isKrSetsLoading">
                 <div id="header" ng-if="!needsRedditAccount">
 
                     <div class="font">{{redditUserName}}</div>
                     <br />
-                    <div class="btn-group">
-                        <nav role="navigation" class="navbar navbar-inverse">
-                            <ul class="nav navbar-nav">
-                                <li><a href="#Add">Add a Keyword Response Set</a></li>
-                                <li><a href="#Edit">Edit a Keyword Response Set</a></li>
-                                <li><a href="#Delete">Delete a Keyword Response Set</a></li>
-                            </ul>
-                        </nav>
+                    <div ng-if="showAddEditDelete">
+                        <a class="fa fa-plus-square fa-2x" href="#Add"> Create</a>
+                        <a class="fa fa-pencil-square fa-2x" style="padding-left:20px;" href="#Edit"> Edit</a>
+                        <a class="fa fa-remove fa-2x" style="padding-left:20px;" href="#Delete"> Delete</a>
                     </div>
 
-                    <div ng-view></div>
                     <br />
-                    <div ui-grid="gridOptions" class="myGrid">
+                    <div ng-view></div>
+                    <div ui-grid="gridOptions" ui-grid-selection class="myGrid">
                     </div>
                 </div>
-
-                <div class="myText">
-                <a ng-if="needsRedditAccount" href="../Manage/">
-                    <br />
-                    Click here to link a Reddit account.
-                    <i class="fa fa-reddit fa-5x"></i> 
-                    <br />
-                </a>
+                <div class="center-aligned">
+                    <a ng-if="needsRedditAccount" href="../Manage/">
+                        <br />
+                        Click here to link a Reddit account.
+                        <i class="fa fa-reddit fa-5x"></i> 
+                        <br />
+                    </a>
                 </div>
             </div>
         </div>
