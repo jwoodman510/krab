@@ -25,6 +25,7 @@ function krController($rootScope, $scope, $http, krService, $location) {
     $scope.krDataChanged = 'KR_DATA_CHANGED';
     $scope.hasAddError = false;
     $scope.isAdding = false;
+    $scope.state = '';
 
     init();
 
@@ -52,6 +53,21 @@ function krController($rootScope, $scope, $http, krService, $location) {
             $location.path() === '' ||
             $location.path() === '/#' ||
             $location.path() === '/';
+
+        if ($location.path() === '/Add' && $scope.state !== 'ADD') {
+            $scope.state = 'ADD';
+            $location.path('/');
+        }
+
+        if ($location.path() === '/Edit' && $scope.state !== 'EDIT') {
+            $scope.state = 'EDIT';
+            $location.path('/');
+        }
+
+        if ($location.path() === '/Delete' && $scope.state !== 'DELETE') {
+            $scope.state = 'DELETE';
+            $location.path('/');
+        }
     });
 
     $scope.$on($scope.krDataChanged, function (event, args) {
