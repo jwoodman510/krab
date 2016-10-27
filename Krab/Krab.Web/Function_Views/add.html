@@ -1,4 +1,4 @@
-﻿<div class="row" ng-controller="KRController">
+﻿<div class="row" ng-controller="krController">
     <br />
     <div class="row pad-left-20">
         <div class="col-md-5">
@@ -20,9 +20,13 @@
     </div>
     <br />
     <div class="row pad-left-20">
-        <div class="col-md-4">
-            <button ng-click="addKrSet()" class="text-center btn btn-primary">Save</button>
+        <div class="col-md-12">
+            <button ng-click="addKrSet()" class="text-center btn btn-primary" ng-if="!isAdding">Save</button>
+            <button ng-click="addKrSet()" class="text-center btn btn-primary disabled" ng-if="isAdding">Save</button>
             <button ng-click="goHome()" class="text-center btn btn-info">Cancel</button>
+            <i class="fa fa-spinner fa-spin" ng-if="isAdding"></i>
+            <label class="pad-left-20 has-error" ng-if="hasAddError">Error adding keyword-response set.</label>
         </div>
     </div>
 </div>
+<br />

@@ -339,6 +339,7 @@
     <Content Include="Scripts\angular-ui-router.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\app\controller\krController.js" />
     <Content Include="Scripts\app\myApp.js" />
     <Content Include="Scripts\app\controller\redditAuthCtrl.js" />
     <Content Include="Scripts\app\service\krService.js" />
