@@ -2,14 +2,11 @@
 
 <div class="container">
     <div ng-app="myApp" class="row">
-        <br />      
-
+        <br />
         <div ng-controller="KRController">
-
             <div ng-if="isRedditUserNameLoading || isKrSetsLoading">
                 <i class="fa fa-spinner fa-spin fa-4x" style="padding-top:10px"></i>
-            </div>
-            
+            </div>            
             <div ng-if="!isRedditUserNameLoading && !isKrSetsLoading">
                 <div id="header" ng-if="!needsRedditAccount">
 
@@ -21,19 +18,18 @@
                         <a class="fa fa-remove fa-2x" style="padding-left:20px;" href="#Delete"> Delete</a>
                     </div>
 
-                    <div ng-view></div>
                     <br />
+                    <div ng-view></div>
                     <div ui-grid="gridOptions" ui-grid-selection class="myGrid">
                     </div>
                 </div>
-
                 <div class="center-aligned">
-                <a ng-if="needsRedditAccount" href="../Manage/">
-                    <br />
-                    Click here to link a Reddit account.
-                    <i class="fa fa-reddit fa-5x"></i> 
-                    <br />
-                </a>
+                    <a ng-if="needsRedditAccount" href="../Manage/">
+                        <br />
+                        Click here to link a Reddit account.
+                        <i class="fa fa-reddit fa-5x"></i> 
+                        <br />
+                    </a>
                 </div>
             </div>
         </div>

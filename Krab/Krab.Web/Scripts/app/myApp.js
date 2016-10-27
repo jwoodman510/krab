@@ -20,9 +20,9 @@
              });
 });
 
-function krController($scope, $http, krService, $location) {
-    $scope.redditUserName = "";
+function krController($rootScope, $scope, $http, krService, $location) {
     $scope.krSets = [];
+    $scope.redditUserName = "";
     $scope.isRedditUserNameLoading = true;
     $scope.isKrSetsLoading = true;
     $scope.needsRedditAccount = false;
@@ -40,10 +40,18 @@ function krController($scope, $http, krService, $location) {
         }
     ];
     $scope.selectedStatus = $scope.statuses[0];
+    $scope.krAdded = 'krAdded';
+
+    init();
+
+    function init() {
+        getRedditUserName();
+        getKeywordResponseSets();
+    }
 
     $scope.gridOptions = {
-        enableSorting: true,
         data: 'krSets',
+        enableSorting: true,
         columnDefs: [
             { field: "keyword", displayName: "Keyword" },
             { field: "response", displayName: "Response" },
@@ -58,22 +66,19 @@ function krController($scope, $http, krService, $location) {
             $location.path() === '/';
     });
 
-    init();
-
-    function init() {
-        getRedditUserName();
+    $scope.$on($scope.krAdded, function (event, args) {
         getKeywordResponseSets();
-    }
+    });
 
     function getKeywordResponseSets() {
         krService.getByUserId()
             .success(function (response) {
                 $scope.krSets = response.result;
-                $scope.isRedditUserNameLoading = false;
+                $scope.isKrSetsLoading = false;
             })
             .error(function (error) {
                 $scope.errorMessage = "Unable to load data: " + error.message;
-                $scope.isRedditUserNameLoading = false;
+                $scope.isKrSetsLoading = false;
             });
     }
 
@@ -85,27 +90,23 @@ function krController($scope, $http, krService, $location) {
                 } else {
                     $scope.needsRedditAccount = true;
                 }
-                $scope.isKrSetsLoading = false;
+                $scope.isRedditUserNameLoading = false;
             })
             .error(function (error) {
-                $scope.isKrSetsLoading = false;
+                $scope.isRedditUserNameLoading = false;
             });
     }
 
     $scope.addKrSet = function () {
-        var krSet = {
+        krService.AddKrSet({
             'Keyword': $scope.keyword,
             'Response': $scope.response,
             'StatusId': $scope.selectedStatus.id
-        };
-
-        krService.AddKrSet(krSet)
-        .success(function (response) {
-            $scope.goHome();
-        })
-        .error(function (response) {
+        }).success(function (response) {
+            $rootScope.$broadcast($scope.krAdded);
+            goHome();
+        }).error(function (response) {
             alert("Error in Adding");
-            // instead of an alert, we can just show/hide an error label to the user. Most people have AdBlock now.
         });
     }
 
