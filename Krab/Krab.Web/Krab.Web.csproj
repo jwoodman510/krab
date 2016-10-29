@@ -266,6 +266,7 @@
     <Compile Include="Controllers\Api\HealthController.cs" />
     <Compile Include="Controllers\Api\RedditAuthorizationController.cs" />
     <Compile Include="Controllers\Api\RedditUserController.cs" />
+    <Compile Include="Controllers\Api\SubredditController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Api\KeywordResponseSetsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
