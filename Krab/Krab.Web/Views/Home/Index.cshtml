@@ -13,9 +13,9 @@
                     <div class="font">{{redditUserName}}</div>
                     <br />
                     <div ng-if="showAddEditDelete">
-                        <a class="fa fa-plus-square fa-2x" href="#Add"> Create</a>
-                        <a class="fa fa-pencil-square fa-2x" style="padding-left:20px;" href="#Edit"> Edit</a>
-                        <a class="fa fa-remove fa-2x" style="padding-left:20px;" href="#Delete"> Delete</a>
+                        <a class="fa fa-plus-square fa-2x clickable" data-ng-click="goToAdd()"> Create</a>
+                        <a class="fa fa-pencil-square fa-2x clickable" style="padding-left:20px;" data-ng-click="goToEdit()"> Edit</a>
+                        <a class="fa fa-remove fa-2x clickable" style="padding-left:20px;" data-ng-click="goToDelete()"> Delete</a>
                     </div>
                     <br />
                     <div ng-view></div>

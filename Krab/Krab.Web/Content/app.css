@@ -45,3 +45,6 @@ body {
 .disabled {
     cursor: not-allowed;
 }
+.clickable {
+    cursor: pointer;
+}

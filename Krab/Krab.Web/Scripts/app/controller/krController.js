@@ -52,29 +52,42 @@ function krController($rootScope, $scope, $http, krService, $location) {
     };
 
     $scope.$on('$locationChangeStart', function (next, last) {
+        var path = $location.path();
+        
         $scope.showAddEditDelete =
-            $location.path() === '' ||
-            $location.path() === '/#' ||
-            $location.path() === '/';
+            path === '' ||
+            path === '/#' ||
+            path === '/';
 
-        if ($location.path() === '/Add' && $scope.state !== 'ADD') {
+        if (path === '/Add' && $scope.state !== 'ADD') {
             $scope.state = 'ADD';
             $location.path('/');
         }
 
-        if ($location.path() === '/Edit' && $scope.state !== 'EDIT') {
+        if (path === '/Edit' && $scope.state !== 'EDIT') {
             $scope.state = 'EDIT';
             $location.path('/');
         }
 
-        if ($location.path() === '/Delete' && $scope.state !== 'DELETE') {
+        if (path === '/Delete' && $scope.state !== 'DELETE') {
             $scope.state = 'DELETE';
             $location.path('/');
         }
     });
 
-    $scope.goToPath = function(path) {
-        $location.path(path);
+    $scope.goToAdd = function () {
+        $scope.state = 'ADD';
+        $location.path('/Add');
+    }
+
+    $scope.goToEdit = function () {
+        $scope.state = 'EDIT';
+        $location.path('/Edit');
+    }
+
+    $scope.goToDelete = function () {
+        $scope.state = 'DELETE';
+        $location.path('/Delete');
     }
 
     $scope.$on($scope.krDataChanged, function (event, args) {
@@ -133,7 +146,7 @@ function krController($rootScope, $scope, $http, krService, $location) {
         $scope.statusId = data.statusId;
     };
 
-    $scope.goHome = function () {
+    function goHome() {
         $location.path('/');
     }
 
