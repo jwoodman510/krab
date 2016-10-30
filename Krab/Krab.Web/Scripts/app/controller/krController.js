@@ -1,5 +1,5 @@
 ﻿angular
-    .module("myApp.controllers", [])
+    .module("myApp.controllers")
     .controller("krController", krController);
 
 function krController($rootScope, $scope, $http, krService, $location) {
@@ -8,7 +8,6 @@ function krController($rootScope, $scope, $http, krService, $location) {
     $scope.isRedditUserNameLoading = true;
     $scope.isKrSetsLoading = true;
     $scope.needsRedditAccount = false;
-    $scope.selectedSet = "Select Keyword Response Set";
     $scope.isDeletedSetVisible = false;
     $scope.errorMessage = "";
     $scope.statuses = [
@@ -84,13 +83,15 @@ function krController($rootScope, $scope, $http, krService, $location) {
         }
     });
 
-    $scope.goToAdd = function () {
+    $scope.onAddClicked = function () {
         $scope.errorMessage = "";
         $scope.state = 'ADD';
         $location.path('/Add');
     }
 
-    $scope.goToEdit = function () {
+    $scope.onEditClicked = function () {
+        var selected = $scope.gridApi.selection.getSelectedRows()[0];
+        $scope.selectedSet = selected;
         $scope.errorMessage = "";
         $scope.state = 'EDIT';
         $location.path('/Edit');
@@ -161,39 +162,7 @@ function krController($rootScope, $scope, $http, krService, $location) {
         });
     }
 
-    $scope.dropboxitemselected = function (data) {
-        $scope.isDeletedSetVisible = true;
-        $scope.selectedSet = data.id;
-        $scope.keyword = data.keyword;
-        $scope.response = data.response;
-        $scope.statusId = data.statusId;
-    };
-
     function goHome() {
         $location.path('/');
-    }
-
-    $scope.UpdateKrSet = function () {
-        var setsToUpdate = {
-            'Id': $scope.selectedSet,
-            'Keyword': $scope.keyword,
-            'Response': $scope.response,
-            'StatusId': $scope.statusId
-        };
-        console.log(setsToUpdate);
-
-        krService.EditKrSet(setsToUpdate)
-        .success(function (response) {
-            alert("KRSet Updated!");
-            $scope.keyword = undefined;
-            $scope.response = undefined;
-            $scope.statusId = undefined;
-            $scope.selectedSet = "Select Keyword Response Set"
-            $scope.isDeletedSetVisible = false;
-            getKeywordResponseSets();
-        })
-        .error(function (response) {
-            alert("Error in Updating");
-        });
     }
 }

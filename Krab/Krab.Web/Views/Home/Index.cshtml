@@ -13,8 +13,9 @@
                     <div class="font">{{redditUserName}}</div>
                     <br />
                     <div ng-if="showAddEditDelete">
-                        <a class="fa fa-plus-square fa-2x clickable" data-ng-click="goToAdd()"> Create</a>
-                        <a class="fa fa-pencil-square fa-2x clickable" style="padding-left:20px;" data-ng-click="goToEdit()"> Edit</a>
+                        <a class="fa fa-plus-square fa-2x clickable" data-ng-click="onAddClicked()"> Create</a>
+                        <a class="fa fa-pencil-square fa-2x clickable" style="padding-left:20px;" data-ng-click="onEditClicked()" data-ng-show="hasSelectedRow"> Edit</a>
+                        <a class="fa fa-pencil-square fa-2x disabled" style="padding-left:20px;" data-ng-show="!hasSelectedRow"> Edit</a>
                         <a class="fa fa-remove fa-2x clickable" style="padding-left:20px;" data-ng-show="hasSelectedRow" data-ng-click="deleteKeywordResponseSet()"> Delete</a>
                         <a class="fa fa-remove fa-2x disabled" style="padding-left: 20px;" data-ng-show="!hasSelectedRow"> Delete</a>
                         <i class="fa fa-spinner fa-spin" data-ng-show="isDeleting"></i>

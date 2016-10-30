@@ -8,11 +8,7 @@
              })
              .when("/Edit", {
                  templateUrl: "Function_Views/edit.html",
-                 controller: "krController"
-             })
-             .when("/Delete", {
-                 templateUrl: "Function_Views/delete.html",
-                 controller: "krController"
+                 controller: "editKrController"
              })
              .otherwise({
                  redirectTo: "/"
