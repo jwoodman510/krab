@@ -26,7 +26,7 @@ namespace Krab.Web.Controllers.Api
         }
 
         [HttpDelete]
-        public OkResponse DeleteKeywordResponseSets(int keywordResponseSetId)
+        public OkResponse DeleteKeywordResponseSet(int keywordResponseSetId)
         {
             var set = _keywordResponseSetDac.Get(keywordResponseSetId);
 

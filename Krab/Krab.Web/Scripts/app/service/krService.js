@@ -18,7 +18,7 @@ function krService($http) {
     };
 
     svc.DeleteKrSet = function (keywordResponseSetId) {
-        return $http.delete("/api/keywordresponsesets/deleteKeywordResponseSets?keywordResponseSetId=" + keywordResponseSetId.toString());
+        return $http.delete("/api/keywordresponsesets/deleteKeywordResponseSet?keywordResponseSetId=" + keywordResponseSetId.toString());
     };
     return svc;
 }

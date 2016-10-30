@@ -305,7 +305,6 @@
     <Content Include="Content\ui-grid.svg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Function_Views\delete.html" />
     <Content Include="Function_Views\edit.html" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\angular-animate.js" />
