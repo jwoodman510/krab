@@ -30,6 +30,7 @@ function krController($rootScope, $scope, $http, krService, $location) {
     $scope.hasError = true;
     $scope.errorMessage = "";
     $scope.isDeleting = false;
+    $scope.goHome = goHome;
 
     init();
 
