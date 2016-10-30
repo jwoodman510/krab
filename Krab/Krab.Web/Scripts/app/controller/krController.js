@@ -134,7 +134,7 @@ function krController($rootScope, $scope, $http, krService, $location) {
         $http.get("/api/reddituser")
             .success(function (response) {
                 if (response.result.userName && response.result.userName.length > 0) {
-                    $scope.redditUserName = "Reddit Username: " + response.result.userName;
+                    $scope.redditUserName = "Welcome, Reddit User: " + response.result.userName;
                 } else {
                     $scope.needsRedditAccount = true;
                 }
