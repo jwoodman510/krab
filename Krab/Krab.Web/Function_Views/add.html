@@ -5,14 +5,18 @@
             <input type="text" ng-model="keyword" class="long-input" placeholder="Length must be 5 - 50 characters" />
         </div>
         <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-            <label>Response: </label>
-            <input type="text" ng-model="response" class="long-input" placeholder="Length must be 1 - 1000 characters" />
+            <div style="padding-top:20px;">
+                <label>Response: </label>
+                <input type="text" ng-model="response" class="long-input" placeholder="Length must be 1 - 1000 characters" />
+            </div>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-            <label>Status:</label>
-            <select ng-model="selectedStatus"
-                    ng-selected="status.id"
-                    ng-options="status as status.label for status in statuses"></select>
+            <div style="padding-top:20px;">
+                <label>Status:</label>
+                <select ng-model="selectedStatus"
+                        ng-selected="status.id"
+                        ng-options="status as status.label for status in statuses"></select>
+            </div>
         </div>
     </div>
     <br />
