@@ -1,5 +1,5 @@
 ﻿angular
-    .module("myApp", ['ui.grid', 'ngRoute', 'myApp.services', 'myApp.controllers'])
+    .module("myApp", ["ui.grid", "ui.grid.selection", "ngRoute", "myApp.services", "myApp.controllers"])
     .config(function ($routeProvider) {
          $routeProvider
              .when("/Add", {

@@ -17,10 +17,15 @@
                         <a class="fa fa-pencil-square fa-2x" style="padding-left:20px;" href="#Edit"> Edit</a>
                         <a class="fa fa-remove fa-2x" style="padding-left:20px;" href="#Delete"> Delete</a>
                     </div>
-
                     <br />
                     <div ng-view></div>
-                    <div ui-grid="gridOptions" ui-grid-selection class="myGrid">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div ui-grid="gridOptions"
+                                 ui-grid-selection
+                                 class="myGrid">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="center-aligned">

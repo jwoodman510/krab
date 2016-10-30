@@ -41,6 +41,9 @@ function krController($rootScope, $scope, $http, krService, $location) {
     $scope.gridOptions = {
         data: 'krSets',
         enableSorting: true,
+        enableRowSelection: true,
+        enableRowHeaderSelection: true,
+        multiSelect: false,
         columnDefs: [
             { field: "keyword", displayName: "Keyword" },
             { field: "response", displayName: "Response" },
@@ -69,6 +72,10 @@ function krController($rootScope, $scope, $http, krService, $location) {
             $location.path('/');
         }
     });
+
+    $scope.goToPath = function(path) {
+        $location.path(path);
+    }
 
     $scope.$on($scope.krDataChanged, function (event, args) {
         getKeywordResponseSets();
