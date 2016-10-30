@@ -104,6 +104,7 @@ function krController($rootScope, $scope, $http, krService, $location) {
            .success(function (response) {
                refreshGrid();
                $scope.isDeleting = false;
+               $scope.hasSelectedRow = false;
             })
            .error(function (response) {
                $scope.errorMessage = "Failed to Delete Keyword-Response Set.";
