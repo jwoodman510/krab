@@ -1,2 +1,2 @@
 language: csharp
-solution: Krab.sln
+solution: Krab/Krab.sln

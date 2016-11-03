@@ -7,6 +7,7 @@ using Krab.Global;
 using NCron;
 using Krab.Bus;
 using Krab.Caching;
+using Krab.Global.Extensions;
 using Krab.Messages;
 using Krab.Logger;
 
@@ -22,9 +23,11 @@ namespace Krab.ScheduledService.Jobs
         private readonly ILogger _logger;
         private readonly IRedditUserDac _redditUserDac;
         private readonly IKeywordResponseSetDac _keywordResponseSetDac;
-        private readonly IAppSettingProvider _appSettingProvider;
         private readonly ISendBus _sendBus;
         private readonly ICache _cache;
+
+        private readonly bool _shouldParallelize;
+        private readonly int _maxDegreeOfParallelism;
 
         public ProcessKeywordResponseSets(
             ILogger logger,
@@ -37,9 +40,11 @@ namespace Krab.ScheduledService.Jobs
             _logger = logger;
             _redditUserDac = redditUserDac;
             _keywordResponseSetDac = keywordResponseSetDac;
-            _appSettingProvider = appSettingProvider;
             _sendBus = sendBus;
             _cache = cache;
+
+            _shouldParallelize = appSettingProvider.GetBool("ShouldParallelize");
+            _maxDegreeOfParallelism = appSettingProvider.GetInt("MaxDegreeOfParallelism");
         }
 
         public override void Execute()
@@ -48,9 +53,7 @@ namespace Krab.ScheduledService.Jobs
 
             try
             {
-                var maxDegreeOfParallelism = _appSettingProvider.GetInt("MaxDegreeOfParallelism");
-
-                ProcessSets(maxDegreeOfParallelism);
+                ProcessSets();
             }
             catch (Exception ex)
             {
@@ -62,14 +65,23 @@ namespace Krab.ScheduledService.Jobs
             }
         }
         
-        private void ProcessSets(int maxDegreeOfParallelism)
+        private void ProcessSets()
         {
             var userKrSets = _keywordResponseSetDac
                 .GetAll()
                 .GroupBy(s => s.UserId)
                 .Where(ShouldProcessUserSets);
 
-            Parallel.ForEach(userKrSets, new ParallelOptions { MaxDegreeOfParallelism = maxDegreeOfParallelism }, ProcessUserSets);
+            if (_shouldParallelize)
+            {
+                var enumeratedSets = userKrSets.ToList();
+
+                Parallel.ForEach(enumeratedSets, new ParallelOptions { MaxDegreeOfParallelism = _maxDegreeOfParallelism }, ProcessUserSets);
+            }
+            else
+            {
+                userKrSets.ForEach(ProcessUserSets);
+            }
         }
 
         private bool ShouldProcessUserSets(IGrouping<int, KeywordResponseSet> grouping)

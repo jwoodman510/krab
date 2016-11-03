@@ -1,38 +1,56 @@
-﻿    .myGrid {
-    width: 1200px; 
+﻿.myGrid {
+    width: 100%;
     height: 500px;
-      }
-
-    .header-filtered {
-  color: blue;
-}
-
-    .myText{
-        text-align: center;
     }
-
-    .font{
+.header-filtered {
+    color: blue;
+}
+.center-aligned{
+    text-align: center;
+}
+.font{
     font-family: inherit;
     font-size: 20px;
-    }
-
-    .form { 
+}
+.form { 
     margin: 0 auto; 
     width:250px;
-    }
+}
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    margin-bottom: 60px;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #000000;
+}
+.long-input {
+    width: 300px;
+}
+.pad-left-20 {
+    padding-left: 20px;
+}
+.pad-top-20 {
+    padding-top: 20px;
+}
+.has-error {
+    color: red;
+}
+.disabled {
+    cursor: not-allowed;
+}
+.clickable {
+    cursor: pointer;
+}
+.redditlogo{
 
-    /* Footer */
-    html {
-      position: relative;
-      min-height: 100%;
-    }
-    body {
-      margin-bottom: 60px;
-    }
-    .footer {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      height: 60px;
-      background-color: #000000;
-    }
+}
+.header{
+    margin-top: 35px;
+}

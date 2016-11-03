@@ -6,6 +6,7 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="styleSheet" href="../../Content/ui-grid.min.css" />
     <link href="~/Content/app.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -13,20 +14,19 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/angular")
     <script src="~/Scripts/angular-route.js"></script>
+    <script src="~/Scripts/angular.js"></script>
     <script src="../../Scripts/ui-grid.min.js"></script>
+    <script src="../../Scripts/app/controller/controllers.js"></script>
     <script src="../../Scripts/app/myApp.js"></script>
+    <script src="../../Scripts/app/service/krService.js"></script>
+    <script src="../../Scripts/app/controller/krController.js"></script>
+    <script src="../../Scripts/app/controller/editKrController.js"></script>
     <script src="https://use.fontawesome.com/a6b6e41872.js"></script>
   
 </head>
 <body ng-app="myApp">
-
     @RenderBody()
-    
     @RenderSection("scripts", required: false)
-    
-
-    
-
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -45,8 +45,6 @@
         </div>
     </div>
 </div>
-    
-
 <div class="container body-content">
     @RenderSection("SPAViews", required: false)
 </div>
@@ -55,7 +53,5 @@
         <p class="text-muted">&copy; @DateTime.Now.Year - Keyword-Response Auto-Bot</p>
     </div>
 </footer>
-
-
 </body>
 </html>

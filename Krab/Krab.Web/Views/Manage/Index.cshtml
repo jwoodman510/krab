@@ -2,18 +2,22 @@
 @{
     ViewBag.Title = "Manage";
 }
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
 <script src="../../Scripts/app/controller/redditAuthCtrl.js"></script>
 
-<h2>@ViewBag.Title.</h2>
-
-<p class="text-success">@ViewBag.StatusMessage</p>
+<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center">
+    <h2>@ViewBag.Title</h2>
+</div>
 <div ng-controller="RedditAuthController">
-    <h4>Change your account settings</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>Password:</dt>
-        <dd>
+    <div class="row">
+        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+            <label style="float: right">Password:</label>
+        </div>
+        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
             [
             @if (Model.HasPassword)
             {
@@ -24,9 +28,13 @@
                 @Html.ActionLink("Create", "SetPassword")
             }
             ]
-        </dd>
-        <dt>Reddit Account:</dt>
-        <dd>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+            <label style="float: right">Reddit Account:</label>
+        </div>
+        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
             [
             @if (Model.HasRedditUser)
             {
@@ -40,6 +48,6 @@
                 <i class="fa fa-spinner fa-spin" ng-if="isLoading"></i>
             }
             ]
-        </dd>
-    </dl>
+        </div>
+    </div>
 </div>

@@ -1,37 +1,34 @@
-﻿<h3 class="text-center"> Edit a Keyword Response Set</h3>
-<br />
-<div class="row" ng-controller="KRController">
-    <div class="col-md-3 col-md-offset-1">
-        <h3 class="text-danger">Select KRSet</h3>
-        <hr />
-        <div class="dropdown">
-            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-                {{selectedSet}}
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li ng-repeat="a in krSets">
-                    <a ng-click="dropboxitemselected(a)">{{a.keyword}}</a>
-                </li>
-            </ul>
+﻿<div ng-controller="editKrController">
+    <div class="row">
+        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+            <div style="padding-top:20px;">
+                <label>Keyword:</label>
+                <input ng-model="keyword" class="long-input" />
+            </div>
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+            <div style="padding-top:20px;">
+                <label>Response:</label>
+                <input ng-model="response" class="long-input" />
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+            <div style="padding-top:20px;">
+                <label>Status:</label>
+                <select ng-model="selectedStatus"
+                        ng-selected="status.id"
+                        ng-options="status as status.label for status in statuses"></select>
+            </div>
         </div>
     </div>
-    <div class="col-md-7">
-        <form ng-show="isDeletedSetVisible">
-            <div class="form-group">
-                <label for="inputEmail">Keyword</label>
-                <input type="text" ng-model="keyword" class="form-control input-lg" placeholder="Length must be 5 - 50 characters" />
-            </div>
-            <div class="form-group">
-                <label for="inputPassword">Response</label>
-                <input type="text" ng-model="response" class="form-control input-lg" placeholder="Length must be 1 - 1000 characters" />
-            </div>
-            <div class="form-group">
-                <label for="inputEmail">Status</label>
-                <input type="text" ng-model="statusId" class="form-control input-lg" placeholder="1 for Active, 2 for Paused" />
-            </div>
-
-            <button ng-click="UpdateKrSet()" class="btn btn-warning form-control input-lg">Update</button>            
-        </form>
+    <div class="row" style="padding-top:10px">
+        <div class="col-md-12">
+            <button ng-click="UpdateKrSet()" class="text-center btn btn-primary" ng-if="!isSaving">Save</button>
+            <button ng-click="UpdateKrSet()" class="text-center btn btn-primary disabled" ng-if="isSaving">Save</button>
+            <button ng-click="goHome()" class="text-center btn btn-info">Cancel</button>
+            <i class="fa fa-spinner fa-spin" ng-if="isSaving"></i>
+            <label class="pad-left-20 has-error" ng-if="hasError">Error udpating keyword-response set.</label>
+        </div>
     </div>
 </div>
+<br />

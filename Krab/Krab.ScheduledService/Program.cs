@@ -81,7 +81,7 @@ namespace Krab.ScheduledService
                     _logger.LogWarning($"Invalid AppSetting: key=ProcessSetsEveryMinutes value={runKrJobEveryMin}");
                 }
 
-                _schedulingService.At("* * * * *").Run(() => ServiceLocator.Current.GetInstance<IDeleteLogs>());
+                _schedulingService.Daily().Run(() => ServiceLocator.Current.GetInstance<IDeleteLogs>());
             }
 
             public void Stop()

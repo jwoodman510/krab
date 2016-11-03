@@ -1,32 +1,33 @@
-﻿<h3 class="text-center"> Add a Keyword Response Set</h3>
-<br/>
-<div class="row" ng-controller="KRController">
-    <div class="col-md-6 col-md-offset-3">
-        <form class="form">
-            <div class="form-group">
-                <label for="inputEmail">Keyword</label>
-                <input type="text" ng-model="keyword" class="form-control input-lg" placeholder="Length must be 5 - 50 characters" />
+﻿<div class="row" ng-controller="krController">
+    <div class="row pad-left-20">
+        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+            <label>Keyword: </label>
+            <input type="text" ng-model="keyword" class="long-input" placeholder="Length must be 5 - 50 characters" />
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+            <div style="padding-top:20px;">
+                <label>Response: </label>
+                <input type="text" ng-model="response" class="long-input" placeholder="Length must be 1 - 1000 characters" />
             </div>
-            <div class="form-group">
-                <label for="inputPassword">Response</label>
-                <input type="text" ng-model="response" class="form-control input-lg" placeholder="Length must be 1 - 1000 characters" />
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+            <div style="padding-top:20px;">
+                <label>Status:</label>
+                <select ng-model="selectedStatus"
+                        ng-selected="status.id"
+                        ng-options="status as status.label for status in statuses"></select>
             </div>
-            <div class="form-group">
-                <label for="inputEmail">Status</label>
-                <input type="text" ng-model="statusId" class="form-control input-lg" placeholder="1 for Active, 2 for Paused" />
-            </div>
-
-            <button ng-click="addKrSet()" class="text-center btn-info form-control input-lg">Save</button>
-        </form>
+        </div>
     </div>
-
-
-   <!-- <div ng-view>
-
-    </div>
-
     <br />
-    <div ui-grid="gridOptions" class="myGrid">
-    </div>-->
-
+    <div class="row pad-left-20">
+        <div class="col-md-12">
+            <button ng-click="addKrSet()" class="text-center btn btn-primary" ng-if="!isAdding">Save</button>
+            <button ng-click="addKrSet()" class="text-center btn btn-primary disabled" ng-if="isAdding">Save</button>
+            <button ng-click="goHome()" class="text-center btn btn-info">Cancel</button>
+            <i class="fa fa-spinner fa-spin" ng-if="isAdding"></i>
+            <label class="pad-left-20 has-error" ng-if="hasAddError">Error adding keyword-response set.</label>
+        </div>
+    </div>
 </div>
+<br />

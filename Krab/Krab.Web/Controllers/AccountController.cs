@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Krab.Mail;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -16,6 +17,13 @@ namespace Krab.Web.Controllers
         public ApplicationSignInManager SignInManager => HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
 
         public ApplicationUserManager UserManager => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+
+        private readonly IMailClient _mailClient;
+
+        public AccountController(IMailClient mailClient)
+        {
+            _mailClient = mailClient;
+        }
 
         [HttpGet]
         public ActionResult Authorize()
@@ -112,7 +120,17 @@ namespace Krab.Web.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                   return RedirectToAction("Index", "Home");
+                     var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+
+                    _mailClient.Send(
+                        "noreply@krab.com",
+                        model.Email,
+                        "Confirm your account",
+                        "text/html",
+                        "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                    return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
             }
@@ -149,6 +167,18 @@ namespace Krab.Web.Controllers
                 {
                     return View("ForgotPasswordConfirmation");
                 }
+
+                var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+
+                _mailClient.Send(
+                    "noreply@krab.com",
+                    model.Email,
+                    "Reset Password",
+                    "text/html",
+                    "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             return View(model);

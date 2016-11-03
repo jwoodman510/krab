@@ -130,6 +130,14 @@
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="SendGrid, Version=8.0.5.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sendgrid.8.0.5\lib\SendGrid.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SendGrid.CSharp.HTTP.Client, Version=3.0.0.0, Culture=neutral, PublicKeyToken=79219bf4e5ecaaca, processorArchitecture=MSIL">
+      <HintPath>..\packages\SendGrid.CSharp.HTTP.Client.3.0.0\lib\SendGrid.CSharp.HTTP.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -255,9 +263,9 @@
     <Compile Include="Bootstrap\UnityResolver.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\BaseController.cs" />
-    <Compile Include="Controllers\Api\HealthController.cs" />
     <Compile Include="Controllers\Api\RedditAuthorizationController.cs" />
     <Compile Include="Controllers\Api\RedditUserController.cs" />
+    <Compile Include="Controllers\Api\SubredditController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Api\KeywordResponseSetsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -286,8 +294,10 @@
     <Content Include="Content\app.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap-default.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Login-template.css" />
     <Content Include="Content\ngDialog-theme-default.css" />
     <Content Include="Content\ngDialog.css" />
     <Content Include="Content\ngDialog.min.css" />
@@ -297,7 +307,6 @@
     <Content Include="Content\ui-grid.svg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Function_Views\delete.html" />
     <Content Include="Function_Views\edit.html" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\angular-animate.js" />
@@ -331,9 +340,13 @@
     <Content Include="Scripts\angular-ui-router.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\app\controller\controllers.js" />
+    <Content Include="Scripts\app\controller\editKrController.js" />
+    <Content Include="Scripts\app\controller\krController.js" />
+    <Content Include="Scripts\app\Login-template.js" />
     <Content Include="Scripts\app\myApp.js" />
     <Content Include="Scripts\app\controller\redditAuthCtrl.js" />
-    <Content Include="Scripts\app\service\myAppService.js" />
+    <Content Include="Scripts\app\service\krService.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -1211,6 +1224,10 @@
     <ProjectReference Include="..\Krab.Global\Krab.Global.csproj">
       <Project>{e1a9478a-5b05-4045-aee6-422cc28363a0}</Project>
       <Name>Krab.Global</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Krab.Mail\Krab.Mail.csproj">
+      <Project>{a569c359-5910-41e0-bc58-dd505d459a9e}</Project>
+      <Name>Krab.Mail</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -26,7 +26,7 @@ namespace Krab.Web.Controllers.Api
         }
 
         [HttpDelete]
-        public OkResponse DeleteKeywordResponseSets(int keywordResponseSetId)
+        public OkResponse DeleteKeywordResponseSet(int keywordResponseSetId)
         {
             var set = _keywordResponseSetDac.Get(keywordResponseSetId);
 
@@ -49,7 +49,7 @@ namespace Krab.Web.Controllers.Api
             if (setDb == null)
                 throw new HttpException((int)HttpStatusCode.BadRequest, "Invalid KeywordResponseSet.");
 
-            if (set.UserId != GetUserId())
+            if (setDb.UserId != GetUserId())
                 throw new HttpException((int)HttpStatusCode.Unauthorized, "User is unauthorized.");
 
            var updated =  _keywordResponseSetDac.Update(set);
