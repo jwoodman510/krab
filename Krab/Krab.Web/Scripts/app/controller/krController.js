@@ -2,7 +2,7 @@
     .module("myApp.controllers")
     .controller("krController", krController);
 
-function krController($rootScope, $scope, $http, krService, locationService, $location, gridService) {
+function krController($rootScope, $scope, $http, krService, locationService, $location, gridService, manageSubredditsModalService) {
     $scope.krSets = [];
     $scope.redditUserName = "";
     $scope.isRedditUserNameLoading = true;
@@ -31,9 +31,23 @@ function krController($rootScope, $scope, $http, krService, locationService, $lo
         enableRowHeaderSelection: true,
         multiSelect: false,
         columnDefs: [
-            { field: "keyword", displayName: "Keyword" },
-            { field: "response", displayName: "Response" },
-            { field: "status", displayName: "Status" }
+            {
+                field: "keyword",
+                displayName: "Keyword"
+            },
+            {
+                field: "response",
+                displayName: "Response"
+            },
+            {
+                field: "status",
+                displayName: "Status"
+            },
+            {
+                field: "subreddits",
+                displayName: "Subreddits",
+                cellTemplate: "<div style=\"text-align: center;\"><a class=\"clickable\" ng-click=\"grid.appScope.onManageSubredditsClicked(row)\">Manage Subreddits</a></div>"
+            }
         ],
         onRegisterApi: function(gridApi) {
             $scope.gridApi = gridApi;
@@ -129,5 +143,14 @@ function krController($rootScope, $scope, $http, krService, locationService, $lo
 
     function goHome() {
         locationService.goHome();
+    }
+
+    $scope.onManageSubredditsClicked = function(row) {
+        manageSubredditsModalService.setKeywordResponseSet(row.entity);
+        manageSubredditsModalService.open({
+            controller: "manageSubredditsController",
+            templateUrl: "Function_Views/manageSubredditsModal.html",
+            controllerAs: "msCtrl"
+        });
     }
 }

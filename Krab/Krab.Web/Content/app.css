@@ -36,6 +36,9 @@ body {
 .pad-left-20 {
     padding-left: 20px;
 }
+.pad-right-20 {
+    padding-right: 20px;
+}
 .pad-top-20 {
     padding-top: 20px;
 }
@@ -48,9 +51,9 @@ body {
 .clickable {
     cursor: pointer;
 }
-.redditlogo{
-
-}
 .header{
     margin-top: 35px;
+}
+.centered {
+    text-align: center;
 }

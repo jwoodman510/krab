@@ -9,16 +9,25 @@ function krService($http) {
         return $http.get("/api/keywordresponsesets");
     };
 
-    svc.AddKrSet = function (sets) {
-        return $http.post("/api/keywordresponsesets", sets);
+    svc.AddKrSet = function (set) {
+        return $http.post("/api/keywordresponsesets", set);
     };
 
-    svc.EditKrSet = function (setsToUpdate) {
-        return $http.put("/api/keywordresponsesets", setsToUpdate);
+    svc.EditKrSet = function (set) {
+        return $http.put("/api/keywordresponsesets", set);
     };
 
     svc.DeleteKrSet = function (keywordResponseSetId) {
         return $http.delete("/api/keywordresponsesets/deleteKeywordResponseSet?keywordResponseSetId=" + keywordResponseSetId.toString());
     };
+
+    svc.getSubreddits = function (keywordResponseSetId) {
+        return $http.get("/api/subreddit/GetByKeywordResponseSet?keywordResponseSetId=" + keywordResponseSetId);
+    }
+
+    svc.updateSubreddits = function(keywordResponseSetId, subredditNames) {
+        return $http.put("/api/keywordresponsesets/updateSubreddits?keywordResponseSetId=" + keywordResponseSetId, subredditNames);
+    }
+
     return svc;
 }
