@@ -6,11 +6,14 @@ using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using Krab.Global;
 
 namespace Krab.ScheduledService.Boostrap
 {
     public static class Bootstrapper
     {
+        private static ILogger _logger;
+
         public static void Configure()
         {
             var container = new UnityContainer();
@@ -18,6 +21,8 @@ namespace Krab.ScheduledService.Boostrap
             ServiceLocator.SetLocatorProvider(() => new UnityServiceLocator(container));
 
             RegisterInstances(container);
+
+            _logger.LogInfo($"ClientId: {AppSettings.ClientId}");
         }
 
         private static void RegisterInstances(IUnityContainer container)
@@ -25,7 +30,10 @@ namespace Krab.ScheduledService.Boostrap
             var busHost = ConfigurationManager.AppSettings["BusHost"];
 
             container.RegisterInstance(typeof(ISendBus), new SendBus(busHost));
-            container.RegisterInstance(typeof(ILogger), new KrabLogger());
+
+            _logger = new KrabLogger();
+
+            container.RegisterInstance(typeof(ILogger), _logger);
 
             Configuration.Register(container);
             DataAccess.Configuration.Register(container);
@@ -45,9 +53,7 @@ namespace Krab.ScheduledService.Boostrap
                 throw new Exception("Unable to find Service Locator!");
             }
 
-            var logger = locator.GetInstance<ILogger>();
-
-            logger.LogInfo("Verifying instances are bootstrapped...");
+            _logger.LogInfo("Verifying instances are bootstrapped...");
 
             var types = new List<Type>
             {
@@ -63,8 +69,8 @@ namespace Krab.ScheduledService.Boostrap
                 }
                 catch (Exception ex)
                 {
-                    logger.LogWarning($"Unable to find instane of {type.Name}!");
-                    logger.LogError($"Unable to find instane of {type.Name}!", ex);
+                    _logger.LogWarning($"Unable to find instane of {type.Name}!");
+                    _logger.LogError($"Unable to find instane of {type.Name}!", ex);
 
 #if DEBUG
                     throw;

@@ -27,7 +27,7 @@
             <button ng-click="UpdateKrSet()" class="text-center btn btn-primary disabled" ng-if="isSaving">Save</button>
             <button ng-click="goHome()" class="text-center btn btn-info">Cancel</button>
             <i class="fa fa-spinner fa-spin" ng-if="isSaving"></i>
-            <label class="pad-left-20 has-error" ng-if="hasError">Error udpating keyword-response set.</label>
+            <label class="pad-left-20 has-error" ng-if="hasError">{{errorMsg}}</label>
         </div>
     </div>
 </div>

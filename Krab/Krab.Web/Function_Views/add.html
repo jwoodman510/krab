@@ -1,8 +1,10 @@
-﻿<div class="row" ng-controller="krController">
-    <div class="row pad-left-20">
+﻿<div ng-controller="addKrController">
+    <div class="row">
         <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-            <label>Keyword: </label>
-            <input type="text" ng-model="keyword" class="long-input" placeholder="Length must be 5 - 50 characters" />
+            <div style="padding-top:20px;">
+                <label>Keyword: </label>
+                <input type="text" ng-model="keyword" class="long-input" placeholder="Length must be 5 - 50 characters" />
+            </div>
         </div>
         <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
             <div style="padding-top:20px;">
@@ -20,13 +22,13 @@
         </div>
     </div>
     <br />
-    <div class="row pad-left-20">
+    <div class="row" style="padding-top:10px">
         <div class="col-md-12">
             <button ng-click="addKrSet()" class="text-center btn btn-primary" ng-if="!isAdding">Save</button>
             <button ng-click="addKrSet()" class="text-center btn btn-primary disabled" ng-if="isAdding">Save</button>
             <button ng-click="goHome()" class="text-center btn btn-info">Cancel</button>
             <i class="fa fa-spinner fa-spin" ng-if="isAdding"></i>
-            <label class="pad-left-20 has-error" ng-if="hasAddError">Error adding keyword-response set.</label>
+            <label class="pad-left-20 has-error" ng-if="hasAddError">{{errorMsg}}</label>
         </div>
     </div>
 </div>

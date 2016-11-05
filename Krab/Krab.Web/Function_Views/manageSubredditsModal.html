@@ -1,0 +1,44 @@
+﻿<div ng-controller="manageSubredditsController">
+    <div class="modal-header centered">
+        <h3 class="modal-title" id="modal-title">{{keyword}}</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <div ng-show="!isLoading">
+            <div class="row centered">
+                <label class="pad-right-20">Subreddit 1: </label>
+                <input ng-model="subreddit1" class="long-input" />
+            </div>
+            <div class="row centered"
+                 ng-show="subreddit1 && subreddit1.length > 0">
+                <label class="pad-right-20">Subreddit 2: </label>
+                <input ng-model="subreddit2" class="long-input" />
+            </div>
+            <div class="row centered"
+                 ng-show="subreddit1 && subreddit1.length > 0 && subreddit2 && subreddit2.length > 0">
+                <label class="pad-right-20">Subreddit 3: </label>
+                <input ng-model="subreddit3" class="long-input" />
+            </div>
+            <div class="row centered"
+                 ng-show="subreddit1 && subreddit1.length > 0 && subreddit2 && subreddit2.length && subreddit3 && subreddit3.length > 0">
+                <label class="pad-right-20">Subreddit 4: </label>
+                <input ng-model="subreddit4" class="long-input" />
+            </div>
+            <div class="row centered"
+                 ng-show="subreddit1 && subreddit1.length > 0 && subreddit2 && subreddit2.length && subreddit3 && subreddit3.length && subreddit4 && subreddit4.length > 0">
+                <label class="pad-right-20">Subreddit 5: </label>
+                <input ng-model="subreddit5" class="long-input" />
+            </div>
+            <div class="row centered" ng-show="hasError">
+                <label class="has-error">{{errorMsg}}</label>
+            </div>
+        </div>
+        <div ng-show="isLoading" class="centered">
+            <i class="fa fa-spinner fa-spin fa-2x"></i>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="save()" ng-show="!isLoading">Save</button>
+        <button class="btn btn-primary disabled" type="button" ng-show="isLoading">Save</button>
+        <button class="btn btn-info" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</div>
