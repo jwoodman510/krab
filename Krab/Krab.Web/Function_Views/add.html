@@ -26,7 +26,7 @@
             <button ng-click="addKrSet()" class="text-center btn btn-primary disabled" ng-if="isAdding">Save</button>
             <button ng-click="goHome()" class="text-center btn btn-info">Cancel</button>
             <i class="fa fa-spinner fa-spin" ng-if="isAdding"></i>
-            <label class="pad-left-20 has-error" ng-if="hasAddError">Error adding keyword-response set.</label>
+            <label class="pad-left-20 has-error" ng-if="hasAddError">{{errorMsg}}</label>
         </div>
     </div>
 </div>
