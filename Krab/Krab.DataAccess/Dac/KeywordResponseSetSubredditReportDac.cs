@@ -12,13 +12,15 @@ namespace Krab.DataAccess.Dac
     {
         IQueryable<Report> GetByKeywordResponseSets(IEnumerable<int> keywordResponseSetIds);
             
-        Report Get(int keywordResponseSetId, int subredditId, DateTime dateTimeUtc);
+        Report Get(int keywordResponseSetId, long subredditId, DateTime dateTimeUtc);
 
-        Report IncrementResponseOrCreate(int keywordResponseSetId, int subredditId, DateTime dateTimeUtc);
+        IQueryable<Report> GetReadyToClose();
 
-        void Close(int keywordResponseSetId, int subredditId, DateTime dateTimeUtc);
+        Report IncrementResponseOrCreate(int keywordResponseSetId, long subredditId, DateTime dateTimeUtc);
 
-        void Delete(int keywordResponseSetId, int subredditId, DateTime dateTimeUtc);
+        void Close(int keywordResponseSetId, long subredditId, DateTime dateTimeUtc);
+
+        void Delete(int keywordResponseSetId, long subredditId, DateTime dateTimeUtc);
     }
 
     public class KeywordResponseSetSubredditReportDac : IKeywordResponseSetSubredditReportDac
@@ -40,7 +42,7 @@ namespace Krab.DataAccess.Dac
                 .Where(r => keywordResponseSetIds.Contains(r.KeywordResponseSetId));
         }
 
-        public Report Get(int keywordResponseSetId, int subredditId, DateTime dateTimeUtc)
+        public Report Get(int keywordResponseSetId, long subredditId, DateTime dateTimeUtc)
         {
             return _context.KeywordResponseSetSubredditReports
                 .AsNoTracking()
@@ -49,7 +51,16 @@ namespace Krab.DataAccess.Dac
                                      r.ReportDateUtc == dateTimeUtc.Date);
         }
 
-        public Report IncrementResponseOrCreate(int keywordResponseSetId, int subredditId, DateTime dateTimeUtc)
+        public IQueryable<Report> GetReadyToClose()
+        {
+            var delteDaysOlderThan = DateTime.UtcNow.Date.AddDays(-1);
+
+            return _context.KeywordResponseSetSubredditReports
+                .AsNoTracking()
+                .Where(r => r.ReportDateUtc <= delteDaysOlderThan);
+        }
+
+        public Report IncrementResponseOrCreate(int keywordResponseSetId, long subredditId, DateTime dateTimeUtc)
         {
             var rpt = Find(keywordResponseSetId, subredditId, dateTimeUtc);
 
@@ -81,7 +92,7 @@ namespace Krab.DataAccess.Dac
             return rpt;
         }
 
-        public void Close(int keywordResponseSetId, int subredditId, DateTime dateTimeUtc)
+        public void Close(int keywordResponseSetId, long subredditId, DateTime dateTimeUtc)
         {
             var rpt = Find(keywordResponseSetId, subredditId, dateTimeUtc);
 
@@ -97,7 +108,7 @@ namespace Krab.DataAccess.Dac
             _context.Entry(rpt).State = EntityState.Detached;
         }
 
-        public void Delete(int keywordResponseSetId, int subredditId, DateTime dateTimeUtc)
+        public void Delete(int keywordResponseSetId, long subredditId, DateTime dateTimeUtc)
         {
             var existing = Find(keywordResponseSetId, subredditId, dateTimeUtc);
 
@@ -110,7 +121,7 @@ namespace Krab.DataAccess.Dac
             _context.SaveChanges();
         }
 
-        private Report Find(int keywordResponseSetId, int subredditId, DateTime dateTimeUtc)
+        private Report Find(int keywordResponseSetId, long subredditId, DateTime dateTimeUtc)
         {
             return _context.KeywordResponseSetSubredditReports
                 .Find(keywordResponseSetId, subredditId, dateTimeUtc.Date);

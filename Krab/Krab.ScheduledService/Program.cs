@@ -82,6 +82,7 @@ namespace Krab.ScheduledService
                 }
 
                 _schedulingService.Daily().Run(() => ServiceLocator.Current.GetInstance<IDeleteLogs>());
+                _schedulingService.Hourly().Run(() => ServiceLocator.Current.GetInstance<ICloseReports>());
             }
 
             public void Stop()

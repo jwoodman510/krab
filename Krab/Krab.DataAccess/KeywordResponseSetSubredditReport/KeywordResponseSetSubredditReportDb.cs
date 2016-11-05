@@ -8,7 +8,7 @@ namespace Krab.DataAccess.KeywordResponseSetSubredditReport
     public partial class KeywordResponseSetSubredditReportDb : DbContext
     {
         public KeywordResponseSetSubredditReportDb()
-            : base("name=KeywordResponseSetSubredditReportDb")
+            : base("name=DefaultConnection")
         {
         }
 
