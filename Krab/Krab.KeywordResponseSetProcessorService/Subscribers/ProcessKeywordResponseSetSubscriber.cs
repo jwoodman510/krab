@@ -16,12 +16,14 @@ namespace Krab.KeywordResponseSetProcessorService.Subscribers
         private readonly ILogger _logger;
         private readonly IAuthApi _authApi;
         private readonly ISubredditDac _subRedditDac;
+        private readonly ISendBus _sendBus;
 
-        public ProcessKeywordResponseSetSubscriber(ILogger logger, IAuthApi authApi, ISubredditDac subredditDac)
+        public ProcessKeywordResponseSetSubscriber(ILogger logger, IAuthApi authApi, ISubredditDac subredditDac, ISendBus sendBus)
         {
             _logger = logger;
             _authApi = authApi;
             _subRedditDac = subredditDac;
+            _sendBus = sendBus;
         }
 
         public void Receive(ProcessKeywordResponseSet message)
@@ -85,6 +87,13 @@ namespace Krab.KeywordResponseSetProcessorService.Subscribers
                     try
                     {
                         comment.Reply(message.Response);
+
+                        _sendBus.PublishAsync(new KeywordResponseSetResponseSubmitted
+                        {
+                            KeywordResponseSetId = message.Id,
+                            DateTimeUtc = DateTime.UtcNow,
+                            SubredditId = subreddit.Id
+                        });
                     }
                     catch (Exception ex)
                     {

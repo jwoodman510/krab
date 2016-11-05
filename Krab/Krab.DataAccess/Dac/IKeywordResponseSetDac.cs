@@ -3,13 +3,16 @@ using System.Data.Entity;
 using System.Linq;
 using Krab.DataAccess.Exception;
 using Krab.DataAccess.KeywordResponseSet;
+using Krab.DataAccess.Subreddit;
 
 namespace Krab.DataAccess.Dac
 {
     public interface IKeywordResponseSetDac
     {
         IQueryable<KeywordResponseSet.KeywordResponseSet> GetAll();
+
         IEnumerable<KeywordResponseSet.KeywordResponseSet> GetByUserId(int userId);
+
         KeywordResponseSet.KeywordResponseSet Get(int id);
 
         KeywordResponseSet.KeywordResponseSet Insert(KeywordResponseSet.KeywordResponseSet set);
@@ -22,10 +25,12 @@ namespace Krab.DataAccess.Dac
     public class KeywordResponseSetDac : IKeywordResponseSetDac
     {
         private readonly KeywordResponseSetsDb _keywordResponseSetsDb;
+        private readonly SubredditDb _subredditDb;
 
-        public KeywordResponseSetDac(KeywordResponseSetsDb keywordResponseSetsDb)
+        public KeywordResponseSetDac(KeywordResponseSetsDb keywordResponseSetsDb, SubredditDb subredditDb)
         {
             _keywordResponseSetsDb = keywordResponseSetsDb;
+            _subredditDb = subredditDb;
         }
 
         public IQueryable<KeywordResponseSet.KeywordResponseSet> GetAll()
@@ -104,6 +109,7 @@ namespace Krab.DataAccess.Dac
             entry.Entity.Keyword = set.Keyword;
             entry.Entity.Response = set.Response;
             entry.Entity.StatusId = set.StatusId;
+            entry.Entity.StatusId = set.StatusId;
 
             _keywordResponseSetsDb.SaveChanges();
 
@@ -121,6 +127,9 @@ namespace Krab.DataAccess.Dac
 
                 if (existing == null)
                     return;
+
+                _subredditDb.Subreddits.RemoveRange(_subredditDb.Subreddits.Where(s => s.KeywordResponseSetId == id));
+                _subredditDb.SaveChanges();
 
                 var entry = _keywordResponseSetsDb.Entry(existing);
                 entry.State = EntityState.Deleted;
