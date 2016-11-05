@@ -3,11 +3,13 @@
     .controller("manageSubredditsController", manageSubredditsController);
 
 function manageSubredditsController($scope, manageSubredditsModalService, krService) {
-    $scope.subreddit1 = null;
-    $scope.subreddit2 = null;
-    $scope.subreddit3 = null;
-    $scope.subreddit4 = null;
-    $scope.subreddit5 = null;
+    $scope.subredditNames = [
+        "",
+        "",
+        "",
+        "",
+        ""
+    ];
     $scope.hasError = false;
     $scope.errorMsg = "";
     $scope.isLoading = true;
@@ -23,19 +25,19 @@ function manageSubredditsController($scope, manageSubredditsModalService, krServ
                 var count = 1;
                 angular.forEach($scope.subreddits, function (value) {
                     if (count === 1) {
-                        $scope.subreddit1 = value.subredditName;
+                        $scope.subredditNames[0] = value.subredditName;
                     }
                     else if (count === 2) {
-                        $scope.subreddit2 = value.subredditName;
+                        $scope.subredditNames[1] = value.subredditName;
                     }
                     else if (count === 3) {
-                        $scope.subreddit3 = value.subredditName;
+                        $scope.subredditNames[2] = value.subredditName;
                     }
                     else if (count === 4) {
-                        $scope.subreddit4 = value.subredditName;
+                        $scope.subredditNames[3] = value.subredditName;
                     }
                     else if (count === 5) {
-                        $scope.subreddit5 = value.subredditName;
+                        $scope.subredditNames[4] = value.subredditName;
                     }
                     count++;
                 });
@@ -52,23 +54,8 @@ function manageSubredditsController($scope, manageSubredditsModalService, krServ
         $scope.isLoading = true;
         $scope.errorMsg = "";
         $scope.hasError = false;
-        var subredditNames = [
-            $scope.subreddit1,
-            $scope.subreddit1 && $scope.subreddit1.length > 0
-                ? $scope.subreddit2
-                : "",
-            $scope.subreddit1 && $scope.subreddit1.length > 0 && $scope.subreddit2 && $scope.subreddit2.length > 0
-                ? $scope.subreddit3
-                : "",
-            $scope.subreddit1 && $scope.subreddit1.length > 0 && $scope.subreddit2 && $scope.subreddit2.length > 0 && $scope.subreddit3 && $scope.subreddit3.length > 0
-                ? $scope.subreddit4
-                : "",
-            $scope.subreddit1 && $scope.subreddit1.length > 0 && $scope.subreddit2 && $scope.subreddit2.length > 0 && $scope.subreddit3 && $scope.subreddit3.length > 0 && $scope.subreddit4 && $scope.subreddit4.length > 0
-                ? $scope.subreddit5
-                : ""
-        ];
 
-        krService.updateSubreddits($scope.krSet.id, subredditNames)
+        krService.updateSubreddits($scope.krSet.id, $scope.subredditNames)
             .success(function () {
                 $scope.isLoading = false;
                 manageSubredditsModalService.close();

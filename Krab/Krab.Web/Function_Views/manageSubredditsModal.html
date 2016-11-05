@@ -5,30 +5,26 @@
     <div class="modal-body" id="modal-body">
         <div ng-show="!isLoading">
             <div class="row centered">
-                <label class="pad-right-20">Subreddit 1: </label>
-                <input ng-model="subreddit1" class="long-input" />
+                <label>/r/</label>
+                <input ng-model="subredditNames[0]" class="long-input" />
             </div>
-            <div class="row centered"
-                 ng-show="subreddit1 && subreddit1.length > 0">
-                <label class="pad-right-20">Subreddit 2: </label>
-                <input ng-model="subreddit2" class="long-input" />
+            <div class="row centered pad-top-20">
+                <label>/r/</label>
+                <input ng-model="subredditNames[1]" class="long-input" />
             </div>
-            <div class="row centered"
-                 ng-show="subreddit1 && subreddit1.length > 0 && subreddit2 && subreddit2.length > 0">
-                <label class="pad-right-20">Subreddit 3: </label>
-                <input ng-model="subreddit3" class="long-input" />
+            <div class="row centered pad-top-20">
+                <label>/r/</label>
+                <input ng-model="subredditNames[2]" class="long-input" />
             </div>
-            <div class="row centered"
-                 ng-show="subreddit1 && subreddit1.length > 0 && subreddit2 && subreddit2.length && subreddit3 && subreddit3.length > 0">
-                <label class="pad-right-20">Subreddit 4: </label>
-                <input ng-model="subreddit4" class="long-input" />
+            <div class="row centered pad-top-20">
+                <label>/r/</label>
+                <input ng-model="subredditNames[3]" class="long-input" />
             </div>
-            <div class="row centered"
-                 ng-show="subreddit1 && subreddit1.length > 0 && subreddit2 && subreddit2.length && subreddit3 && subreddit3.length && subreddit4 && subreddit4.length > 0">
-                <label class="pad-right-20">Subreddit 5: </label>
-                <input ng-model="subreddit5" class="long-input" />
+            <div class="row centered pad-top-20">
+                <label>/r/</label>
+                <input ng-model="subredditNames[4]" class="long-input" />
             </div>
-            <div class="row centered" ng-show="hasError">
+            <div class="row centered pad-top-20" ng-show="hasError">
                 <label class="has-error">{{errorMsg}}</label>
             </div>
         </div>
