@@ -80,6 +80,9 @@
     <Compile Include="Exception\ModificationException.cs" />
     <Compile Include="Exception\NotFoundException.cs" />
     <Compile Include="Exception\ValidationException.cs" />
+    <Compile Include="Dac\KeywordResponseSetSubredditReportDac.cs" />
+    <Compile Include="KeywordResponseSetSubredditReport\KeywordResponseSetSubredditReport.cs" />
+    <Compile Include="KeywordResponseSetSubredditReport\KeywordResponseSetSubredditReportDb.cs" />
     <Compile Include="KeywordResponseSet\KeywordResponseSet.cs" />
     <Compile Include="KeywordResponseSet\KeywordResponseSetsDb.cs" />
     <Compile Include="KeywordResponseSet\KeywordResponseSetStatus.cs" />

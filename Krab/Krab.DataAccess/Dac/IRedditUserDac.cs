@@ -8,6 +8,7 @@ namespace Krab.DataAccess.Dac
     public interface IRedditUserDac
     {
         RedditUser.RedditUser Get(int id);
+
         IQueryable<RedditUser.RedditUser> GetByUser(int userId);
 
         RedditUser.RedditUser Create(RedditUser.RedditUser u);
