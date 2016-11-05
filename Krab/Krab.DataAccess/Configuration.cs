@@ -1,5 +1,6 @@
 ﻿using Krab.DataAccess.Dac;
 using Krab.DataAccess.KeywordResponseSet;
+using Krab.DataAccess.KeywordResponseSetSubredditReport;
 using Krab.DataAccess.RedditUser;
 using Krab.DataAccess.Subreddit;
 using Krab.DataAccess.User;
@@ -15,11 +16,13 @@ namespace Krab.DataAccess
             container.RegisterType<KeywordResponseSetsDb, KeywordResponseSetsDb>();
             container.RegisterType<RedditUserDb, RedditUserDb>();
             container.RegisterType<SubredditDb, SubredditDb>();
+            container.RegisterType<KeywordResponseSetSubredditReportDb, KeywordResponseSetSubredditReportDb>();
 
             container.RegisterType<IUserDac, UserDac>();
             container.RegisterType<IKeywordResponseSetDac, KeywordResponseSetDac>();
             container.RegisterType<IRedditUserDac,RedditUserDac>();
             container.RegisterType<ISubredditDac, SubredditDac>();
+            container.RegisterType<IKeywordResponseSetSubredditReportDac, KeywordResponseSetSubredditReportDac>();
         }
     }
 }

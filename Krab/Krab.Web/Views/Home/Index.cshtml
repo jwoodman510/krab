@@ -8,8 +8,9 @@
     <div ng-app="myApp" class="row">
         <br />
         <div ng-controller="krController">
-            <div ng-if="isRedditUserNameLoading || isKrSetsLoading">
-                <i class="fa fa-spinner fa-spin fa-4x" style="padding-top:10px"></i>
+            <div class="row centered" ng-if="isRedditUserNameLoading || isKrSetsLoading">
+                <div style="padding-top: 200px;"></div>
+                <i class="fa fa-spinner fa-spin fa-4x"></i>
             </div>            
             <div ng-if="!isRedditUserNameLoading && !isKrSetsLoading">
                 <div id="header" ng-if="!needsRedditAccount">
@@ -24,6 +25,7 @@
                         <a class="fa fa-remove fa-2x disabled" style="padding-left: 20px;" data-ng-show="!hasSelectedRow"> Delete</a>
                         <i class="fa fa-spinner fa-spin" data-ng-show="isDeleting"></i>
                         <label class="has-error" data-ng-show="hasError" style="padding-left:20px">{{errorMessage}}</label>
+                        <a class="fa fa-file-excel-o fa-2x clickable" style="float: right;" data-ng-click="onGenerateReportClicked()"> Generate Report</a>
                     </div>
                     <br />
                     <div ng-view></div>

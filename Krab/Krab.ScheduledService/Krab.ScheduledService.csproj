@@ -104,6 +104,7 @@
   <ItemGroup>
     <Compile Include="Boostrap\Bootstrapper.cs" />
     <Compile Include="Boostrap\Configuration.cs" />
+    <Compile Include="Jobs\CloseReports.cs" />
     <Compile Include="Jobs\DeleteLogs.cs" />
     <Compile Include="LogFactory.cs" />
     <Compile Include="Program.cs" />

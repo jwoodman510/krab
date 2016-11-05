@@ -14,6 +14,7 @@ namespace Krab.ScheduledService.Boostrap
         {
             container.RegisterType<IProcessKeywordResponseSets, ProcessKeywordResponseSets>();
             container.RegisterType<IDeleteLogs, DeleteLogs>();
+            container.RegisterType<ICloseReports, CloseReports>();
         }
     }
 }

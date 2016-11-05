@@ -58,7 +58,8 @@ namespace Krab.ScheduledService.Boostrap
             var types = new List<Type>
             {
                 typeof(IDeleteLogs),
-                typeof(IProcessKeywordResponseSets)
+                typeof(IProcessKeywordResponseSets),
+                typeof(ICloseReports)
             };
 
             foreach (var type in types)

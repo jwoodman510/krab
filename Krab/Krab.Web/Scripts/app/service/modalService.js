@@ -1,18 +1,18 @@
 ﻿angular
     .module("myApp.services")
-    .factory("manageSubredditsModalService", manageSubredditsModalService);
+    .factory("modalService", modalService);
 
-function manageSubredditsModalService($location, $uibModal) {
+function modalService($location, $uibModal) {
     var svc = this;
-    var krSet = null;
+    var data = null;
     var modalInstance = null;
     
-    svc.getKeywordResponseSet = function () {
-        return krSet;
+    svc.getData = function () {
+        return data;
     }
 
-    svc.setKeywordResponseSet = function(set) {
-        krSet = set;
+    svc.setData = function(input) {
+        data = input;
     }
 
     svc.open = function (options) {

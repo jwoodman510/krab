@@ -1,0 +1,40 @@
+﻿<div ng-controller="generateReportController">
+    <div class="modal-header centered">
+        <h3 class="modal-title" id="modal-title">Generate Report</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <div class="row" ng-show="!isLoading">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                <p class="input-group">
+                    <input type="text" class="form-control" uib-datepicker-popup ng-model="startDate" is-open="startDatePopup.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="openStartDate()"><i class="fa fa-calendar"></i></button>
+                    </span>
+                </p>
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                <label style="padding-top: 10px;">To</label>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                <p class="input-group">
+                    <input type="text" class="form-control" uib-datepicker-popup ng-model="endDate" is-open="endDatePopup.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
+                    <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openEndDate()"><i class="fa fa-calendar"></i></button>
+                </span>
+                </p>
+            </div>
+        </div>
+        <div class="row centered" ng-show="isLoading">
+            <i class="fa fa-spinner fa-spin fa-2x"></i>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <label class="has-error pad-right-20" ng-show="hasError">{{errorMsg}}</label>
+        <button class="btn btn-primary" type="button" ng-click="submit()" ng-show="isValid()">Submit</button>
+        <button class="btn" id="downloadCsvButton" type="button" style="display: none;"
+                ng-csv="reportData" lazy-load="true" filename="krReport.csv" field-separator=","
+                csv-header="getHeader()"></button>
+        <button class="btn btn-primary disabled" type="button" ng-show="!isValid()">Submit</button>
+        <button class="btn btn-info" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

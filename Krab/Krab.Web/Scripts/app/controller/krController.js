@@ -2,7 +2,7 @@
     .module("myApp.controllers")
     .controller("krController", krController);
 
-function krController($rootScope, $scope, $http, krService, locationService, $location, gridService, manageSubredditsModalService) {
+function krController($rootScope, $scope, $http, krService, locationService, $location, gridService, modalService) {
     $scope.krSets = [];
     $scope.redditUserName = "";
     $scope.isRedditUserNameLoading = true;
@@ -146,11 +146,19 @@ function krController($rootScope, $scope, $http, krService, locationService, $lo
     }
 
     $scope.onManageSubredditsClicked = function(row) {
-        manageSubredditsModalService.setKeywordResponseSet(row.entity);
-        manageSubredditsModalService.open({
+        modalService.setData(row.entity);
+        modalService.open({
             controller: "manageSubredditsController",
             templateUrl: "Function_Views/manageSubredditsModal.html",
             controllerAs: "msCtrl"
+        });
+    }
+
+    $scope.onGenerateReportClicked = function() {
+        modalService.open({
+            controller: "generateReportController",
+            templateUrl: "Function_Views/generateReportModal.html",
+            controllerAs: "gCtrl"
         });
     }
 }

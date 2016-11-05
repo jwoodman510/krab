@@ -2,7 +2,7 @@
     .module("myApp.controllers")
     .controller("manageSubredditsController", manageSubredditsController);
 
-function manageSubredditsController($scope, manageSubredditsModalService, krService) {
+function manageSubredditsController($scope, modalService, krService) {
     $scope.subredditNames = [
         "",
         "",
@@ -17,7 +17,7 @@ function manageSubredditsController($scope, manageSubredditsModalService, krServ
     init();
 
     function init() {
-        $scope.krSet = manageSubredditsModalService.getKeywordResponseSet();
+        $scope.krSet = modalService.getData();
         $scope.keyword = $scope.krSet.keyword;
         krService.getSubreddits($scope.krSet.id)
             .success(function (data) {
@@ -58,7 +58,7 @@ function manageSubredditsController($scope, manageSubredditsModalService, krServ
         krService.updateSubreddits($scope.krSet.id, $scope.subredditNames)
             .success(function () {
                 $scope.isLoading = false;
-                manageSubredditsModalService.close();
+                modalService.close();
             })
             .error(function () {
                 $scope.errorMsg = "An error occured.";
@@ -68,6 +68,6 @@ function manageSubredditsController($scope, manageSubredditsModalService, krServ
     }
 
     $scope.cancel = function () {
-        manageSubredditsModalService.close();
+        modalService.close();
     }
 }

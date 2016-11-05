@@ -1,5 +1,14 @@
 ﻿angular
-    .module("myApp", ["ui.grid", "ui.grid.selection", "ngRoute", "myApp.services", "myApp.controllers", "ui.bootstrap"])
+    .module("myApp", [
+        "ui.grid",
+        "ui.grid.selection",
+        "ngRoute",
+        "myApp.services",
+        "myApp.controllers",
+        "ui.bootstrap",
+        "ngSanitize",
+        "ngCsv"
+    ])
     .config(function ($routeProvider) {
          $routeProvider
              .when("/Add", {
