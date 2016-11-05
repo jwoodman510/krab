@@ -9,6 +9,7 @@ namespace Krab.DataAccess.Dac
     public interface ISubredditDac
     {
         Subreddit.Subreddit Get(int id);
+
         IEnumerable<Subreddit.Subreddit> GetByKeywordResponseSetId(int id);
 
         Subreddit.Subreddit Insert(Subreddit.Subreddit subreddit);
