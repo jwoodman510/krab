@@ -31,6 +31,9 @@
     <div class="modal-footer">
         <label class="has-error pad-right-20" ng-show="hasError">{{errorMsg}}</label>
         <button class="btn btn-primary" type="button" ng-click="submit()" ng-show="isValid()">Submit</button>
+        <button class="btn" id="downloadCsvButton" type="button" style="display: none;"
+                ng-csv="reportData" lazy-load="true" filename="krReport.csv" field-separator=","
+                csv-header="getHeader()"></button>
         <button class="btn btn-primary disabled" type="button" ng-show="!isValid()">Submit</button>
         <button class="btn btn-info" type="button" ng-click="cancel()">Cancel</button>
     </div>

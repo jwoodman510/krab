@@ -2,7 +2,7 @@
     .module("myApp.controllers")
     .controller("generateReportController", generateReportController);
 
-function generateReportController($scope, modalService, $http) {
+function generateReportController($scope, modalService, $http, $timeout) {
 
     $scope.format = "dd-MMMM-yyyy";
     $scope.hasError = false;
@@ -35,6 +35,16 @@ function generateReportController($scope, modalService, $http) {
         $scope.endDatePopup.opened = true;
     };
 
+    $scope.getHeader = function() {
+        return [
+            "Id",
+            "Report Date",
+            "Keyword",
+            "Response",
+            "Number of Responses"
+        ];
+    }
+
     $scope.submit = function () {
         $scope.hasError = false;
         $scope.isLoading = true;
@@ -42,6 +52,13 @@ function generateReportController($scope, modalService, $http) {
 
         $http.get("/api/keywordResponseSetReport?startDateMs=" + $scope.startDate.getTime() + "&endDateMs=" + $scope.endDate.getTime())
             .success(function (data) {
+
+                $scope.reportData = data.result;
+
+                $timeout(function () {
+                    angular.element("#downloadCsvButton").triggerHandler("click");
+                });
+
                 $scope.isLoading = false;
                 modalService.close();
             })
