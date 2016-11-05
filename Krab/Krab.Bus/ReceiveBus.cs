@@ -47,23 +47,47 @@ namespace Krab.Bus
                 catch (Exception ex)
                 {
                     _logger.LogError($"Failed to get an instance of subscriber: {typeof(TSubscriber).Name}.", ex);
-                    throw;
+                    _bus.Send($"{message.GetType()}_Error", message);
+                    return;
                 }
 
-                try
+                Receive(message, subscriber);
+            });
+        }
+
+        private void Receive<TSubscriber, TMessage>(TMessage message, TSubscriber subscriber)
+            where TSubscriber : IMessageSubscriber<TMessage> where TMessage : Message
+        {
+            try
+            {
+                _logger.LogInfo($"{message.GetType()} received.");
+
+                subscriber.Receive(message);
+
+                _logger.LogInfo($"{message.GetType()} complete.");
+            }
+            catch (MessageFailureException ex)
+            {
+                if (ex.Configuration != null &&
+                    ex.Configuration.ShouldRetry &&
+                    message.RetryAttempt < ex.Configuration.MaxRetryAttempts)
                 {
-                    _logger.LogInfo($"{message.GetType()} received.");
+                    _logger.LogError($"{message.GetType()} failed. Retry attempt {message.RetryAttempt}/{ex.Configuration.MaxRetryAttempts}.", ex);
 
-                    subscriber.Receive(message);
-
-                    _logger.LogInfo($"{message.GetType()} complete.");
+                    message.RetryAttempt++;
+                    Receive(message, subscriber);
                 }
-                catch (Exception ex)
+                else
                 {
                     _logger.LogError($"{message.GetType()} Failed Unexpectedly!", ex);
-                    throw;
+                    _bus.Send($"{message.GetType()}_Error", message);
                 }
-            });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{message.GetType()} Failed Unexpectedly!", ex);
+                _bus.Send($"{message.GetType()}_Error", message);
+            }
         }
 
         public void RegisterAsyncSubscriber<TSubscriber, TMessage>() where TSubscriber : IAsyncMessageSubscriber<TMessage> where TMessage : Message
@@ -79,23 +103,47 @@ namespace Krab.Bus
                 catch (Exception ex)
                 {
                     _logger.LogError($"Failed to get an instance of subscriber: {typeof(TSubscriber).Name}.", ex);
-                    throw;
+                    await _bus.SendAsync($"{message.GetType()}_Error", message);
+                    return;
                 }
 
-                try
+                await ReceiveAsync(message, subscriber);
+            });
+        }
+
+        private async Task ReceiveAsync<TSubscriber, TMessage>(TMessage message, TSubscriber subscriber)
+            where TSubscriber : IAsyncMessageSubscriber<TMessage> where TMessage : Message
+        {
+            try
+            {
+                _logger.LogInfo($"{message.GetType()} received.");
+
+                await subscriber.ReceiveAsync(message);
+
+                _logger.LogInfo($"{message.GetType()} complete.");
+            }
+            catch (MessageFailureException ex)
+            {
+                if (ex.Configuration != null &&
+                    ex.Configuration.ShouldRetry &&
+                    message.RetryAttempt <= ex.Configuration.MaxRetryAttempts)
                 {
-                    _logger.LogInfo($"{message.GetType()} received.");
+                    _logger.LogError($"{message.GetType()} failed. Retry attempt {message.RetryAttempt}/{ex.Configuration.MaxRetryAttempts}.", ex);
 
-                    await subscriber.ReceiveAsync(message);
-
-                    _logger.LogInfo($"{message.GetType()} complete.");
+                    message.RetryAttempt++;
+                    await ReceiveAsync(message, subscriber);
                 }
-                catch (Exception ex)
+                else
                 {
                     _logger.LogError($"{message.GetType()} Failed Unexpectedly!", ex);
-                    throw;
+                    await _bus.SendAsync($"{message.GetType()}_Error", message);
                 }
-            });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{message.GetType()} Failed Unexpectedly!", ex);
+                await _bus.SendAsync($"{message.GetType()}_Error", message);
+            }
         }
 
         public void Dispose()
