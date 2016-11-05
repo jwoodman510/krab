@@ -1,5 +1,5 @@
 ﻿using Krab.Bus;
-using Krab.KeywordResponseSetProcessorService.Subscribers;
+using Krab.KeywordResponseSetReportingService.Subscribers;
 using Krab.Logger;
 using Krab.Messages;
 using Microsoft.Practices.ServiceLocation;
@@ -7,7 +7,7 @@ using Microsoft.Practices.Unity;
 using System.Configuration;
 using Krab.Global;
 
-namespace Krab.KeywordResponseSetProcessorService.Bootstrap
+namespace Krab.KeywordResponseSetReportingService.Bootstrap
 {
     public static class Bootstrapper
     {
@@ -35,13 +35,12 @@ namespace Krab.KeywordResponseSetProcessorService.Bootstrap
             _logger.LogInfo("Registering Instances...");
 
             DataAccess.Configuration.Register(container);
-            Api.Configuration.Register(container);
             Global.Configuration.Register(container);
             Caching.Configuration.RegisterRedisCache(container);
 
-            container.RegisterType<IMessageSubscriber<ProcessKeywordResponseSet>, ProcessKeywordResponseSetSubscriber>();
-
-            Bus.Configuration.TryGetMessageSubscribersInContainingAssembly<ProcessKeywordResponseSetSubscriber>();
+            container.RegisterType<IMessageSubscriber<KeywordResponseSetResponseSubmitted>, KeywordResponseSetResponseSubmittedSubscriber>();
+            
+            Bus.Configuration.TryGetMessageSubscribersInContainingAssembly<KeywordResponseSetResponseSubmittedSubscriber>();
         }
 
         private static void StartBus(IUnityContainer container)
@@ -52,7 +51,7 @@ namespace Krab.KeywordResponseSetProcessorService.Bootstrap
 
             _receiveBus = new ReceiveBus(busHost, _logger);
 
-            _receiveBus.RegisterSubscriber<IMessageSubscriber<ProcessKeywordResponseSet>, ProcessKeywordResponseSet>();
+            _receiveBus.RegisterSubscriber<IMessageSubscriber<KeywordResponseSetResponseSubmitted>, KeywordResponseSetResponseSubmitted>();
 
             container.RegisterInstance(typeof(IReceiveBus), _receiveBus);
             container.RegisterInstance(typeof(ISendBus), new SendBus(busHost));
