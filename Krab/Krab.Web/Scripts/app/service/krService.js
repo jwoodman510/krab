@@ -1,5 +1,5 @@
 ﻿angular
-    .module('myApp.services', [])
+    .module("myApp.services")
     .factory("krService", krService);
 
 function krService($http) {

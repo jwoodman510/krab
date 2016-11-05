@@ -2,13 +2,12 @@
     .module("myApp.controllers")
     .controller("editKrController", editKrController);
 
-function editKrController($rootScope, $scope, $http, krService, $location) {
+function editKrController($rootScope, $scope, $http, krService, locationService, gridService) {
     $scope.keyword = "";
     $scope.response = "";
     $scope.statusId = "";
     $scope.hasError = false;
     $scope.isSaving = false;
-    $scope.krDataChanged = 'KR_DATA_CHANGED';
     $scope.statuses = [
         {
             "id": 1,
@@ -24,12 +23,11 @@ function editKrController($rootScope, $scope, $http, krService, $location) {
     init();
 
     function init() {
-        var krController = $scope.$parent.$parent;
-        $scope.selectedSet = krController.selectedSet;
+        $scope.selectedSet = gridService.getSelectedRow();
         $scope.keyword = $scope.selectedSet.keyword;
         $scope.response = $scope.selectedSet.response;
 
-        if ($scope.selectedSet.statusId == 2) {
+        if ($scope.selectedSet.statusId === 2) {
             $scope.selectedStatus = $scope.statuses[1];
         }
     }
@@ -45,12 +43,12 @@ function editKrController($rootScope, $scope, $http, krService, $location) {
         };
 
         krService.EditKrSet(set)
-            .success(function (response) {
+            .success(function () {
                 $scope.isSaving = false;
-                $rootScope.$broadcast($scope.krDataChanged);
-                $location.path('/');
+                gridService.refreshGrid();
+                locationService.goHome();
             })
-            .error(function (response) {
+            .error(function () {
                 $scope.isSaving = false;
                 $scope.hasError = true;
             });

@@ -2,7 +2,7 @@
     .module("myApp.controllers")
     .controller("krController", krController);
 
-function krController($rootScope, $scope, $http, krService, $location) {
+function krController($rootScope, $scope, $http, krService, locationService, $location, gridService) {
     $scope.krSets = [];
     $scope.redditUserName = "";
     $scope.isRedditUserNameLoading = true;
@@ -10,21 +10,7 @@ function krController($rootScope, $scope, $http, krService, $location) {
     $scope.needsRedditAccount = false;
     $scope.isDeletedSetVisible = false;
     $scope.errorMessage = "";
-    $scope.statuses = [
-        {
-            "id": 1,
-            "label": "Active"
-        },
-        {
-            "id": 2,
-            "label": "Paused"
-        }
-    ];
-    $scope.selectedStatus = $scope.statuses[0];
-    $scope.krDataChanged = 'KR_DATA_CHANGED';
-    $scope.hasAddError = false;
-    $scope.isAdding = false;
-    $scope.state = '';
+    $scope.state = "";
     $scope.hasSelectedRow = false;
     $scope.hasError = true;
     $scope.errorMessage = "";
@@ -38,12 +24,8 @@ function krController($rootScope, $scope, $http, krService, $location) {
         getKeywordResponseSets();
     }
 
-    function refreshGrid() {
-        $rootScope.$broadcast($scope.krDataChanged);
-    }
-
     $scope.gridOptions = {
-        data: 'krSets',
+        data: "krSets",
         enableSorting: true,
         enableRowSelection: true,
         enableRowHeaderSelection: true,
@@ -55,7 +37,7 @@ function krController($rootScope, $scope, $http, krService, $location) {
         ],
         onRegisterApi: function(gridApi) {
             $scope.gridApi = gridApi;
-            gridApi.selection.on.rowSelectionChanged($scope, function (rows) {
+            gridApi.selection.on.rowSelectionChanged($scope, function () {
                 $scope.errorMessage = "";
                 var selected = gridApi.selection.getSelectedRows();
                 $scope.hasSelectedRow = selected && selected.length > 0;
@@ -63,38 +45,38 @@ function krController($rootScope, $scope, $http, krService, $location) {
         }
     };
 
-    $scope.$on('$locationChangeStart', function (next, last) {
+    $scope.$on("$locationChangeStart", function () {
         $scope.errorMessage = "";
         var path = $location.path();
         
         $scope.showAddEditDelete =
-            path === '' ||
-            path === '/#' ||
-            path === '/';
+            path === "" ||
+            path === "/#" ||
+            path === "/";
 
-        if (path === '/Add' && $scope.state !== 'ADD') {
-            $scope.state = 'ADD';
-            $location.path('/');
+        if (path === "/Add" && $scope.state !== "ADD") {
+            $scope.state = "ADD";
+            $location.path("/");
         }
 
-        if (path === '/Edit' && $scope.state !== 'EDIT') {
-            $scope.state = 'EDIT';
-            $location.path('/');
+        if (path === "/Edit" && $scope.state !== "EDIT") {
+            $scope.state = "EDIT";
+            $location.path("/");
         }
     });
 
     $scope.onAddClicked = function () {
         $scope.errorMessage = "";
-        $scope.state = 'ADD';
-        $location.path('/Add');
+        $scope.state = "ADD";
+        $location.path("/Add");
     }
 
     $scope.onEditClicked = function () {
         var selected = $scope.gridApi.selection.getSelectedRows()[0];
-        $scope.selectedSet = selected;
+        gridService.setSelectedRow(selected);
         $scope.errorMessage = "";
-        $scope.state = 'EDIT';
-        $location.path('/Edit');
+        $scope.state = "EDIT";
+        $location.path("/Edit");
     }
 
     $scope.deleteKeywordResponseSet = function () {
@@ -103,18 +85,18 @@ function krController($rootScope, $scope, $http, krService, $location) {
         var selected = $scope.gridApi.selection.getSelectedRows()[0];
 
         krService.DeleteKrSet(selected.id)
-           .success(function (response) {
-               refreshGrid();
+           .success(function () {
+               gridService.refreshGrid();
                $scope.isDeleting = false;
                $scope.hasSelectedRow = false;
             })
-           .error(function (response) {
+           .error(function () {
                $scope.errorMessage = "Failed to Delete Keyword-Response Set.";
                $scope.isDeleting = false;
             });
     }
 
-    $scope.$on($scope.krDataChanged, function (event, args) {
+    $scope.$on(gridService.krDataChanged, function () {
         getKeywordResponseSets();
     });
 
@@ -140,29 +122,12 @@ function krController($rootScope, $scope, $http, krService, $location) {
                 }
                 $scope.isRedditUserNameLoading = false;
             })
-            .error(function (error) {
+            .error(function () {
                 $scope.isRedditUserNameLoading = false;
             });
     }
 
-    $scope.addKrSet = function () {
-        $scope.isAdding = true;
-        $scope.hasAddError = false;
-        krService.AddKrSet({
-            'Keyword': $scope.keyword,
-            'Response': $scope.response,
-            'StatusId': $scope.selectedStatus.id
-        }).success(function (response) {
-            refreshGrid();
-            goHome();
-            $scope.isAdding = false;
-        }).error(function (response) {
-            $scope.hasAddError = true;
-            $scope.isAdding = false;
-        });
-    }
-
     function goHome() {
-        $location.path('/');
+        locationService.goHome();
     }
 }

@@ -340,13 +340,17 @@
     <Content Include="Scripts\angular-ui-router.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\app\controller\addKrController.js" />
     <Content Include="Scripts\app\controller\controllers.js" />
     <Content Include="Scripts\app\controller\editKrController.js" />
     <Content Include="Scripts\app\controller\krController.js" />
     <Content Include="Scripts\app\Login-template.js" />
     <Content Include="Scripts\app\myApp.js" />
     <Content Include="Scripts\app\controller\redditAuthCtrl.js" />
+    <Content Include="Scripts\app\service\gridService.js" />
     <Content Include="Scripts\app\service\krService.js" />
+    <Content Include="Scripts\app\service\locationService.js" />
+    <Content Include="Scripts\app\service\services.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
