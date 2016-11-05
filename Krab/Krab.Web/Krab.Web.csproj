@@ -263,6 +263,7 @@
     <Compile Include="Bootstrap\UnityResolver.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\BaseController.cs" />
+    <Compile Include="Controllers\Api\KeywordResponseSetReportController.cs" />
     <Compile Include="Controllers\Api\RedditAuthorizationController.cs" />
     <Compile Include="Controllers\Api\RedditUserController.cs" />
     <Compile Include="Controllers\Api\SubredditController.cs" />

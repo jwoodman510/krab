@@ -2,15 +2,19 @@
     .module("myApp.controllers")
     .controller("generateReportController", generateReportController);
 
-function generateReportController($scope, modalService) {
+function generateReportController($scope, modalService, $http) {
 
     $scope.format = "dd-MMMM-yyyy";
+    $scope.hasError = false;
+    $scope.errorMsg = "";
+    $scope.isLoading = false;
 
     function init() {
-        var yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        $scope.endDate = yesterday;
-        $scope.startDate = yesterday;
+        var sixDaysAgo = new Date();
+        sixDaysAgo.setDate(sixDaysAgo.getDate() - 6);
+        $scope.startDate = sixDaysAgo;
+
+        $scope.endDate = new Date();;
     };
 
     init();
@@ -32,7 +36,20 @@ function generateReportController($scope, modalService) {
     };
 
     $scope.submit = function () {
-        modalService.close();
+        $scope.hasError = false;
+        $scope.isLoading = true;
+        $scope.errorMsg = "";
+
+        $http.get("/api/keywordResponseSetReport?startDateMs=" + $scope.startDate.getTime() + "&endDateMs=" + $scope.endDate.getTime())
+            .success(function (data) {
+                $scope.isLoading = false;
+                modalService.close();
+            })
+            .error(function () {
+                $scope.errorMsg = "An error occured.";
+                $scope.hasError = true;
+                $scope.isLoading = false;
+            });
     }
 
     $scope.cancel = function () {

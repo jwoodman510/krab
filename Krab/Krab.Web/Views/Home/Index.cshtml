@@ -8,8 +8,9 @@
     <div ng-app="myApp" class="row">
         <br />
         <div ng-controller="krController">
-            <div ng-if="isRedditUserNameLoading || isKrSetsLoading">
-                <i class="fa fa-spinner fa-spin fa-4x" style="padding-top:10px"></i>
+            <div class="row centered" ng-if="isRedditUserNameLoading || isKrSetsLoading">
+                <div style="padding-top: 200px;"></div>
+                <i class="fa fa-spinner fa-spin fa-4x"></i>
             </div>            
             <div ng-if="!isRedditUserNameLoading && !isKrSetsLoading">
                 <div id="header" ng-if="!needsRedditAccount">

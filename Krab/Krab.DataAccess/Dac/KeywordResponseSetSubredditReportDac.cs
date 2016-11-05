@@ -11,7 +11,9 @@ namespace Krab.DataAccess.Dac
     public interface IKeywordResponseSetSubredditReportDac
     {
         IQueryable<Report> GetByKeywordResponseSets(IEnumerable<int> keywordResponseSetIds);
-            
+        
+        IQueryable<Report> GetByKeywordResponseSetsDateRange(IEnumerable<int> keywordResponseSetIds, DateTime startDateUtc, DateTime endDateUtc);
+
         Report Get(int keywordResponseSetId, long subredditId, DateTime dateTimeUtc);
 
         IQueryable<Report> GetReadyToClose();
@@ -40,6 +42,23 @@ namespace Krab.DataAccess.Dac
             return _context.KeywordResponseSetSubredditReports
                 .AsNoTracking()
                 .Where(r => keywordResponseSetIds.Contains(r.KeywordResponseSetId));
+        }
+
+        public IQueryable<Report> GetByKeywordResponseSetsDateRange(IEnumerable<int> keywordResponseSetIds, DateTime startDateUtc,
+            DateTime endDateUtc)
+        {
+            if (keywordResponseSetIds == null)
+                return new List<Report>().AsQueryable();
+
+            startDateUtc = startDateUtc.Date;
+            endDateUtc = endDateUtc.Date;
+
+            return _context.KeywordResponseSetSubredditReports
+                .AsNoTracking()
+                .Where(r =>
+                    keywordResponseSetIds.Contains(r.KeywordResponseSetId) &&
+                    r.ReportDateUtc >= startDateUtc &&
+                    r.ReportDateUtc <= endDateUtc);
         }
 
         public Report Get(int keywordResponseSetId, long subredditId, DateTime dateTimeUtc)
