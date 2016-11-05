@@ -7,6 +7,7 @@ function editKrController($rootScope, $scope, $http, krService, locationService,
     $scope.response = "";
     $scope.statusId = "";
     $scope.hasError = false;
+    $scope.errorMsg = "";
     $scope.isSaving = false;
     $scope.statuses = [
         {
@@ -35,6 +36,15 @@ function editKrController($rootScope, $scope, $http, krService, locationService,
     $scope.UpdateKrSet = function () {
         $scope.isSaving = true;
         $scope.hasError = false;
+        var validationResult = validateSet();
+
+        if (validationResult && validationResult.length > 0) {
+            $scope.errorMsg = validationResult;
+            $scope.isSaving = false;
+            $scope.hasError = true;
+            return;
+        }
+
         var set = {
             'Id': $scope.selectedSet.id,
             'Keyword': $scope.keyword,
@@ -49,8 +59,20 @@ function editKrController($rootScope, $scope, $http, krService, locationService,
                 locationService.goHome();
             })
             .error(function () {
+                $scope.errorMsg = "Error udpating keyword-response set.";
                 $scope.isSaving = false;
                 $scope.hasError = true;
             });
+    }
+
+    function validateSet() {
+        if (!$scope.keyword || $scope.keyword === null || $scope.keyword.length < 5 || $scope.keyword.length > 50) {
+            return "Keyword must be 5 - 50 characters.";
+        }
+        else if (!$scope.response || $scope.response === null || $scope.response.length < 1 || $scope.response.length > 1000) {
+            return "Response must be 1 - 1000 characters.";
+        }
+
+        return null;
     }
 }
