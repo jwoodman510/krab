@@ -7,6 +7,7 @@ using Microsoft.Practices.Unity;
 using System;
 using System.Configuration;
 using System.Linq;
+using Krab.Global;
 
 namespace Krab.KeywordResponseSetProcessorService.Bootstrap
 {
@@ -24,6 +25,8 @@ namespace Krab.KeywordResponseSetProcessorService.Bootstrap
             RegisterInstances(container);
 
             StartReceiveBus(container);
+
+            _logger.LogInfo($"ClientId: {AppSettings.ClientId}");
         }
 
         private static void RegisterInstances(IUnityContainer container)

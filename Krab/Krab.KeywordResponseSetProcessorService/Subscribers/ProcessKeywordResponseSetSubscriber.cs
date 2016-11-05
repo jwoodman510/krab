@@ -28,17 +28,20 @@ namespace Krab.KeywordResponseSetProcessorService.Subscribers
         {
             _logger.LogInfo($"Processing keyword [{message.Keyword}] for UserId: {message.UserId}");
 
-            var subreddits = _subRedditDac.GetByKeywordResponseSetId(message.Id)?.ToList() ?? new List<DataAccess.Subreddit.Subreddit>();
+            var subreddits = _subRedditDac.GetByKeywordResponseSetId(message.Id)?.ToList() ??
+                             new List<DataAccess.Subreddit.Subreddit>();
 
             if (subreddits.Count == 0)
             {
-                _logger.LogInfo($"Keyword [{message.Keyword}] for UserId: {message.UserId} has no associated subreddits.");
+                _logger.LogInfo(
+                    $"Keyword [{message.Keyword}] for UserId: {message.UserId} has no associated subreddits.");
                 return;
             }
 
             if (subreddits.Count > 5)
             {
-                _logger.LogInfo($"Keyword [{message.Keyword}] for UserId: {message.UserId} has {subreddits.Count} associated subreddits. Truncating the list.");
+                _logger.LogInfo(
+                    $"Keyword [{message.Keyword}] for UserId: {message.UserId} has {subreddits.Count} associated subreddits. Truncating the list.");
                 subreddits = subreddits.GetRange(0, 5);
             }
 
@@ -50,8 +53,18 @@ namespace Krab.KeywordResponseSetProcessorService.Subscribers
             {
                 _logger.LogInfo($"Retreiving the last 100 comments from /r/{subreddit.SubredditName}...");
 
-                var comments = reddit
-                    .GetSubreddit(subreddit.SubredditName)
+                Subreddit s = null;
+
+                try
+                {
+                    s = reddit.GetSubreddit(subreddit.SubredditName);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Failed to get subreddit: {subreddit.SubredditName}", ex);
+                }
+
+                var comments = s
                     ?.Comments
                     ?.GetListing(100)
                     ?.ToList() ?? new List<Comment>();
