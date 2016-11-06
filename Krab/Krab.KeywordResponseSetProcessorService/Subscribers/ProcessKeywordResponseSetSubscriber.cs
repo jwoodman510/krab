@@ -71,6 +71,8 @@ namespace Krab.KeywordResponseSetProcessorService.Subscribers
                     ?.GetListing(100)
                     ?.ToList() ?? new List<Comment>();
 
+                var numResponses = 0;
+
                 foreach (var comment in comments)
                 {
                     if (HasSameAuthor(message.RedditUserName, comment))
@@ -88,16 +90,22 @@ namespace Krab.KeywordResponseSetProcessorService.Subscribers
                     {
                         comment.Reply(message.Response);
 
-                        _sendBus.PublishAsync(new KeywordResponseSetResponseSubmitted
-                        {
-                            KeywordResponseSetId = message.Id,
-                            DateTimeUtc = DateTime.UtcNow,
-                            SubredditId = subreddit.Id
-                        });
+                        numResponses++;
                     }
                     catch (Exception ex)
                     {
                         _logger.LogError($"Failed to reply comment. Id={comment.Id}.", ex);
+                    }
+
+                    if (numResponses > 0)
+                    {
+                        _sendBus.PublishAsync(new KeywordResponseSetResponsesSubmitted
+                        {
+                            KeywordResponseSetId = message.Id,
+                            DateTimeUtc = DateTime.UtcNow,
+                            SubredditId = subreddit.Id,
+                            NumResponses = numResponses
+                        });
                     }
                 }
             }

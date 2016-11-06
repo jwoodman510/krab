@@ -29,7 +29,7 @@ namespace Krab.KeywordResponseSetReportingService
         public class Service
         {
             private static ILogger _logger;
-
+            
             public void Start()
             {
                 Bootstrap.Bootstrapper.Configure();
