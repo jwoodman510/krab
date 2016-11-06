@@ -12,6 +12,8 @@ namespace Krab.DataAccess.Dac
 
         IEnumerable<Subreddit.Subreddit> GetByKeywordResponseSetId(int id);
 
+        IEnumerable<Subreddit.Subreddit> GetByKeywordResponseSetIds(IEnumerable<int> ids);
+
         Subreddit.Subreddit Insert(Subreddit.Subreddit subreddit);
 
         void Delete(IEnumerable<int> ids);
@@ -41,6 +43,13 @@ namespace Krab.DataAccess.Dac
             return _subredditDb.Subreddits
                 .AsNoTracking()
                 .Where(s => s.KeywordResponseSetId == id);
+        }
+
+        public IEnumerable<Subreddit.Subreddit> GetByKeywordResponseSetIds(IEnumerable<int> ids)
+        {
+            return ids == null
+                ? Enumerable.Empty<Subreddit.Subreddit>()
+                : _subredditDb.Subreddits.Where(s => ids.Contains(s.KeywordResponseSetId));
         }
 
         public Subreddit.Subreddit Insert(Subreddit.Subreddit subreddit)

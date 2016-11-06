@@ -4,6 +4,13 @@
     </div>
     <div class="modal-body" id="modal-body">
         <div class="row" ng-show="!isLoading">
+            <div class="checkbox pad-left-20">
+                <label>
+                    <input type="checkbox" ng-model="breakoutBySubreddit"> Breakout by Subreddit
+                </label>
+            </div>
+        </div>
+        <div class="row" ng-show="!isLoading">
             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
                 <p class="input-group">
                     <input type="text" class="form-control" uib-datepicker-popup ng-model="startDate" is-open="startDatePopup.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
