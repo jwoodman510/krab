@@ -130,7 +130,7 @@ namespace Krab.Web.Controllers
                         "text/html",
                         "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "About");
                 }
                 AddErrors(result);
             }

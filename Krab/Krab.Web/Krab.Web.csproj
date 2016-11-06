@@ -261,6 +261,7 @@
     <Compile Include="Bootstrap\Bootstrapper.cs" />
     <Compile Include="Bootstrap\UnityFilterProvider.cs" />
     <Compile Include="Bootstrap\UnityResolver.cs" />
+    <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\BaseController.cs" />
     <Compile Include="Controllers\Api\KeywordResponseSetReportController.cs" />
@@ -1217,6 +1218,7 @@
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
     <Content Include="Scripts\knockout.validation.min.js.map" />
+    <Content Include="Views\About\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
