@@ -18,7 +18,7 @@ namespace Krab.DataAccess.Dac
 
         IQueryable<Report> GetReadyToClose();
 
-        Report IncrementResponseOrCreate(int keywordResponseSetId, long subredditId, DateTime dateTimeUtc);
+        Report IncrementResponseOrCreate(int keywordResponseSetId, long subredditId, DateTime dateTimeUtc, int incrementBy);
 
         void Close(int keywordResponseSetId, long subredditId, DateTime dateTimeUtc);
 
@@ -79,8 +79,11 @@ namespace Krab.DataAccess.Dac
                 .Where(r => r.ReportDateUtc <= delteDaysOlderThan);
         }
 
-        public Report IncrementResponseOrCreate(int keywordResponseSetId, long subredditId, DateTime dateTimeUtc)
+        public Report IncrementResponseOrCreate(int keywordResponseSetId, long subredditId, DateTime dateTimeUtc, int incrementBy)
         {
+            if (incrementBy < 1)
+                throw new ValidationException("Invalid Increment.");
+
             var rpt = Find(keywordResponseSetId, subredditId, dateTimeUtc);
 
             if (rpt == null)
@@ -91,7 +94,7 @@ namespace Krab.DataAccess.Dac
                     SubredditId = subredditId,
                     ReportDateUtc = dateTimeUtc.Date,
                     IsClosed = false,
-                    NumResponses = 1
+                    NumResponses = incrementBy
                 };
 
                 _context.KeywordResponseSetSubredditReports.Add(created);
@@ -102,7 +105,7 @@ namespace Krab.DataAccess.Dac
 
             var entry = _context.Entry(rpt);
 
-            entry.Entity.NumResponses++;
+            entry.Entity.NumResponses += incrementBy;
 
             _context.SaveChanges();
 

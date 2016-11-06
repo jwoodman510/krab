@@ -2,6 +2,7 @@
     .module("myApp", [
         "ui.grid",
         "ui.grid.selection",
+        "ui.grid.resizeColumns",
         "ngRoute",
         "myApp.services",
         "myApp.controllers",

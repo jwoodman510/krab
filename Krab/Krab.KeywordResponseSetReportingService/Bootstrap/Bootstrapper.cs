@@ -38,7 +38,7 @@ namespace Krab.KeywordResponseSetReportingService.Bootstrap
             Global.Configuration.Register(container);
             Caching.Configuration.RegisterRedisCache(container);
 
-            container.RegisterType<IMessageSubscriber<KeywordResponseSetResponseSubmitted>, KeywordResponseSetResponseSubmittedSubscriber>();
+            container.RegisterType<IMessageSubscriber<KeywordResponseSetResponsesSubmitted>, KeywordResponseSetResponseSubmittedSubscriber>();
             
             Bus.Configuration.TryGetMessageSubscribersInContainingAssembly<KeywordResponseSetResponseSubmittedSubscriber>();
         }
@@ -48,10 +48,10 @@ namespace Krab.KeywordResponseSetReportingService.Bootstrap
             _logger.LogInfo("Starting Receive Bus...");
 
             var busHost = ConfigurationManager.AppSettings["BusHost"];
-
+            
             _receiveBus = new ReceiveBus(busHost, _logger);
 
-            _receiveBus.RegisterSubscriber<IMessageSubscriber<KeywordResponseSetResponseSubmitted>, KeywordResponseSetResponseSubmitted>();
+            _receiveBus.RegisterSubscriber<IMessageSubscriber<KeywordResponseSetResponsesSubmitted>, KeywordResponseSetResponsesSubmitted>();
 
             container.RegisterInstance(typeof(IReceiveBus), _receiveBus);
             container.RegisterInstance(typeof(ISendBus), new SendBus(busHost));

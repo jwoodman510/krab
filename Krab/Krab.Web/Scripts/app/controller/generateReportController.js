@@ -8,6 +8,7 @@ function generateReportController($scope, modalService, $http, $timeout) {
     $scope.hasError = false;
     $scope.errorMsg = "";
     $scope.isLoading = false;
+    $scope.breakoutBySubreddit = false;
 
     function init() {
         var sixDaysAgo = new Date();
@@ -41,6 +42,7 @@ function generateReportController($scope, modalService, $http, $timeout) {
             "Report Date UTC",
             "Keyword",
             "Response",
+            "Subreddit",
             "Number of Responses"
         ];
     }
@@ -50,7 +52,11 @@ function generateReportController($scope, modalService, $http, $timeout) {
         $scope.isLoading = true;
         $scope.errorMsg = "";
 
-        $http.get("/api/keywordResponseSetReport?startDateMs=" + $scope.startDate.getTime() + "&endDateMs=" + $scope.endDate.getTime())
+        var rptType = $scope.breakoutBySubreddit
+            ? "subreddit"
+            : "standard";
+
+        $http.get("/api/keywordResponseSetReport?startDateMs=" + $scope.startDate.getTime() + "&endDateMs=" + $scope.endDate.getTime() + "&reportType=" + rptType)
             .success(function (data) {
 
                 $scope.reportData = data.result;
