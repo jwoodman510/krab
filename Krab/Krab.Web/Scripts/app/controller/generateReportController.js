@@ -38,7 +38,7 @@ function generateReportController($scope, modalService, $http, $timeout) {
     $scope.getHeader = function() {
         return [
             "Id",
-            "Report Date",
+            "Report Date UTC",
             "Keyword",
             "Response",
             "Number of Responses"
@@ -55,12 +55,18 @@ function generateReportController($scope, modalService, $http, $timeout) {
 
                 $scope.reportData = data.result;
 
-                $timeout(function () {
-                    angular.element("#downloadCsvButton").triggerHandler("click");
-                });
+                if (data.result && data.result.length > 0) {
+                    $timeout(function() {
+                        angular.element("#downloadCsvButton").triggerHandler("click");
+                    });
 
-                $scope.isLoading = false;
-                modalService.close();
+                    $scope.isLoading = false;
+                    modalService.close();
+                } else {
+                    $scope.errorMsg = "No data found.";
+                    $scope.hasError = true;
+                    $scope.isLoading = false;
+                }
             })
             .error(function () {
                 $scope.errorMsg = "An error occured.";
