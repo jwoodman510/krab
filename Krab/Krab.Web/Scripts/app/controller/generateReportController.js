@@ -55,7 +55,7 @@ function generateReportController($scope, modalService, $http, $timeout) {
             ];
     }
 
-    $scope.getFileName = ($scope.breakoutBySubreddit && $scope.breakoutBySubreddit === true)
+    $scope.fileName = ($scope.breakoutBySubreddit && $scope.breakoutBySubreddit === true)
             ? "keyword_subreddit_report.csv"
             : "keyword_report.csv";
 
@@ -76,10 +76,10 @@ function generateReportController($scope, modalService, $http, $timeout) {
                 if (data.result && data.result.length > 0) {
                     $timeout(function() {
                         angular.element("#downloadCsvButton").triggerHandler("click");
+                    }).then(function() {
+                        $scope.isLoading = false;
+                        modalService.close();
                     });
-
-                    $scope.isLoading = false;
-                    modalService.close();
                 } else {
                     $scope.errorMsg = "No data found.";
                     $scope.hasError = true;
