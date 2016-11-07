@@ -37,22 +37,34 @@ function generateReportController($scope, modalService, $http, $timeout) {
     };
 
     $scope.getHeader = function() {
-        return [
-            "Id",
-            "Report Date UTC",
-            "Keyword",
-            "Response",
-            "Subreddit",
-            "Number of Responses"
-        ];
+        return ($scope.breakoutBySubreddit && $scope.breakoutBySubreddit === true)
+            ? [
+                "Id",
+                "Report Date UTC",
+                "Keyword",
+                "Response",
+                "Subreddit",
+                "Number of Responses"
+            ]
+            : [
+                "Id",
+                "Report Date UTC",
+                "Keyword",
+                "Response",
+                "Number of Responses"
+            ];
     }
+
+    $scope.getFileName = ($scope.breakoutBySubreddit && $scope.breakoutBySubreddit === true)
+            ? "keyword_subreddit_report.csv"
+            : "keyword_report.csv";
 
     $scope.submit = function () {
         $scope.hasError = false;
         $scope.isLoading = true;
         $scope.errorMsg = "";
 
-        var rptType = $scope.breakoutBySubreddit
+        var rptType = ($scope.breakoutBySubreddit && $scope.breakoutBySubreddit === true)
             ? "subreddit"
             : "standard";
 
