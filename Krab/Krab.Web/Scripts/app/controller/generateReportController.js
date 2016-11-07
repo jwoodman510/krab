@@ -15,7 +15,8 @@ function generateReportController($scope, modalService, $http, $timeout) {
         sixDaysAgo.setDate(sixDaysAgo.getDate() - 6);
         $scope.startDate = sixDaysAgo;
 
-        $scope.endDate = new Date();;
+        $scope.endDate = new Date();
+        $scope.fileName = "keyword_report";
     };
 
     init();
@@ -54,10 +55,6 @@ function generateReportController($scope, modalService, $http, $timeout) {
                 "Number of Responses"
             ];
     }
-
-    $scope.fileName = ($scope.breakoutBySubreddit && $scope.breakoutBySubreddit === true)
-            ? "keyword_subreddit_report.csv"
-            : "keyword_report.csv";
 
     $scope.submit = function () {
         $scope.hasError = false;
@@ -112,6 +109,8 @@ function generateReportController($scope, modalService, $http, $timeout) {
 
         return ($scope.endDate <= today) &&
                ($scope.endDate >= $scope.startDate &&
-               ($scope.startDate >= minDate));
+               ($scope.startDate >= minDate)) &&
+                $scope.filename && $scope.filename.length > 0 &&
+                $scope.isLoading === false;
     }
 }

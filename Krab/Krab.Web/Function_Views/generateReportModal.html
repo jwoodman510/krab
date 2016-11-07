@@ -3,12 +3,15 @@
         <h3 class="modal-title" id="modal-title">Generate Report</h3>
     </div>
     <div class="modal-body" id="modal-body">
-        <div class="row" ng-show="!isLoading">
-            <div class="checkbox pad-left-20">
-                <label>
-                    <input type="checkbox" ng-model="breakoutBySubreddit"> Breakout by Subreddit
-                </label>
-            </div>
+        <div class="row pad-left-20" ng-show="!isLoading">
+            <label for="filename">Filename: </label>
+            <input type="text" class="long-input" ng-model="filename" id="filename"/>
+            <label for="filename"> .csv</label>
+        </div>
+        <div class="row pad-left-20" ng-show="!isLoading">
+            <label class="checkbox pad-left-20">
+                <input type="checkbox" ng-model="breakoutBySubreddit"> Breakout by Subreddit
+            </label>
         </div>
         <div class="row" ng-show="!isLoading">
             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
@@ -39,7 +42,7 @@
         <label class="has-error pad-right-20" ng-show="hasError">{{errorMsg}}</label>
         <button class="btn btn-primary" type="button" ng-click="submit()" ng-show="isValid()">Submit</button>
         <button class="btn" id="downloadCsvButton" type="button" style="display: none;"
-                ng-csv="reportData" lazy-load="true" filename="keyword_report.csv" field-separator=","
+                ng-csv="reportData" lazy-load="true" filename="{{filename}}.csv" field-separator=","
                 csv-header="getHeader()"></button>
         <button class="btn btn-primary disabled" type="button" ng-show="!isValid()">Submit</button>
         <button class="btn btn-info" type="button" ng-click="cancel()">Cancel</button>
