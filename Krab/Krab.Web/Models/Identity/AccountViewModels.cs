@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Krab.Web.Models.Identity
 {
+
     // Models returned by AccountController actions.
     public class ExternalLoginConfirmationViewModel
     {

@@ -281,6 +281,7 @@
     <Compile Include="Models\Identity\IdentityModels.cs" />
     <Compile Include="Models\Identity\ManageViewModels.cs" />
     <Compile Include="Models\Identity\MeViewModels.cs" />
+    <Compile Include="Models\Identity\ParentViewModel.cs" />
     <Compile Include="Models\RedditUser.cs" />
     <Compile Include="Models\Response\OkResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

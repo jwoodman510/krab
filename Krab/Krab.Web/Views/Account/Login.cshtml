@@ -1,6 +1,6 @@
 ﻿@using Krab.Web.Models
 @using Krab.Web.Models.Identity
-@model Krab.Web.Models.Identity.LoginViewModel
+@model Krab.Web.Models.Identity.ParentViewModel
 
 <head>
     <meta charset="utf-8" />
@@ -29,24 +29,24 @@
                             <hr />
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="form-group">
-                                @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                                @Html.LabelFor(m => m.LoginViewModel.Email, new { @class = "col-md-2 control-label" })
                                 <div class="col-md-10">
-                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                    @Html.TextBoxFor(m => m.LoginViewModel.Email, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.LoginViewModel.Email, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                                @Html.LabelFor(m => m.LoginViewModel.Password, new { @class = "col-md-2 control-label" })
                                 <div class="col-md-10">
-                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                    @Html.PasswordFor(m => m.LoginViewModel.Password, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.LoginViewModel.Password, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-offset-2 col-md-10">
                                     <div class="checkbox">
-                                        @Html.CheckBoxFor(m => m.RememberMe)
-                                        @Html.LabelFor(m => m.RememberMe)
+                                        @Html.CheckBoxFor(m => m.LoginViewModel.RememberMe)
+                                        @Html.LabelFor(m => m.LoginViewModel.RememberMe)
                                     </div>
                                 </div>
                             </div>
@@ -82,18 +82,18 @@
 
                             <div class="input-container">
                                 <div> <h3 style="color: #e9e9e9;">Email:</h3></div>
-                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                @Html.TextBoxFor(m => m.RegisterViewModel.Email, new { @class = "form-control" })
                             </div>
 
                             <div class="input-container">
                                 <div> <h3 style="color: #e9e9e9;">Password:</h3></div>
-                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                @Html.PasswordFor(m => m.RegisterViewModel.Password, new { @class = "form-control" })
                             </div>
 
-                            @*<div class="input-container">
+                            <div class="input-container">
                                 <div> <h3 style="color: #e9e9e9;">Confirm Password:</h3></div>
-                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-                            </div>*@
+                                @Html.PasswordFor(m => m.RegisterViewModel.ConfirmPassword, new { @class = "form-control" })
+                            </div>
 
                             <div class="form-group">
                                 <div class="button-container">
@@ -104,7 +104,6 @@
                         }
                     </section>
                 </div>
-
             </div>
         </div>
     </div>
