@@ -271,6 +271,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Api\KeywordResponseSetsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SubredditsController.cs" />
     <Compile Include="Exceptions\ApiException.cs" />
     <Compile Include="Exceptions\NotFoundException.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />
@@ -281,6 +282,7 @@
     <Compile Include="Models\Identity\IdentityModels.cs" />
     <Compile Include="Models\Identity\ManageViewModels.cs" />
     <Compile Include="Models\Identity\MeViewModels.cs" />
+    <Compile Include="Models\Identity\ParentViewModel.cs" />
     <Compile Include="Models\RedditUser.cs" />
     <Compile Include="Models\Response\OkResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

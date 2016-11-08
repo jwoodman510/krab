@@ -15,7 +15,8 @@ function generateReportController($scope, modalService, $http, $timeout) {
         sixDaysAgo.setDate(sixDaysAgo.getDate() - 6);
         $scope.startDate = sixDaysAgo;
 
-        $scope.endDate = new Date();;
+        $scope.endDate = new Date();
+        $scope.fileName = "keyword_report";
     };
 
     init();
@@ -37,14 +38,22 @@ function generateReportController($scope, modalService, $http, $timeout) {
     };
 
     $scope.getHeader = function() {
-        return [
-            "Id",
-            "Report Date UTC",
-            "Keyword",
-            "Response",
-            "Subreddit",
-            "Number of Responses"
-        ];
+        return ($scope.breakoutBySubreddit && $scope.breakoutBySubreddit === true)
+            ? [
+                "Id",
+                "Report Date UTC",
+                "Keyword",
+                "Response",
+                "Subreddit",
+                "Number of Responses"
+            ]
+            : [
+                "Id",
+                "Report Date UTC",
+                "Keyword",
+                "Response",
+                "Number of Responses"
+            ];
     }
 
     $scope.submit = function () {
@@ -52,7 +61,7 @@ function generateReportController($scope, modalService, $http, $timeout) {
         $scope.isLoading = true;
         $scope.errorMsg = "";
 
-        var rptType = $scope.breakoutBySubreddit
+        var rptType = ($scope.breakoutBySubreddit && $scope.breakoutBySubreddit === true)
             ? "subreddit"
             : "standard";
 
@@ -64,10 +73,10 @@ function generateReportController($scope, modalService, $http, $timeout) {
                 if (data.result && data.result.length > 0) {
                     $timeout(function() {
                         angular.element("#downloadCsvButton").triggerHandler("click");
+                    }).then(function() {
+                        $scope.isLoading = false;
+                        modalService.close();
                     });
-
-                    $scope.isLoading = false;
-                    modalService.close();
                 } else {
                     $scope.errorMsg = "No data found.";
                     $scope.hasError = true;
@@ -100,6 +109,8 @@ function generateReportController($scope, modalService, $http, $timeout) {
 
         return ($scope.endDate <= today) &&
                ($scope.endDate >= $scope.startDate &&
-               ($scope.startDate >= minDate));
+               ($scope.startDate >= minDate)) &&
+                $scope.filename && $scope.filename.length > 0 &&
+                $scope.isLoading === false;
     }
 }

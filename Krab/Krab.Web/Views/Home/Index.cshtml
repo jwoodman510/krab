@@ -15,7 +15,7 @@
             <div ng-if="!isRedditUserNameLoading && !isKrSetsLoading">
                 <div id="header" ng-if="!needsRedditAccount">
 
-                    <div class="font">{{redditUserName}}</div>
+                    <div class="font" style="text-align:center; font-size:25px;">{{redditUserName}}</div>
                     <br />
                     <div ng-if="showAddEditDelete">
                         <a class="fa fa-plus-square fa-2x clickable" data-ng-click="onAddClicked()"> Create</a>
@@ -25,7 +25,18 @@
                         <a class="fa fa-remove fa-2x disabled" style="padding-left: 20px;" data-ng-show="!hasSelectedRow"> Delete</a>
                         <i class="fa fa-spinner fa-spin" data-ng-show="isDeleting"></i>
                         <label class="has-error" data-ng-show="hasError" style="padding-left:20px">{{errorMessage}}</label>
-                        <a class="fa fa-file-excel-o fa-2x clickable" style="float: right;" data-ng-click="onGenerateReportClicked()"> Generate Report</a>
+                        <div class="btn-group" uib-dropdown is-open="status.isopen" style="float: right;">
+                            <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
+                                <i class="fa fa-area-chart"></i>
+                                 Tools
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                <li role="menuitem">
+                                    <a class="fa fa-file-excel-o clickable" data-ng-click="onGenerateReportClicked()"> Generate Report</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                     <br />
                     <div ng-view></div>
