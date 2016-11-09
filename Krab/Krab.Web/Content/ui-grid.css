@@ -1092,7 +1092,6 @@ div.ui-grid-cell input.ng-valid {
   background-color: #f3f3f3;
 }
 .ui-grid-cell.ui-grid-disable-selection.ui-grid-row-header-cell {
-  pointer-events: none;
 }
 .ui-grid-expandable-buttons-cell i {
   pointer-events: all;

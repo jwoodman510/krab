@@ -27,11 +27,10 @@ function krController($rootScope, $scope, $http, krService, locationService, $lo
     $scope.gridOptions = {
         data: "krSets",
         enableSorting: true,
-        enableRowSelection: true,
-        enableRowHeaderSelection: true,
         multiSelect: false,
         enableColumnResizing: true,
         enableFiltering: true,
+        enableFullRowSelection: true,
         columnDefs: [
             {
                 field: "keyword",
@@ -113,11 +112,13 @@ function krController($rootScope, $scope, $http, krService, locationService, $lo
     }
 
     $scope.$on(gridService.krDataChanged, function () {
-        getKeywordResponseSets();
+        getKeywordResponseSets().then(function() {
+            $scope.hasSelectedRow = false;
+        });
     });
 
     function getKeywordResponseSets() {
-        krService.getByUserId()
+        return krService.getByUserId()
             .success(function (response) {
                 $scope.krSets = response.result;
                 $scope.isKrSetsLoading = false;
