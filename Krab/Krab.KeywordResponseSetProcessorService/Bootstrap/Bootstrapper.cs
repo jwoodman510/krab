@@ -24,6 +24,8 @@ namespace Krab.KeywordResponseSetProcessorService.Bootstrap
 
             StartBus(container);
 
+            Bus.Configuration.TryGetMessageSubscribersInContainingAssembly<ProcessKeywordResponseSetSubscriber>();
+
             _logger.LogInfo($"ClientId: {AppSettings.ClientId}");
         }
 
@@ -40,8 +42,6 @@ namespace Krab.KeywordResponseSetProcessorService.Bootstrap
             Caching.Configuration.RegisterRedisCache(container);
 
             container.RegisterType<IMessageSubscriber<ProcessKeywordResponseSet>, ProcessKeywordResponseSetSubscriber>();
-
-            Bus.Configuration.TryGetMessageSubscribersInContainingAssembly<ProcessKeywordResponseSetSubscriber>();
         }
 
         private static void StartBus(IUnityContainer container)
@@ -51,7 +51,7 @@ namespace Krab.KeywordResponseSetProcessorService.Bootstrap
             var busHost = ConfigurationManager.AppSettings["BusHost"];
 
             _receiveBus = new ReceiveBus(busHost, _logger);
-
+            
             _receiveBus.RegisterSubscriber<IMessageSubscriber<ProcessKeywordResponseSet>, ProcessKeywordResponseSet>();
 
             container.RegisterInstance(typeof(IReceiveBus), _receiveBus);

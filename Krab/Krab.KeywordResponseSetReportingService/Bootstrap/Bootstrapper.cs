@@ -24,6 +24,8 @@ namespace Krab.KeywordResponseSetReportingService.Bootstrap
 
             StartBus(container);
 
+            container.RegisterType<IMessageSubscriber<KeywordResponseSetResponsesSubmitted>, KeywordResponseSetResponseSubmittedSubscriber>();
+
             _logger.LogInfo($"ClientId: {AppSettings.ClientId}");
         }
 
@@ -37,8 +39,6 @@ namespace Krab.KeywordResponseSetReportingService.Bootstrap
             DataAccess.Configuration.Register(container);
             Global.Configuration.Register(container);
             Caching.Configuration.RegisterRedisCache(container);
-
-            container.RegisterType<IMessageSubscriber<KeywordResponseSetResponsesSubmitted>, KeywordResponseSetResponseSubmittedSubscriber>();
             
             Bus.Configuration.TryGetMessageSubscribersInContainingAssembly<KeywordResponseSetResponseSubmittedSubscriber>();
         }
