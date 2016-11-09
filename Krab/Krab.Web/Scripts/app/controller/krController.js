@@ -31,6 +31,7 @@ function krController($rootScope, $scope, $http, krService, locationService, $lo
         enableRowHeaderSelection: true,
         multiSelect: false,
         enableColumnResizing: true,
+        enableFiltering: true,
         columnDefs: [
             {
                 field: "keyword",
