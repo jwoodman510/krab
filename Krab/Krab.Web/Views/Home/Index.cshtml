@@ -5,7 +5,7 @@
 <script src="../../Scripts/app/myApp.js"></script>
 
 <div class="container">
-    <div ng-app="myApp" class="row">
+    <div ng-app="myApp" class="row" style="padding-top:50px">
         <br />
         <div ng-controller="krController">
             <div class="row centered" ng-if="isRedditUserNameLoading || isKrSetsLoading">
@@ -14,7 +14,6 @@
             </div>            
             <div ng-if="!isRedditUserNameLoading && !isKrSetsLoading">
                 <div id="header" ng-if="!needsRedditAccount">
-
                     <div class="font" style="text-align:center; font-size:25px;">{{redditUserName}}</div>
                     <br />
                     <div ng-if="showAddEditDelete">
