@@ -8,7 +8,8 @@
         "myApp.controllers",
         "ui.bootstrap",
         "ngSanitize",
-        "ngCsv"
+        "ngCsv",
+        "nvd3"
     ])
     .config(function ($routeProvider) {
          $routeProvider

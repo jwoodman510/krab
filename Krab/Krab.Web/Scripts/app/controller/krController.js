@@ -151,17 +151,20 @@ function krController($rootScope, $scope, $http, krService, locationService, $lo
     $scope.onManageSubredditsClicked = function(row) {
         modalService.setData(row.entity);
         modalService.open({
-            controller: "manageSubredditsController",
-            templateUrl: "Function_Views/manageSubredditsModal.html",
-            controllerAs: "msCtrl"
+            templateUrl: "Function_Views/manageSubredditsModal.html"
         });
     }
 
     $scope.onGenerateReportClicked = function() {
         modalService.open({
-            controller: "generateReportController",
-            templateUrl: "Function_Views/generateReportModal.html",
-            controllerAs: "gCtrl"
+            templateUrl: "Function_Views/generateReportModal.html"
+        });
+    }
+
+    $scope.onViewMetricsClicked = function () {
+        modalService.open({
+            templateUrl: "Function_Views/viewChartModal.html",
+            size: "lg"
         });
     }
 }
