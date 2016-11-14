@@ -163,7 +163,8 @@ function krController($rootScope, $scope, $http, krService, locationService, $lo
 
     $scope.onViewMetricsClicked = function () {
         modalService.open({
-            templateUrl: "Function_Views/viewChartModal.html"
+            templateUrl: "Function_Views/viewChartModal.html",
+            size: "lg"
         });
     }
 }

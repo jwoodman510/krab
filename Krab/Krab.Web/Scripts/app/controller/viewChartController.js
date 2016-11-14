@@ -8,6 +8,41 @@ function viewChartController($scope, modalService, $http) {
     $scope.errorMsg = "";
     $scope.isLoading = false;
     $scope.reportData = [];
+    $scope.data = [
+        {
+            key: "Number of Responses",
+            values: [
+                {
+                    "label": "hello",
+                    "value": 30
+                },
+                {
+                    "label": "world",
+                    "value": 20
+                }
+            ]
+        }
+    ];
+    $scope.options = {
+        chart: {
+            type: "discreteBarChart",
+            height: 450,
+            x: function(d) {
+                return d.label;
+            },
+            y: function(d) {
+                return d.value;
+            },
+            showValues: true,
+            xAxis: {
+                axisLabel: "Keyword Response Sets"
+            },
+            yAxis: {
+                axisLabel: "Number of Responses",
+                axisLabelDistance: -10
+            }
+        }
+    };
 
     function init() {
         var sixDaysAgo = new Date();
