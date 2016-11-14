@@ -2,40 +2,26 @@
     .module("myApp.controllers")
     .controller("viewChartController", viewChartController);
 
-function viewChartController($scope, modalService, $http) {
+function viewChartController($scope, modalService, $http, $timeout) {
 
     $scope.hasError = false;
     $scope.errorMsg = "";
     $scope.isLoading = false;
     $scope.reportData = [];
-    $scope.data = [
-        {
-            key: "Number of Responses",
-            values: [
-                {
-                    "label": "hello",
-                    "value": 30
-                },
-                {
-                    "label": "world",
-                    "value": 20
-                }
-            ]
-        }
-    ];
+
     $scope.options = {
         chart: {
             type: "discreteBarChart",
             height: 450,
-            x: function(d) {
+            x: function (d) {
                 return d.label;
             },
-            y: function(d) {
+            y: function (d) {
                 return d.value;
             },
             showValues: true,
             xAxis: {
-                axisLabel: "Keyword Response Sets"
+                axisLabel: "Keyword"
             },
             yAxis: {
                 axisLabel: "Number of Responses",
@@ -54,25 +40,48 @@ function viewChartController($scope, modalService, $http) {
 
     init();
 
+    $scope.$watch("isLoading", function () {
+        if (!$scope.isLoading) {
+            $timeout(function () {
+                window.dispatchEvent(new Event("resize"));
+            }, 500);
+        }
+    });
+
     function loadData() {
         $scope.hasError = false;
         $scope.isLoading = true;
         $scope.errorMsg = "";
 
-        var rptType = ($scope.breakoutBySubreddit && $scope.breakoutBySubreddit === true)
-            ? "subreddit"
-            : "standard";
+        var rptType = "StandardAggregate";
 
         $http.get("/api/keywordResponseSetReport?startDateMs=" + $scope.startDate.getTime() + "&endDateMs=" + $scope.endDate.getTime() + "&reportType=" + rptType)
             .success(function (data) {
-                $scope.reportData = data.result;
+
+                var rptRows = [];
+
+                angular.forEach(data.result, function (value) {
+                    rptRows.push({
+                        "label": value.keyword,
+                        "value": value.numberOfResponses
+                    });
+                });
+
+                $scope.data = [
+                    {
+                        key: "Number of Responses",
+                        values: rptRows
+                    }
+                ];
+
                 $scope.hasError = false;
                 $scope.errorMsg = "";
-                $scope.isLoading = false;
             })
-            .error(function (error) {
+            .error(function () {
                 $scope.errorMsg = "An error occured.";
                 $scope.hasError = true;
+            })
+            .finally(function() {
                 $scope.isLoading = false;
             });
     }
@@ -95,5 +104,28 @@ function viewChartController($scope, modalService, $http) {
     
     $scope.cancel = function () {
         modalService.close();
+    }
+
+    $scope.submit = function () {
+        loadData();
+    }
+
+    $scope.isValid = function () {
+        var today = new Date();
+        var minDate = new Date();
+        minDate.setDate(minDate.getDate() - 368);
+
+        if (!$scope.endDate || $scope.endDate === null || $scope.endDate === "") {
+            return false;
+        }
+
+        if (!$scope.startDate || $scope.startDate === null || $scope.startDate === "") {
+            return false;
+        }
+
+        return ($scope.endDate <= today) &&
+               ($scope.endDate >= $scope.startDate &&
+               ($scope.startDate >= minDate)) &&
+                $scope.isLoading === false;
     }
 }

@@ -287,6 +287,12 @@
     <Compile Include="Models\Response\OkResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
+    <Compile Include="Reporting\IReportRow.cs" />
+    <Compile Include="Reporting\KeywordResponseSetAggregateRow.cs" />
+    <Compile Include="Reporting\KeywordResponseSetRow.cs" />
+    <Compile Include="Reporting\KeywordResponseSetSubredditRow.cs" />
+    <Compile Include="Reporting\ReportService.cs" />
+    <Compile Include="Reporting\ReportType.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
