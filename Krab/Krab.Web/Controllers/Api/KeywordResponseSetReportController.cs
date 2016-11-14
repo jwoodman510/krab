@@ -39,7 +39,9 @@ namespace Krab.Web.Controllers.Api
             var startDateUtc = new DateTime(1970,1,1,0,0,0,0).AddMilliseconds(startDateMs);
             var endDateUtc = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddMilliseconds(endDateMs);
 
-            var krSets = _keywordResponseSetDac.GetByUserId(GetUserId())
+            var userId = GetUserId();
+
+            var krSets = _keywordResponseSetDac.GetByUserId(userId)
                 ?.ToDictionary(k => k.Id) ?? new Dictionary<int, KeywordResponseSet>();
 
             var reportData = _reportDac.GetByKeywordResponseSetsDateRange(

@@ -312,6 +312,7 @@
     <Content Include="Content\ui-grid.svg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Function_Views\viewChartModal.html" />
     <Content Include="Function_Views\generateReportModal.html" />
     <Content Include="Function_Views\manageSubredditsModal.html" />
     <Content Include="Function_Views\edit.html" />
@@ -354,6 +355,7 @@
     <Content Include="Scripts\app\controller\addKrController.js" />
     <Content Include="Scripts\app\controller\controllers.js" />
     <Content Include="Scripts\app\controller\editKrController.js" />
+    <Content Include="Scripts\app\controller\viewChartController.js" />
     <Content Include="Scripts\app\controller\krController.js" />
     <Content Include="Scripts\app\controller\generateReportController.js" />
     <Content Include="Scripts\app\controller\manageSubredditsController.js" />
