@@ -21,7 +21,7 @@ function viewChartController($scope, modalService, $http, $timeout) {
             },
             showValues: true,
             xAxis: {
-                axisLabel: "Keyword"
+                axisLabel: ""
             },
             yAxis: {
                 axisLabel: "Number of Responses",
