@@ -1,0 +1,22 @@
+﻿<div ng-controller="viewTrendsController">
+    <div class="modal-header centered">
+        <h3 class="modal-title" id="modal-title">Trends (UTC)</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <div class="row" ng-show="!isLoading" style="padding-left: 50px;">
+            <label>Status:</label>
+            <select ng-model="selectedDateRange"
+                    ng-selected="dateRange.id"
+                    ng-options="dateRange as dateRange.label for dateRange in dateRanges"></select>
+        </div>
+        <div class="row" ng-show="!isLoading">
+            <nvd3 options="options" data="data"></nvd3>
+        </div>
+        <div class="row centered" ng-show="isLoading">
+            <i class="fa fa-spinner fa-spin fa-2x"></i>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-info" type="button" ng-click="cancel()">Close</button>
+    </div>
+</div>

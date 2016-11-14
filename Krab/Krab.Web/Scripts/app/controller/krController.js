@@ -167,4 +167,11 @@ function krController($rootScope, $scope, $http, krService, locationService, $lo
             size: "lg"
         });
     }
+
+    $scope.onViewTrendsClicked = function () {
+        modalService.open({
+            templateUrl: "Function_Views/viewTrendsModal.html",
+            size: "lg"
+        });
+    }
 }
