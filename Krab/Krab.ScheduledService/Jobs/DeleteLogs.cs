@@ -16,7 +16,12 @@ namespace Krab.ScheduledService.Jobs
         private const int DeleteDaysOlderThan = 7;
 
         private readonly ILogger _logger;
-        private readonly string[] _directories = { @"c:\tmp\logs\ScheduledService", @"c:\tmp\logs\KeywordResponseSetProcessorService" };
+        private readonly string[] _directories =
+        {
+            @"c:\tmp\logs\ScheduledService",
+            @"c:\tmp\logs\KeywordResponseSetProcessorService",
+            @"c:\tmp\logs\KeywordResponseSetReportingService"
+        };
 
         public DeleteLogs(ILogger logger)
         {
@@ -42,7 +47,8 @@ namespace Krab.ScheduledService.Jobs
             {
                 var fileInfo = new FileInfo(file);
 
-                if (fileInfo.CreationTimeUtc.AddDays(DeleteDaysOlderThan) >= DateTime.UtcNow)
+                var cutoff = DateTime.UtcNow.AddDays(DeleteDaysOlderThan * -1);
+                if (fileInfo.CreationTimeUtc >= cutoff)
                     continue;
 
                 try
