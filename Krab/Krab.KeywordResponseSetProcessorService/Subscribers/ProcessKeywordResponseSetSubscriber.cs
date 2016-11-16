@@ -7,7 +7,6 @@ using RedditSharp;
 using RedditSharp.Things;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Krab.KeywordResponseSetProcessorService.Subscribers
@@ -19,30 +18,15 @@ namespace Krab.KeywordResponseSetProcessorService.Subscribers
         private readonly ISubredditDac _subRedditDac;
         private readonly ISendBus _sendBus;
 
-        public ProcessKeywordResponseSetSubscriber(
-            ILogger logger,
-            IAuthApi authApi,
-            ISubredditDac subredditDac,
-            ISendBus sendBus)
+        public ProcessKeywordResponseSetSubscriber(ILogger logger, IAuthApi authApi, ISubredditDac subredditDac, ISendBus sendBus)
         {
             _logger = logger;
             _authApi = authApi;
             _subRedditDac = subredditDac;
             _sendBus = sendBus;
         }
-        
+
         public void Receive(ProcessKeywordResponseSet message)
-        {
-            var sw = Stopwatch.StartNew();
-
-            Process(message);
-
-            var processTimeMs = sw.ElapsedMilliseconds;
-
-            _logger.LogInfo($"ProcessTimeMs: {message.GetType()}: {processTimeMs}");
-        }
-
-        public void Process(ProcessKeywordResponseSet message)
         {
             _logger.LogInfo($"Processing keyword [{message.Keyword}] for UserId: {message.UserId}");
 
